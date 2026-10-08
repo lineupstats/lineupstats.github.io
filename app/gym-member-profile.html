@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>LineUp</title>
+
+<style>
+  :root {
+    --bg: #0A0B0C; --card: #151618; --card2: #1D1F22;
+    --accent: #F47A12; --text: #F5F5F5; --muted: #9A9DA1; --border: #2C2F33;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0; background: var(--bg); color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    min-height: 100%;
+  }
+  body { padding: env(safe-area-inset-top, 20px) 16px calc(env(safe-area-inset-bottom, 20px) + 16px); }
+
+  #redirecting { max-width: 400px; margin: 70px auto; text-align: center; color: var(--muted); font-size: 14px; }
+  .link-btn {
+    all: unset; cursor: pointer; color: var(--muted); font-size: 13px; text-decoration: underline;
+    display: block; margin-top: 14px; text-align: center;
+  }
+
+  .card-top { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
+  .avatar {
+    width: 54px; height: 54px; border-radius: 50%; background: var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; font-weight: 700; color: #0A0B0C; flex-shrink: 0;
+  }
+  .card-top h1 { font-size: 19px; margin: 0; }
+  .card-top .belt { color: var(--muted); font-size: 13px; }
+  .kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 16px; }
+  .kpi { background: var(--card); border-left: 3px solid var(--accent); border-radius: 0 12px 12px 0; padding: 12px; }
+  .kpi .label { color: var(--muted); font-size: 11px; margin-bottom: 4px; }
+  .kpi .value { font-size: 21px; font-weight: 700; }
+  .panel { background: var(--card); border-radius: 14px; padding: 16px; margin-bottom: 14px; }
+  .panel h2 { font-size: 13px; color: var(--muted); font-weight: 600; margin: 0 0 14px; text-transform: uppercase; letter-spacing: 0.04em; }
+  .j-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 11px 0; border-bottom: 1px solid var(--border); }
+  .j-row:last-child { border-bottom: none; }
+  .j-belt { font-size: 15px; }
+  .j-row.now .j-belt { color: var(--accent); font-weight: 600; }
+  .j-dates { color: var(--muted); font-size: 12px; margin-top: 3px; }
+  .j-count { font-weight: 600; font-size: 15px; white-space: nowrap; }
+  .heatmap { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+  .cell { aspect-ratio: 1; border-radius: 4px; background: var(--card2); }
+  .cell.visited { background: var(--accent); }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  td { padding: 8px 0; border-bottom: 1px solid var(--border); color: var(--muted); }
+  tr:last-child td { border-bottom: none; }
+  #err { color: #ff6b6b; font-size: 13px; text-align: center; padding: 20px; }
+  #loading { text-align: center; color: var(--muted); padding: 40px; }
+
+  .checkin-row { display: flex; gap: 10px; }
+  .checkin-row .pin-input {
+    width: 100%; padding: 16px; border-radius: 12px; border: 1px solid var(--border);
+    background: var(--card2); color: var(--text); font-size: 20px; letter-spacing: 6px;
+    text-align: center; font-family: inherit;
+  }
+  .checkin-row button {
+    padding: 14px 20px; border-radius: 12px; border: none; white-space: nowrap;
+    background: var(--accent); color: #0A0B0C; font-weight: 700; font-size: 15px; cursor: pointer;
+    font-family: inherit;
+  }
+  .checkin-status { font-size: 13px; margin-top: 10px; text-align: center; min-height: 18px; }
+  .checkin-status.ok { color: #4ade80; }
+  .checkin-status.bad { color: #ff6b6b; }
+  .checkin-row button:disabled { opacity: 0.6; cursor: default; }
+  .checkin-state {
+    border-radius: 10px; padding: 12px 14px; font-size: 14px; line-height: 1.4;
+    background: var(--card2); color: var(--muted);
+  }
+  .checkin-state.ready { background: rgba(244,122,18,0.15); border: 1px solid var(--accent); color: var(--text); margin-bottom: 12px; }
+  .checkin-state.done { background: rgba(74,222,128,0.12); border: 1px solid #4ade80; color: var(--text); }
+  .checkin-state .tick { color: #4ade80; font-weight: 700; margin-right: 6px; }
+</style>
+</head>
+<body>
+
+<div id="redirecting">Loading…</div>
+
+<div id="profile" style="display:none; max-width: 520px; margin: 0 auto;">
+  <div id="loading">Loading…</div>
+  <div id="err" style="display:none;"></div>
+  <div id="content" style="display:none;">
+    <div class="card-top">
+      <div class="avatar" id="initial">?</div>
+      <div>
+        <h1 id="name">—</h1>
+        <div class="belt" id="belt">—</div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>Check in</h2>
+      <!-- The message box below changes with the situation: checking location,
+           away from the gym, at the gym (PIN box appears), or already checked in. -->
+      <div id="checkinState" class="checkin-state">Checking whether you're at the gym…</div>
+      <div class="checkin-row" id="checkinForm" style="display:none;">
+        <input id="checkinPinInput" class="pin-input" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="PIN" autocomplete="off" autocapitalize="off" spellcheck="false">
+        <button type="button" id="checkinBtn">Check In</button>
+      </div>
+      <div class="checkin-status" id="checkinStatus"></div>
+      <button type="button" class="link-btn" id="recheckBtn" style="display:none;">Check again</button>
+    </div>
+
+    <div class="kpis">
+      <div class="kpi"><div class="label">Total visits</div><div class="value" id="kpiTotal">0</div></div>
+      <div class="kpi"><div class="label">This month</div><div class="value" id="kpiMonth">0</div></div>
+      <div class="kpi"><div class="label">Last visit</div><div class="value" id="kpiLast" style="font-size:14px;">—</div></div>
+    </div>
+    <div class="panel" id="journeyPanel" style="display:none;">
+      <h2 id="journeyTitle">Belt journey</h2>
+      <div id="journeyList"></div>
+    </div>
+    <div class="panel">
+      <h2>Last 28 days</h2>
+      <div class="heatmap" id="heatmap"></div>
+    </div>
+    <div class="panel">
+      <h2>Recent visits</h2>
+      <table><tbody id="recentTable"></tbody></table>
+    </div>
+    <button class="link-btn" id="signOutBtn">Not you? Sign out</button>
+  </div>
+</div>
+
+<script src="./config.js"></script>
+<script>
+(function() {
+  const APPS_SCRIPT_URL = window.LINEUP_CONFIG.APPS_SCRIPT_URL;
+
+  // Shared with login.html and gym-attendance-dashboard.html — same origin, same keys.
+  const IDENTITY_KEY = 'gymAppIdentity';
+  const SESSION_KEY = 'gymAppSessionKey';
+
+  let member = null; // { name, gymId, gymName, memberId } — from the remembered device identity
+  let sessionKey = null; // proof of this unlock, sent with every request for private data
+  let visits = [];            // this member's visits, newest first
+  let checkinState = null;    // 'locating' | 'away' | 'nolocation' | 'notsetup' | 'error' | 'ready' | 'done'
+  let locationCheckRunning = false;
+
+  // Sign out: forget this person on this device completely.
+  function signOut() {
+    try { localStorage.removeItem(IDENTITY_KEY); sessionStorage.removeItem(SESSION_KEY); } catch (e) {}
+    window.location.href = 'login.html';
+  }
+
+  // Session ended (expired, or this tab has none): keep who this device belongs to,
+  // so they only have to enter their PIN again, not sign in from scratch.
+  function backToUnlock() {
+    try { sessionStorage.removeItem(SESSION_KEY); } catch (e) {}
+    window.location.href = 'login.html';
+  }
+
+  function jsonpRequest(baseUrl, params) {
+    return new Promise((resolve, reject) => {
+      const cbName = 'jsonp_cb_' + Math.random().toString(36).slice(2);
+      const timeout = setTimeout(() => {
+        cleanup();
+        reject(new Error('Request timed out. Check your connection and try again'));
+      }, 20000);
+
+      function cleanup() {
+        clearTimeout(timeout);
+        delete window[cbName];
+        if (script.parentNode) script.parentNode.removeChild(script);
+      }
+
+      window[cbName] = (data) => { cleanup(); resolve(data); };
+
+      const qs = Object.keys(params).map(k => k + '=' + encodeURIComponent(params[k])).join('&');
+      const script = document.createElement('script');
+      script.src = baseUrl + (baseUrl.includes('?') ? '&' : '?') + qs + '&callback=' + cbName;
+      script.onerror = () => { cleanup(); reject(new Error('Could not reach the script URL')); };
+      document.body.appendChild(script);
+    });
+  }
+
+  function getLocation() {
+    return new Promise((resolve, reject) => {
+      if (!navigator.geolocation) { reject(new Error('Location is not available on this device')); return; }
+      navigator.geolocation.getCurrentPosition(
+        pos => resolve({ lat: pos.coords.latitude, lng: pos.coords.longitude }),
+        err => {
+          const e = new Error('Could not get your location. Check that location access is allowed');
+          e.denied = err && err.code === 1;
+          reject(e);
+        },
+        { timeout: 10000, maximumAge: 60000 }
+      );
+    });
+  }
+
+  function fmtDate(d) {
+    return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+  }
+
+  async function loadAndShowProfile() {
+    document.getElementById('redirecting').style.display = 'none';
+    document.getElementById('profile').style.display = 'block';
+    document.getElementById('loading').style.display = 'block';
+    document.getElementById('err').style.display = 'none';
+    document.getElementById('content').style.display = 'none';
+    try {
+      const data = await jsonpRequest(APPS_SCRIPT_URL, { mode: 'profile', sessionKey: sessionKey });
+      if (data.sessionExpired) { backToUnlock(); return; }
+      if (data.error || !data.member) throw new Error('Profile not found');
+      render(data);
+      const today = todaysVisit();
+      if (today) setCheckinState('done', today);
+      else checkIfNearGym(true);
+    } catch (err) {
+      document.getElementById('loading').style.display = 'none';
+      const e = document.getElementById('err');
+      e.style.display = 'block';
+      e.textContent = 'Could not load profile: ' + err.message;
+    }
+  }
+
+  function render(data) {
+    visits = (data.visits || []).map(v => new Date(v)).filter(d => !isNaN(d)).sort((a,b) => b-a);
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('content').style.display = 'block';
+
+    document.getElementById('name').textContent = data.member.name || 'Member';
+    const rankWord = (data.labels && data.labels.rank) || 'Belt';
+    document.getElementById('belt').textContent = data.member.belt ? rankWord + ': ' + data.member.belt : '';
+    document.getElementById('initial').textContent = (data.member.name || '?').charAt(0).toUpperCase();
+    renderStats();
+    renderJourney(data);
+  }
+
+  // The belt journey: sessions at each belt, newest first.
+  function dayText(s) {
+    if (!s) return '';
+    const p = s.split('-').map(Number);
+    return new Date(p[0], p[1] - 1, p[2]).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' });
+  }
+  function escHtml(t) {
+    return String(t === null || t === undefined ? '' : t).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  }
+  function renderJourney(data) {
+    const panel = document.getElementById('journeyPanel');
+    const segs = (data.beltJourney || []).slice().reverse();
+    if (!segs.length) { panel.style.display = 'none'; return; }
+    const word = (data.labels && data.labels.rank) || 'Belt';
+    document.getElementById('journeyTitle').textContent = word + ' journey';
+    document.getElementById('journeyList').innerHTML = segs.map(seg => {
+      let range;
+      if (seg.current) range = seg.from ? 'Since ' + dayText(seg.from) : 'Since records began';
+      else if (!seg.from) range = 'Before ' + dayText(seg.to);
+      else range = dayText(seg.from) + ' to ' + dayText(seg.to);
+      return `<div class="j-row${seg.current ? ' now' : ''}">
+        <div><div class="j-belt">${escHtml(seg.belt)}</div><div class="j-dates">${escHtml(range)}</div></div>
+        <div class="j-count">${seg.sessions} session${seg.sessions === 1 ? '' : 's'}</div>
+      </div>`;
+    }).join('');
+    panel.style.display = 'block';
+  }
+
+  function renderStats() {
+    document.getElementById('kpiTotal').textContent = visits.length;
+    const now = new Date();
+    const monthCount = visits.filter(d => d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear()).length;
+    document.getElementById('kpiMonth').textContent = monthCount;
+    document.getElementById('kpiLast').textContent = visits.length ? fmtDate(visits[0]) : '—';
+
+    const heat = document.getElementById('heatmap');
+    heat.innerHTML = '';
+    for (let i = 27; i >= 0; i--) {
+      const day = new Date(); day.setHours(0,0,0,0); day.setDate(day.getDate() - i);
+      const next = new Date(day); next.setDate(next.getDate() + 1);
+      const visited = visits.some(v => v >= day && v < next);
+      const cell = document.createElement('div');
+      cell.className = 'cell' + (visited ? ' visited' : '');
+      cell.title = day.toLocaleDateString();
+      heat.appendChild(cell);
+    }
+
+    const recentEl = document.getElementById('recentTable');
+    const recent = visits.slice(0, 8);
+    recentEl.innerHTML = recent.length ? recent.map(d =>
+      `<tr><td>${d.toLocaleDateString(undefined,{weekday:'short', month:'short', day:'numeric'})}</td><td style="text-align:right;">${d.toLocaleTimeString(undefined,{hour:'2-digit',minute:'2-digit'})}</td></tr>`
+    ).join('') : '<tr><td style="color:var(--muted);">No visits recorded yet</td></tr>';
+  }
+
+  function sameDay(a, b) {
+    return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+  }
+
+  function todaysVisit() {
+    const now = new Date();
+    return visits.find(d => sameDay(d, now)) || null;
+  }
+
+  function fmtTime(d) {
+    return d.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
+  }
+
+  // Shows the right message (and only shows the PIN box when it can actually be used).
+  function setCheckinState(state, when) {
+    checkinState = state;
+    const box = document.getElementById('checkinState');
+    const form = document.getElementById('checkinForm');
+    const recheck = document.getElementById('recheckBtn');
+    box.className = 'checkin-state';
+    form.style.display = 'none';
+    recheck.style.display = 'none';
+
+    if (state === 'locating') {
+      box.textContent = "Checking whether you're at the gym…";
+    } else if (state === 'away') {
+      box.textContent = "Check-in opens when you're at the gym.";
+      recheck.textContent = 'Check again';
+      recheck.style.display = 'block';
+    } else if (state === 'nolocation') {
+      box.textContent = 'Allow location access for this app so we can tell when you\'re at the gym.';
+      recheck.textContent = 'Try again';
+      recheck.style.display = 'block';
+    } else if (state === 'notsetup') {
+      box.textContent = "Check-in isn't available yet, because your gym's location hasn't been set up.";
+    } else if (state === 'error') {
+      box.textContent = "Couldn't check your location just now.";
+      recheck.textContent = 'Try again';
+      recheck.style.display = 'block';
+    } else if (state === 'ready') {
+      box.classList.add('ready');
+      box.textContent = "You're at the gym. Enter your PIN to check in.";
+      form.style.display = 'flex';
+    } else if (state === 'done') {
+      box.classList.add('done');
+      box.textContent = '';
+      const tick = document.createElement('span');
+      tick.className = 'tick';
+      tick.textContent = '✓';
+      box.appendChild(tick);
+      box.appendChild(document.createTextNode(
+        when ? 'Checked in today at ' + fmtTime(when) + '. See you in class!' : "You're checked in for today. See you in class!"
+      ));
+    }
+  }
+
+  // showProgress = true when the person is waiting on it (first load, "Check again");
+  // the background re-checks every 2 minutes update quietly instead.
+  async function checkIfNearGym(showProgress) {
+    if (checkinState === 'done' || checkinState === 'notsetup' || locationCheckRunning) return;
+    // Don't yank the PIN box away mid-typing because of a GPS wobble — the server
+    // still checks the distance properly when they press Check In.
+    if (checkinState === 'ready' && !showProgress) return;
+
+    locationCheckRunning = true;
+    if (showProgress) setCheckinState('locating');
+    try {
+      const loc = await getLocation();
+      const result = await jsonpRequest(APPS_SCRIPT_URL, {
+        mode: 'checkProximity', gymId: member.gymId, lat: loc.lat, lng: loc.lng
+      });
+      if (checkinState === 'done') return;
+      if (result.notSetUp) setCheckinState('notsetup');
+      else if (result.withinRange === true) setCheckinState('ready');
+      else if (result.withinRange === false) setCheckinState('away');
+      else setCheckinState('error');
+    } catch (err) {
+      if (checkinState === 'done') return;
+      setCheckinState(err.denied ? 'nolocation' : 'error');
+    } finally {
+      locationCheckRunning = false;
+    }
+  }
+
+  async function checkInWithPin() {
+    const statusEl = document.getElementById('checkinStatus');
+    const btn = document.getElementById('checkinBtn');
+    const input = document.getElementById('checkinPinInput');
+    if (btn.disabled) return;
+    const pin = input.value.trim();
+    if (!/^[0-9]{4}$/.test(pin)) {
+      statusEl.textContent = 'Enter your 4-digit PIN.';
+      statusEl.className = 'checkin-status bad';
+      return;
+    }
+    statusEl.textContent = '';
+    statusEl.className = 'checkin-status';
+    btn.disabled = true;
+    btn.textContent = 'Checking in…';
+    try {
+      const loc = await getLocation();
+      const result = await jsonpRequest(APPS_SCRIPT_URL, {
+        mode: 'pinCheckIn', gymId: member.gymId, memberId: member.memberId, pin: pin, lat: loc.lat, lng: loc.lng
+      });
+      input.value = '';
+      if (result.success) {
+        const now = new Date();
+        visits.unshift(now);  // show the new visit in the stats straight away
+        renderStats();
+        setCheckinState('done', now);
+        return;
+      }
+      if (result.reason === 'already') { setCheckinState('done'); return; }
+      if (result.reason === 'too_far') setCheckinState('away');
+      else if (result.reason === 'no_location') setCheckinState('nolocation');
+      else if (result.reason === 'not_setup') setCheckinState('notsetup');
+      statusEl.textContent = result.error || 'Could not check in.';
+      statusEl.className = 'checkin-status bad';
+    } catch (err) {
+      if (err.denied) setCheckinState('nolocation');
+      statusEl.textContent = err.message;
+      statusEl.className = 'checkin-status bad';
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Check In';
+    }
+  }
+
+  function init() {
+    // This page trusts login.html entirely — it never signs anyone in itself.
+    // No remembered identity or wrong role for this device = straight back.
+    let identity = null;
+    try { identity = JSON.parse(localStorage.getItem(IDENTITY_KEY)); } catch (e) { identity = null; }
+
+    try { sessionKey = sessionStorage.getItem(SESSION_KEY); } catch (e) { sessionKey = null; }
+
+    if (!identity || identity.role !== 'Member') {
+      signOut();
+      return;
+    }
+    if (!sessionKey) {
+      backToUnlock();
+      return;
+    }
+
+    member = identity;
+    document.title = identity.gymName ? identity.gymName + ' LineUp' : 'LineUp';
+    loadAndShowProfile();
+  }
+
+  document.getElementById('checkinBtn').addEventListener('click', checkInWithPin);
+  document.getElementById('signOutBtn').addEventListener('click', signOut);
+  document.getElementById('recheckBtn').addEventListener('click', () => {
+    document.getElementById('checkinStatus').textContent = '';
+    checkIfNearGym(true);
+  });
+  document.getElementById('checkinPinInput').addEventListener('keydown', ev => {
+    if (ev.key === 'Enter') { ev.preventDefault(); checkInWithPin(); }
+  });
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState !== 'visible' || !member || document.getElementById('content').style.display === 'none') return;
+    // Coming back to the app on a new day? Reload so "checked in" resets.
+    if (checkinState === 'done' && !todaysVisit()) { loadAndShowProfile(); return; }
+    checkIfNearGym(false);
+  });
+  setInterval(() => {
+    if (member && document.getElementById('content').style.display !== 'none') checkIfNearGym(false);
+  }, 120000);
+
+  init();
+})();
+</script>
+
+</body>
+</html>

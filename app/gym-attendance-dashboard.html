@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>LineUp</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --bg: #0A0B0C; --card: #151618; --card2: #1D1F22;
+    --accent: #F47A12; --text: #F5F5F5; --muted: #9A9DA1; --border: #2C2F33;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0; background: var(--bg); color: var(--text);
+    font-family: 'Work Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    min-height: 100%;
+  }
+  body { padding: env(safe-area-inset-top, 20px) 16px calc(env(safe-area-inset-bottom, 20px) + 16px); }
+  h1, h2 { font-family: 'Oswald', sans-serif; }
+
+  #redirecting { max-width: 400px; margin: 70px auto; text-align: center; color: var(--muted); font-size: 14px; }
+
+  header { text-align: center; margin-bottom: 24px; }
+  header h1 {
+    font-size: 26px; margin: 0 0 6px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+  }
+  header .sub {
+    display: inline-flex; align-items: center; gap: 7px; color: var(--muted); font-size: 12px;
+    background: var(--card); border: 1px solid var(--border); padding: 6px 14px; border-radius: 999px;
+  }
+  header .sub::before {
+    content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); display: inline-block;
+  }
+
+  .tabs { display: flex; gap: 4px; max-width: 460px; margin: 0 auto 18px; background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 4px; }
+  .tab-btn { flex: 1; background: transparent; border: 0; color: var(--muted); padding: 11px 8px; border-radius: 9px; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer; }
+  .tab-btn.active { background: var(--accent); color: #0A0B0C; }
+  .kpi[data-kpi="today"] .label::after { content: ' \203A  manage'; text-transform: none; letter-spacing: 0; color: var(--accent); }
+
+  .ci-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+  .ci-head h2 { margin: 0; }
+  .ci-date { color: var(--muted); font-size: 12px; margin-top: 3px; }
+  .ci-count { background: rgba(110,231,168,0.12); color: #6EE7A8; border: 1px solid rgba(110,231,168,0.35); padding: 7px 12px; border-radius: 999px; font-size: 13px; font-weight: 600; text-align: center; }
+  .ci-input { width: 100%; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--border); background: var(--card2); color: var(--text); font-size: 16px; font-family: inherit; }
+  .ci-results { display: none; margin-top: 8px; background: var(--card2); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .ci-result { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 9px 14px; border-bottom: 1px solid var(--border); font-size: 14px; min-height: 46px; }
+  .ci-result:last-child { border-bottom: none; }
+  .ci-result .sr-left { display: flex; align-items: center; gap: 8px; min-width: 0; }
+  .ci-done { color: #6EE7A8; font-size: 12px; white-space: nowrap; }
+  .mini-btn { background: var(--card2); border: 1px solid var(--border); color: var(--text); padding: 9px 14px; border-radius: 9px; font-size: 13px; font-family: inherit; cursor: pointer; flex: none; }
+  .mini-btn.primary { background: var(--accent); color: #0A0B0C; border-color: var(--accent); font-weight: 600; }
+  .ci-guest-btn { margin-top: 12px; width: 100%; background: transparent; border: 1px dashed var(--border); color: var(--text); padding: 12px; border-radius: 10px; font-size: 14px; font-family: inherit; cursor: pointer; }
+  #ciGuestForm { display: none; margin-top: 12px; padding: 14px; background: var(--card2); border: 1px solid var(--border); border-radius: 12px; }
+  #ciGuestForm label { display: block; color: var(--muted); font-size: 12px; margin: 0 0 6px; }
+  #ciGuestForm .ci-input { margin-bottom: 12px; background: var(--card); }
+  .ci-actions { display: flex; gap: 8px; }
+  .ci-actions .mini-btn { flex: 1; padding: 12px; }
+  .ci-msg { font-size: 13px; margin-top: 12px; display: none; }
+  .ci-msg.ok { display: block; color: #6EE7A8; }
+  .ci-msg.bad { display: block; color: #ff6b6b; }
+  .ci-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 12px 0; border-bottom: 1px solid var(--border); }
+  .ci-row:last-child { border-bottom: none; }
+  .ci-name { font-size: 15px; }
+  .ci-name.gone { text-decoration: line-through; color: var(--muted); }
+  .ci-meta { color: var(--muted); font-size: 12px; margin-top: 4px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .ci-rank { display: inline-flex; align-items: center; gap: 5px; }
+  .tag { font-size: 10px; padding: 2px 7px; border-radius: 6px; border: 1px solid var(--border); text-transform: uppercase; letter-spacing: 0.4px; }
+  .tag.coach { background: rgba(244,122,18,0.15); color: var(--accent); border-color: rgba(244,122,18,0.4); }
+  .tag.guest { background: rgba(255,255,255,0.08); color: #E6E7E8; border-color: rgba(255,255,255,0.28); }
+  .ci-empty { color: var(--muted); font-size: 14px; padding: 8px 0 2px; }
+  #checkinsTab.busy .mini-btn { opacity: 0.55; pointer-events: none; }
+
+  .journey { margin-top: 16px; border-top: 1px solid var(--border); padding-top: 14px; }
+  .journey-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 4px; }
+  .journey-head b { font-size: 14px; }
+  .journey-actions { display: flex; gap: 8px; align-items: center; }
+  .j-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .j-row:last-child { border-bottom: none; }
+  .j-belt { display: flex; align-items: center; gap: 8px; font-size: 15px; }
+  .j-row.now .j-belt { color: var(--accent); font-weight: 600; }
+  .j-dates { color: var(--muted); font-size: 12px; margin-top: 3px; }
+  .j-count { font-weight: 600; font-size: 15px; white-space: nowrap; }
+  .belt-form { display: none; margin-top: 12px; padding: 14px; background: var(--card2); border: 1px solid var(--border); border-radius: 12px; }
+  .belt-form label { display: block; color: var(--muted); font-size: 12px; margin: 0 0 6px; }
+  .belt-form select, .belt-form input { width: 100%; padding: 11px 12px; border-radius: 9px; border: 1px solid var(--border); background: var(--card); color: var(--text); font-size: 16px; font-family: inherit; margin-bottom: 12px; }
+  .belt-hint { font-size: 12px; color: var(--muted); margin: -4px 0 12px; line-height: 1.4; }
+  .kpis { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 460px; margin: 0 auto 16px; }
+  .kpi {
+    background: var(--card); border-top: 3px solid var(--accent); border: 1px solid var(--border);
+    border-top: 3px solid var(--accent); border-radius: 14px; padding: 18px 16px;
+    width: 100%; text-align: left; font-family: inherit; cursor: pointer; color: var(--text);
+  }
+  .kpi.expanded { border-color: var(--accent); }
+  .kpi .label { color: var(--muted); font-size: 11px; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .kpi .value { font-size: 32px; font-weight: 700; font-family: 'Oswald', sans-serif; color: var(--text); }
+
+  #loading, #err { text-align: center; padding: 60px 20px; color: var(--muted); font-size: 14px; }
+  #err { color: #ff6b6b; }
+  .refresh-btn {
+    background: var(--card); border: 1px solid var(--border); color: var(--text);
+    padding: 9px 18px; border-radius: 10px; font-size: 13px; cursor: pointer; font-family: inherit;
+  }
+
+  .panel {
+    max-width: 460px; margin: 0 auto 14px; background: var(--card); border: 1px solid var(--border);
+    border-radius: 14px; padding: 18px;
+  }
+  .panel h2 {
+    font-size: 15px; color: var(--text); font-weight: 600; margin: 0 0 12px;
+    text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .panel h2 .hint { color: var(--muted); font-size: 11px; text-transform: none; font-weight: 400; font-family: 'Work Sans', sans-serif; letter-spacing: normal; display: block; margin-top: 2px; }
+
+  .risk-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 11px 0; border-bottom: 1px solid var(--border); font-size: 14px;
+  }
+  .risk-row:last-child { border-bottom: none; }
+  .risk-left { display: flex; align-items: center; gap: 10px; }
+  .risk-right { text-align: right; }
+  .risk-days { color: var(--accent); font-weight: 600; font-size: 13px; }
+  .risk-action { color: var(--muted); font-size: 11px; margin-top: 2px; }
+
+  .dot { width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0; display: inline-block; }
+
+  .belt-item { border-radius: 10px; background: var(--card2); margin-bottom: 8px; }
+  .belt-item:last-child { margin-bottom: 0; }
+  .belt-item.expanded { border: 1px solid var(--accent); }
+  .belt-row {
+    all: unset; box-sizing: border-box; width: 100%; display: flex; align-items: center;
+    justify-content: space-between; padding: 12px 14px; cursor: pointer; font-family: inherit;
+  }
+  .belt-left { display: flex; align-items: center; gap: 12px; }
+  .belt-name { font-size: 15px; font-weight: 500; }
+  .belt-count { font-size: 12px; color: var(--muted); }
+  .belt-avg { font-size: 13px; color: var(--muted); font-weight: 600; }
+  .belt-chevron { font-size: 18px; color: var(--muted); transition: transform 0.15s ease; }
+  .belt-item.expanded .belt-chevron { transform: rotate(90deg); color: var(--accent); }
+
+  .belt-roster {
+    padding: 0 14px 14px; display: flex; flex-direction: column; gap: 7px;
+    border-top: 1px solid var(--border); margin-top: 2px; padding-top: 10px;
+  }
+  .roster-row { display: flex; justify-content: space-between; font-size: 13.5px; }
+  .roster-row .rname { color: var(--text); }
+  .roster-row .rstatus { color: var(--muted); }
+
+  .cal-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .cal-nav { all: unset; cursor: pointer; color: var(--muted); font-size: 17px; padding: 2px 8px; }
+  .cal-nav:active { color: var(--accent); }
+  .cal-label { font-size: 12px; color: var(--muted); }
+  .cal-weekdays, .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; }
+  .cal-weekdays { margin-bottom: 6px; }
+  .cal-weekdays span { font-size: 10px; color: #6B7280; text-align: center; }
+  .cal-day {
+    all: unset; box-sizing: border-box; cursor: pointer; font-family: inherit;
+    aspect-ratio: 1; border-radius: 6px; background: var(--card2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; color: var(--muted);
+  }
+  .cal-day.blank { background: transparent; cursor: default; }
+  .cal-day.today { border: 2px solid var(--accent); }
+  .cal-day.selected { box-shadow: 0 0 0 2px #fff inset; }
+  .cal-legend { display: flex; align-items: center; justify-content: flex-end; gap: 5px; margin-top: 10px; }
+  .cal-legend span.sw { width: 11px; height: 11px; border-radius: 3px; display: inline-block; }
+  .cal-legend span.lbl { font-size: 10px; color: #6B7280; }
+
+  .cal-toggle-btn {
+    flex: 1; padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border);
+    background: var(--card2); color: var(--muted); font-size: 12px; font-weight: 600;
+    cursor: pointer; font-family: inherit; text-transform: uppercase; letter-spacing: 0.3px;
+  }
+  .cal-toggle-btn.active { background: var(--accent); color: #0A0B0C; border-color: var(--accent); }
+
+  .bars-wrap { display: flex; align-items: flex-end; gap: 8px; height: 140px; }
+  .bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; height: 100%; justify-content: flex-end; }
+  .bar-col .bar-val { font-size: 12px; font-weight: 600; }
+  .bar-col .bar-fill { width: 100%; max-width: 30px; background: var(--accent); border-radius: 6px 6px 0 0; }
+  .bar-col .bar-day { font-size: 11px; color: var(--muted); }
+  .bar-col.peak .bar-day { color: var(--text); font-weight: 600; }
+  .bar-col.peak .bar-val { color: var(--accent); font-weight: 700; }
+
+  .lookup-wrap { position: relative; }
+  .lookup-wrap input {
+    width: 100%; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--border);
+    background: var(--card2); color: var(--text); font-size: 14px; font-family: inherit;
+  }
+  .search-results {
+    display: none; position: absolute; left: 0; right: 0; top: calc(100% + 6px);
+    background: var(--card2); border: 1px solid var(--border); border-radius: 10px;
+    overflow-y: auto; max-height: 220px; z-index: 5;
+  }
+  .search-result {
+    padding: 10px 14px; cursor: pointer; font-size: 14px; border-bottom: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .search-result:last-child { border-bottom: none; }
+  .search-result:active { background: var(--card); }
+  .search-result .sr-left { display: flex; align-items: center; gap: 8px; }
+  .search-result .sr-belt { color: var(--muted); font-size: 12px; }
+
+  .member-detail-head { display: flex; align-items: center; justify-content: space-between; }
+  .member-detail-name { font-family: 'Oswald', sans-serif; font-size: 17px; font-weight: 600; }
+  .member-detail-meta { font-size: 12px; color: var(--muted); margin: 6px 0 12px; }
+  .clear-btn { all: unset; cursor: pointer; color: var(--muted); font-size: 12px; text-decoration: underline; }
+  .visit-list { display: flex; flex-direction: column; gap: 2px; max-height: 260px; overflow-y: auto; }
+  .visit-row { display: flex; justify-content: space-between; font-size: 13px; padding: 7px 0; border-bottom: 1px solid var(--border); }
+  .visit-row:last-child { border-bottom: none; }
+</style>
+</head>
+<body>
+
+<div id="redirecting">Loading…</div>
+
+<div id="dash" style="display:none;">
+  <header>
+    <h1 id="gymTitle">Gym Attendance</h1>
+    <div style="display:flex; align-items:center; justify-content:center; gap:10px; flex-wrap:wrap;">
+      <div class="sub" id="lastUpdated">—</div>
+      <button class="refresh-btn" id="refreshBtn">Refresh</button>
+      <button class="refresh-btn" id="signOutBtn">Sign out</button>
+    </div>
+  </header>
+
+  <div class="tabs" id="tabs">
+    <button type="button" class="tab-btn active" data-tab="overview">Overview</button>
+    <button type="button" class="tab-btn" data-tab="checkins">Check-ins</button>
+  </div>
+
+  <div id="overviewTab">
+  <div id="loading">Loading…</div>
+  <div id="err" style="display:none;"></div>
+
+  <div id="content" style="display:none;">
+    <div class="panel">
+      <h2>Member lookup <span class="hint">Search a name to see their full check-in history</span></h2>
+      <div class="lookup-wrap">
+        <input id="memberSearch" type="text" placeholder="Search by name…" autocomplete="off" autocapitalize="off" spellcheck="false">
+        <div class="search-results" id="searchResults"></div>
+      </div>
+      <div id="memberDetail" style="display:none; margin-top:14px;"></div>
+    </div>
+
+    <div class="kpis">
+      <button type="button" class="kpi" data-kpi="today"><div class="label">Today</div><div class="value" id="kpiToday">0</div></button>
+      <button type="button" class="kpi" data-kpi="week"><div class="label">This week</div><div class="value" id="kpiWeek">0</div></button>
+      <button type="button" class="kpi" data-kpi="members"><div class="label">Total members</div><div class="value" id="kpiMembers">0</div></button>
+      <button type="button" class="kpi" data-kpi="total"><div class="label">All-time check-ins</div><div class="value" id="kpiTotal">0</div></button>
+    </div>
+
+    <div class="panel" id="kpiDetailPanel" style="display:none;">
+      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
+        <h2 style="margin:0;" id="kpiDetailTitle">Details</h2>
+        <button type="button" class="clear-btn" id="kpiDetailClose">Close</button>
+      </div>
+      <div id="kpiDetailBody"></div>
+    </div>
+
+    <div class="panel" id="atRiskPanel" style="display:none;">
+      <h2>At-risk members <span class="hint">10+ days away</span></h2>
+      <div id="atRiskList"></div>
+    </div>
+
+    <div class="panel" id="calPanel" style="display:none;">
+      <div class="cal-head">
+        <h2 style="margin:0;">This month</h2>
+        <span style="display:flex; align-items:center; gap:8px;">
+          <button type="button" class="cal-nav" id="calPrev" aria-label="Previous month">&lsaquo;</button>
+          <span class="cal-label" id="calLabel">—</span>
+          <button type="button" class="cal-nav" id="calNext" aria-label="Next month">&rsaquo;</button>
+        </span>
+      </div>
+      <div class="cal-weekdays">
+        <span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span><span>Su</span>
+      </div>
+      <div class="cal-grid" id="calGrid"></div>
+      <div class="cal-legend">
+        <span class="lbl">Fewer</span>
+        <span class="sw" style="background:rgba(244,122,18,0.15)"></span>
+        <span class="sw" style="background:rgba(244,122,18,0.4)"></span>
+        <span class="sw" style="background:rgba(244,122,18,0.65)"></span>
+        <span class="sw" style="background:rgba(244,122,18,0.95)"></span>
+        <span class="lbl">More</span>
+      </div>
+
+      <div id="calDayDetail" style="display:none; margin-top:14px; padding-top:14px; border-top:1px solid var(--border);">
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
+          <h2 style="margin:0; font-size:13px;" id="calDayTitle">—</h2>
+          <button type="button" class="clear-btn" id="calDayClose">Close</button>
+        </div>
+        <div style="display:flex; gap:8px; margin-bottom:10px;">
+          <button type="button" class="cal-toggle-btn" id="calModeAttended" data-mode="attended">Attended</button>
+          <button type="button" class="cal-toggle-btn" id="calModeAbsent" data-mode="absent">Not attended</button>
+        </div>
+        <div id="calDayBody"></div>
+      </div>
+    </div>
+
+    <div class="panel" id="beltPanel" style="display:none;">
+      <h2><span id="rankPanelTitle">Belt</span> breakdown <span class="hint" id="rankPanelHint">Tap a belt to see its students</span></h2>
+      <div id="beltList"></div>
+    </div>
+
+    <div class="panel" id="weekdayPanel" style="display:none;">
+      <h2>Busiest days <span class="hint">Total check-ins by weekday</span></h2>
+      <div class="bars-wrap" id="weekdayBars"></div>
+    </div>
+  </div>
+  </div>
+
+  <div id="checkinsTab" style="display:none;">
+    <div class="panel">
+      <div class="ci-head">
+        <div>
+          <h2>Today</h2>
+          <div class="ci-date" id="ciDate">&mdash;</div>
+        </div>
+        <div class="ci-count" id="ciCount">0 checked in</div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>Add a check-in <span class="hint">For anyone who forgot</span></h2>
+      <input id="ciSearch" class="ci-input" type="text" placeholder="Search by name…" autocomplete="off" autocapitalize="off" spellcheck="false">
+      <div class="ci-results" id="ciResults"></div>
+      <button type="button" class="ci-guest-btn" id="ciGuestBtn">+ New guest</button>
+      <div id="ciGuestForm">
+        <label for="ciGuestName">Guest's name</label>
+        <input id="ciGuestName" class="ci-input" type="text" maxlength="60" autocomplete="off" spellcheck="false">
+        <label for="ciGuestRank" id="ciGuestRankLabel">Belt (optional)</label>
+        <select id="ciGuestRank" class="ci-input"><option value="">Unknown</option></select>
+        <div class="ci-actions">
+          <button type="button" class="mini-btn primary" id="ciGuestSubmit">Add guest</button>
+          <button type="button" class="mini-btn" id="ciGuestCancel">Cancel</button>
+        </div>
+      </div>
+      <div class="ci-msg" id="ciMsg" role="status"></div>
+    </div>
+
+    <div class="panel">
+      <h2>Checked in today</h2>
+      <div id="ciList"><div class="ci-empty">Loading…</div></div>
+    </div>
+  </div>
+</div>
+
+<script src="./config.js"></script>
+<script>
+(function() {
+  const APPS_SCRIPT_URL = window.LINEUP_CONFIG.APPS_SCRIPT_URL;
+
+  // Shared with login.html and gym-member-profile.html — same origin, same keys.
+  const IDENTITY_KEY = 'gymAppIdentity';
+  const SESSION_KEY = 'gymAppSessionKey';
+
+  let gymName = null, sessionKey = null;
+
+  // Each gym's app is called "[Gym Name] LineUp".
+  function showAppName(gym) {
+    const name = gym ? gym + ' LineUp' : 'LineUp';
+    document.getElementById('gymTitle').textContent = name;
+    document.title = name;
+  }
+  let expandedBelt = null;
+  let expandedKpi = null;
+  let calYear = null, calMonth = null, calDaysMap = {};
+  let expandedDay = null;
+  let calViewMode = 'attended';
+  let allMembers = [];
+
+  // Sign out: forget this person on this device completely.
+  function signOut() {
+    try { localStorage.removeItem(IDENTITY_KEY); sessionStorage.removeItem(SESSION_KEY); } catch (e) {}
+    window.location.href = 'login.html';
+  }
+
+  // Session ended (expired, or this tab has none): keep who this device belongs to,
+  // so they only have to enter their PIN again, not sign in from scratch.
+  function backToUnlock() {
+    try { sessionStorage.removeItem(SESSION_KEY); } catch (e) {}
+    window.location.href = 'login.html';
+  }
+
+  async function loadData() {
+    document.getElementById('loading').style.display = 'block';
+    document.getElementById('err').style.display = 'none';
+    document.getElementById('content').style.display = 'none';
+
+    const dataPromise = jsonpRequest(APPS_SCRIPT_URL, { mode: 'data', gymId: gymName, sessionKey: sessionKey });
+    const membersPromise = jsonpRequest(APPS_SCRIPT_URL, { mode: 'members', gymId: gymName, sessionKey: sessionKey });
+
+    try {
+      const data = await dataPromise;
+      if (data.error) {
+        // Any error from a session-protected endpoint most likely means the
+        // session has expired — the quickest fix is just unlocking again.
+        backToUnlock();
+        return;
+      }
+      render(data);
+      document.getElementById('lastUpdated').textContent = 'Updated ' + new Date().toLocaleTimeString();
+    } catch (err) {
+      document.getElementById('loading').style.display = 'none';
+      const e = document.getElementById('err');
+      e.style.display = 'block';
+      e.textContent = 'Could not load data: ' + err.message;
+    }
+
+    try {
+      const memberListResult = await membersPromise;
+      if (memberListResult.members) allMembers = memberListResult.members;
+    } catch (err) { /* search just won't have results if this fails */ }
+  }
+
+  function jsonpRequest(baseUrl, params) {
+    return new Promise((resolve, reject) => {
+      const cbName = 'jsonp_cb_' + Math.random().toString(36).slice(2);
+      const timeout = setTimeout(() => {
+        cleanup();
+        reject(new Error('Request timed out. Check your connection and try again'));
+      }, 20000);
+
+      function cleanup() {
+        clearTimeout(timeout);
+        delete window[cbName];
+        if (script.parentNode) script.parentNode.removeChild(script);
+      }
+
+      window[cbName] = (data) => { cleanup(); resolve(data); };
+
+      const qs = Object.keys(params).map(k => k + '=' + encodeURIComponent(params[k])).join('&');
+      const script = document.createElement('script');
+      script.src = baseUrl + (baseUrl.includes('?') ? '&' : '?') + qs + '&callback=' + cbName;
+      script.onerror = () => { cleanup(); reject(new Error('Could not reach the script URL')); };
+      document.body.appendChild(script);
+    });
+  }
+
+  // Wording and colours come from the gym's rows in the Google Sheet (Gyms and Ranks
+  // tabs), so changing them never needs a code change. These are only the defaults.
+  let labels = { rank: 'Belt', member: 'Students' };
+  let rankColours = {};   // lower-case rank name -> colour set in the Ranks tab
+
+  // Plain colour words work with no setup at all.
+  const COMMON_COLOURS = {
+    white: '#F5F5F0', yellow: '#F5C400', orange: '#F57C00', green: '#2E9E4F', blue: '#2F6FED',
+    purple: '#8B5CF6', brown: '#8B5E34', red: '#D93025', pink: '#EC6FA8', grey: '#8E9195',
+    gray: '#8E9195', black: '#111111', gold: '#D4A017', silver: '#B8BCC4'
+  };
+  const UNSET_COLOUR = '#6B7280';
+
+  function esc(text) {
+    return String(text === null || text === undefined ? '' : text).replace(/[&<>"']/g, c =>
+      ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  }
+
+  function resolveColour(value) {
+    const v = String(value || '').trim();
+    if (/^#[0-9a-f]{3}([0-9a-f]{3})?$/i.test(v)) return v;
+    return COMMON_COLOURS[v.toLowerCase()] || null;
+  }
+
+  // Very light or very dark dots get a thin outline so they stay visible on either theme.
+  function needsOutline(hex) {
+    let h = hex.replace('#', '');
+    if (h.length === 3) h = h.split('').map(c => c + c).join('');
+    const r = parseInt(h.slice(0, 2), 16), g = parseInt(h.slice(2, 4), 16), b = parseInt(h.slice(4, 6), 16);
+    const lum = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+    return lum > 0.85 || lum < 0.12;
+  }
+
+  function beltStyle(beltName) {
+    const key = (beltName || '').toLowerCase().trim();
+    const hex = resolveColour(rankColours[key]) || resolveColour(key) || UNSET_COLOUR;
+    return { dot: hex, border: needsOutline(hex) };
+  }
+
+  function applyGymSettings(data) {
+    if (data.labels) labels = { rank: data.labels.rank || 'Belt', member: data.labels.member || 'Students' };
+    rankColours = {};
+    (data.ranks || []).forEach(r => { if (r.colour) rankColours[String(r.rank).toLowerCase().trim()] = r.colour; });
+    document.getElementById('rankPanelTitle').textContent = labels.rank;
+    document.getElementById('rankPanelHint').textContent =
+      'Tap a ' + labels.rank.toLowerCase() + ' to see its ' + labels.member.toLowerCase();
+  }
+
+  let lastData = null;
+
+  function render(data) {
+    applyGymSettings(data);
+    lastData = data;
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('content').style.display = 'block';
+    if (data.gymName) showAppName(data.gymName);
+    document.getElementById('kpiToday').textContent = data.today || 0;
+    document.getElementById('kpiWeek').textContent = data.week || 0;
+    document.getElementById('kpiMembers').textContent = data.totalMembers || 0;
+    document.getElementById('kpiTotal').textContent = data.totalCheckIns || 0;
+
+    const atRiskPanel = document.getElementById('atRiskPanel');
+    const atRiskList = document.getElementById('atRiskList');
+    if (data.atRisk && data.atRisk.length) {
+      atRiskPanel.style.display = 'block';
+      atRiskList.innerHTML = data.atRisk.map(m =>
+        `<div class="risk-row">
+           <div class="risk-left">${m.name}</div>
+           <div class="risk-right">
+             <div class="risk-days">${m.daysSince}d away</div>
+             <div class="risk-action">Worth a message</div>
+           </div>
+         </div>`
+      ).join('');
+    } else {
+      atRiskPanel.style.display = 'none';
+    }
+
+    renderBeltList(data);
+
+    if (data.calendarMonth) {
+      calYear = data.calendarMonth.year;
+      calMonth = data.calendarMonth.month;
+      calDaysMap = data.calendarMonth.days || {};
+      expandedDay = null;
+      renderCalendar();
+      renderCalDayDetail();
+    }
+    if (data.weekdayTotals) renderWeekdayBars(data.weekdayTotals);
+    renderKpiDetail();
+  }
+
+  function renderBeltList(data) {
+    const beltPanel = document.getElementById('beltPanel');
+    const beltList = document.getElementById('beltList');
+    if (!data.beltBreakdown || !data.beltBreakdown.length) {
+      beltPanel.style.display = 'none';
+      return;
+    }
+    beltPanel.style.display = 'block';
+
+    beltList.innerHTML = data.beltBreakdown.map((b, i) => {
+      const style = beltStyle(b.belt);
+      const isOpen = expandedBelt === b.belt;
+      const roster = (b.members || []).map(m =>
+        `<div class="roster-row"><span class="rname">${m.name}</span><span class="rstatus">${m.label}</span></div>`
+      ).join('');
+      return `
+        <div class="belt-item${isOpen ? ' expanded' : ''}">
+          <button type="button" class="belt-row" data-idx="${i}">
+            <span class="belt-left">
+              <span class="dot" style="background:${style.dot};${style.border ? 'border:1px solid var(--border);' : ''}"></span>
+              <span class="belt-name">${esc(b.belt)}</span>
+              <span class="belt-count">${b.memberCount} ${esc(labels.member.toLowerCase())}</span>
+            </span>
+            <span class="belt-right" style="display:flex;align-items:center;gap:10px;">
+              <span class="belt-avg">${b.avgVisits} avg</span>
+              <span class="belt-chevron" aria-hidden="true">&rsaquo;</span>
+            </span>
+          </button>
+          ${isOpen ? `<div class="belt-roster">${roster || '<div class="roster-row"><span class="rname" style="color:var(--muted)">No ${esc(labels.member.toLowerCase())} here yet</span></div>'}</div>` : ''}
+        </div>`;
+    }).join('');
+
+    beltList.querySelectorAll('.belt-row').forEach(row => {
+      row.addEventListener('click', () => {
+        const b = data.beltBreakdown[parseInt(row.dataset.idx, 10)];
+        expandedBelt = (expandedBelt === b.belt) ? null : b.belt;
+        renderBeltList(data);
+      });
+    });
+  }
+
+  function renderKpiDetail() {
+    const panel = document.getElementById('kpiDetailPanel');
+    document.querySelectorAll('.kpi').forEach(btn => btn.classList.toggle('expanded', btn.dataset.kpi === expandedKpi));
+
+    if (!expandedKpi || !lastData) { panel.style.display = 'none'; return; }
+    panel.style.display = 'block';
+
+    let title = '', rowsHtml = '';
+
+    if (expandedKpi === 'today') {
+      title = 'Checked in today';
+      const list = (lastData.todayList || []);
+      rowsHtml = list.length ? list.map(m => {
+        const t = new Date(m.time);
+        return `<div class="visit-row"><span class="rname">${m.name}</span><span class="rstatus">${t.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' })}</span></div>`;
+      }).join('') : '<div style="color:var(--muted); font-size:13px;">No check-ins yet today.</div>';
+
+    } else if (expandedKpi === 'week') {
+      title = 'Attended this week';
+      const list = (lastData.allMembers || []).filter(m => m.visitsThisWeek > 0)
+        .sort((a, b) => b.visitsThisWeek - a.visitsThisWeek);
+      rowsHtml = list.length ? list.map(m =>
+        `<div class="visit-row"><span class="rname">${m.name}</span><span class="rstatus">${m.visitsThisWeek} visit${m.visitsThisWeek === 1 ? '' : 's'}</span></div>`
+      ).join('') : '<div style="color:var(--muted); font-size:13px;">No check-ins yet this week.</div>';
+
+    } else if (expandedKpi === 'members') {
+      title = 'All members';
+      const list = (lastData.allMembers || []).slice().sort((a, b) => a.name.localeCompare(b.name));
+      rowsHtml = list.length ? list.map(m =>
+        `<div class="visit-row"><span class="rname">${m.name} <span style="color:var(--muted); font-size:12px;">(${m.belt})</span></span><span class="rstatus">${m.totalVisits} all-time</span></div>`
+      ).join('') : '<div style="color:var(--muted); font-size:13px;">No members recorded yet.</div>';
+
+    } else if (expandedKpi === 'total') {
+      title = 'All-time check-ins by member';
+      const list = (lastData.allMembers || []).filter(m => m.totalVisits > 0)
+        .sort((a, b) => b.totalVisits - a.totalVisits);
+      rowsHtml = list.length ? list.map(m =>
+        `<div class="visit-row"><span class="rname">${m.name}</span><span class="rstatus">${m.totalVisits}</span></div>`
+      ).join('') : '<div style="color:var(--muted); font-size:13px;">No check-ins recorded yet.</div>';
+    }
+
+    document.getElementById('kpiDetailTitle').textContent = title;
+    document.getElementById('kpiDetailBody').innerHTML = `<div class="visit-list" style="max-height:320px;">${rowsHtml}</div>`;
+  }
+
+  const MONTH_NAMES = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+  function dateKey(y, m, d) {
+    return y + '-' + String(m + 1).padStart(2, '0') + '-' + String(d).padStart(2, '0');
+  }
+
+  function renderCalendar() {
+    document.getElementById('calPanel').style.display = 'block';
+    document.getElementById('calLabel').textContent = MONTH_NAMES[calMonth] + ' ' + calYear;
+
+    const firstDay = new Date(calYear, calMonth, 1);
+    const leading = (firstDay.getDay() + 6) % 7;
+    const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+    const counts = Object.values(calDaysMap).map(names => names.length);
+    const maxCount = counts.length ? Math.max(...counts) : 0;
+
+    const todayReal = new Date();
+    const isCurrentMonth = todayReal.getFullYear() === calYear && todayReal.getMonth() === calMonth;
+
+    let html = '';
+    for (let i = 0; i < leading; i++) html += '<span class="cal-day blank"></span>';
+    for (let d = 1; d <= daysInMonth; d++) {
+      const key = dateKey(calYear, calMonth, d);
+      const count = (calDaysMap[key] || []).length;
+      let style = '';
+      if (count > 0 && maxCount > 0) {
+        const opacity = (0.25 + (count / maxCount) * 0.75).toFixed(2);
+        style = `background: rgba(244,122,18,${opacity});`;
+        if (opacity >= 0.9) style += 'color:#0A0B0C;font-weight:700;';
+      }
+      const isToday = isCurrentMonth && d === todayReal.getDate();
+      const isSelected = expandedDay === key;
+      html += `<button type="button" class="cal-day${isToday ? ' today' : ''}${isSelected ? ' selected' : ''}" data-day="${key}" style="${style}">${d}</button>`;
+    }
+    document.getElementById('calGrid').innerHTML = html;
+
+    document.querySelectorAll('.cal-day[data-day]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const day = btn.dataset.day;
+        expandedDay = (expandedDay === day) ? null : day;
+        renderCalendar();
+        renderCalDayDetail();
+      });
+    });
+  }
+
+  function renderCalDayDetail() {
+    const detailBox = document.getElementById('calDayDetail');
+    if (!expandedDay) { detailBox.style.display = 'none'; return; }
+    detailBox.style.display = 'block';
+
+    const [y, m, d] = expandedDay.split('-').map(Number);
+    const dateObj = new Date(y, m - 1, d);
+    document.getElementById('calDayTitle').textContent =
+      dateObj.toLocaleDateString(undefined, { weekday: 'long', day: 'numeric', month: 'long' });
+
+    const attendedNames = calDaysMap[expandedDay] || [];
+    const allNames = (lastData && lastData.allMembers) ? lastData.allMembers.map(m => m.name) : [];
+    const absentNames = allNames.filter(n => !attendedNames.includes(n));
+
+    document.getElementById('calModeAttended').classList.toggle('active', calViewMode === 'attended');
+    document.getElementById('calModeAbsent').classList.toggle('active', calViewMode === 'absent');
+
+    const list = calViewMode === 'attended' ? attendedNames : absentNames;
+    const body = list.length
+      ? list.map(n => `<div class="visit-row"><span class="rname">${n}</span></div>`).join('')
+      : `<div style="color:var(--muted); font-size:13px;">${calViewMode === 'attended' ? 'No one checked in this day.' : 'Everyone checked in this day.'}</div>`;
+    document.getElementById('calDayBody').innerHTML = `<div class="visit-list" style="max-height:260px;">${body}</div>`;
+  }
+
+  async function changeMonth(delta) {
+    let newMonth = calMonth + delta, newYear = calYear;
+    if (newMonth < 0) { newMonth = 11; newYear--; }
+    if (newMonth > 11) { newMonth = 0; newYear++; }
+    try {
+      const result = await jsonpRequest(APPS_SCRIPT_URL, { mode: 'calendar', gymId: gymName, year: newYear, month: newMonth, sessionKey: sessionKey });
+      if (result.error) throw new Error(result.error);
+      calYear = result.year; calMonth = result.month; calDaysMap = result.days || {};
+      expandedDay = null;
+      renderCalendar();
+      renderCalDayDetail();
+    } catch (err) {
+      // Silently ignore — the visible month just won't change if the request fails
+    }
+  }
+
+  const WEEKDAY_LABELS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+  function renderWeekdayBars(weekdayTotals) {
+    document.getElementById('weekdayPanel').style.display = 'block';
+    const values = weekdayTotals.slice(0, 6);
+    const max = Math.max(...values, 1);
+    const peakIdx = values.indexOf(Math.max(...values));
+    document.getElementById('weekdayBars').innerHTML = WEEKDAY_LABELS.map((label, i) => {
+      const pct = Math.round((values[i] / max) * 100);
+      return `<div class="bar-col${i === peakIdx ? ' peak' : ''}">
+        <span class="bar-val">${values[i]}</span>
+        <div class="bar-fill" style="height:${pct}%"></div>
+        <span class="bar-day">${label}</span>
+      </div>`;
+    }).join('');
+  }
+
+  function renderSearchResults(matches) {
+    const box = document.getElementById('searchResults');
+    if (!matches.length) {
+      box.style.display = 'block';
+      box.innerHTML = '<div class="search-result" style="color:var(--muted); cursor:default;">No matches</div>';
+      return;
+    }
+    box.style.display = 'block';
+    box.innerHTML = matches.map(m => {
+      const style = beltStyle(m.belt);
+      return `<div class="search-result" data-id="${m.id}">
+        <span class="sr-left">
+          <span class="dot" style="background:${style.dot};${style.border ? 'border:1px solid var(--border);' : ''}"></span>
+          ${m.name}
+        </span>
+        <span class="sr-belt">${esc(m.belt)}</span>
+      </div>`;
+    }).join('');
+    box.querySelectorAll('.search-result[data-id]').forEach(row => {
+      row.addEventListener('click', () => selectMember(row.dataset.id));
+    });
+  }
+
+  async function selectMember(id) {
+    document.getElementById('searchResults').style.display = 'none';
+    document.getElementById('memberSearch').value = '';
+    const detailBox = document.getElementById('memberDetail');
+    detailBox.style.display = 'block';
+    detailBox.innerHTML = '<div style="color:var(--muted); font-size:13px;">Loading…</div>';
+    try {
+      const result = await jsonpRequest(APPS_SCRIPT_URL, { mode: 'profile', id: id, sessionKey: sessionKey });
+      if (result.sessionExpired) { backToUnlock(); return; }
+      if (result.error) throw new Error(result.error);
+      renderMemberDetail(result);
+    } catch (err) {
+      detailBox.innerHTML = '<div style="color:#ff6b6b; font-size:13px;">Could not load this member\'s history.</div>';
+    }
+  }
+
+  // ---------- Belt journey (coach) ----------
+  function dayTextLocal(s) {
+    if (!s) return '';
+    const p = s.split('-').map(Number);
+    return new Date(p[0], p[1] - 1, p[2]).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' });
+  }
+  function todayText() {
+    const d = new Date();
+    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  }
+
+  function renderBeltJourney(result) {
+    const word = (result.labels && result.labels.rank) || labels.rank;
+    const segs = (result.beltJourney || []).slice().reverse();
+    const rows = segs.map(seg => {
+      const st = beltStyle(seg.belt);
+      let range;
+      if (seg.current) range = seg.from ? 'Since ' + dayTextLocal(seg.from) : 'Since records began';
+      else if (!seg.from) range = 'Before ' + dayTextLocal(seg.to);
+      else range = dayTextLocal(seg.from) + ' to ' + dayTextLocal(seg.to);
+      const note = seg.note ? ' (' + seg.note + ')' : '';
+      return `<div class="j-row${seg.current ? ' now' : ''}">
+        <div>
+          <div class="j-belt"><span class="dot" style="background:${st.dot};${st.border ? 'border:1px solid var(--border);' : ''}"></span>${esc(seg.belt)}</div>
+          <div class="j-dates">${esc(range + note)}</div>
+        </div>
+        <div class="j-count">${seg.sessions} session${seg.sessions === 1 ? '' : 's'}</div>
+      </div>`;
+    }).join('');
+
+    const options = (result.rankOptions || []).slice();
+    if (!options.some(o => o.toLowerCase() === String(result.member.belt).toLowerCase())) options.unshift(result.member.belt);
+    const optionHtml = options.map(o => `<option value="${esc(o)}"${o.toLowerCase() === String(result.member.belt).toLowerCase() ? ' selected' : ''}>${esc(o)}</option>`).join('');
+
+    return `<div class="journey">
+      <div class="journey-head">
+        <b>${esc(word)} journey</b>
+        <div class="journey-actions">
+          ${result.beltChanges > 0 ? '<button type="button" class="clear-btn" id="undoBeltBtn">Undo last</button>' : ''}
+          <button type="button" class="mini-btn" id="changeBeltBtn">Change ${esc(word.toLowerCase())}</button>
+        </div>
+      </div>
+      ${rows}
+      <div class="belt-form" id="beltForm">
+        <label for="beltSelect">New ${esc(word.toLowerCase())}</label>
+        <select id="beltSelect">${optionHtml}</select>
+        <label for="beltDate">Date awarded</label>
+        <input type="date" id="beltDate" value="${todayText()}" max="${todayText()}">
+        <label for="beltNote">Note (optional)</label>
+        <input type="text" id="beltNote" maxlength="80" placeholder="For example: grading day">
+        <div class="belt-hint">Choosing the same ${esc(word.toLowerCase())} with the date they received it starts the session count from that day.</div>
+        <div class="ci-actions">
+          <button type="button" class="mini-btn primary" id="beltSave">Save</button>
+          <button type="button" class="mini-btn" id="beltCancel">Cancel</button>
+        </div>
+        <div class="ci-msg" id="beltMsg" role="status"></div>
+      </div>
+    </div>`;
+  }
+
+  function wireBeltJourney(result) {
+    const memberId = result.member.id;
+    const msg = document.getElementById('beltMsg');
+    function say(text, kind) { msg.textContent = text; msg.className = 'ci-msg ' + kind; }
+    const form = document.getElementById('beltForm');
+    document.getElementById('changeBeltBtn').addEventListener('click', () => {
+      form.style.display = form.style.display === 'block' ? 'none' : 'block';
+    });
+    document.getElementById('beltCancel').addEventListener('click', () => { form.style.display = 'none'; msg.className = 'ci-msg'; });
+
+    let busy = false;
+    async function send(params, okText) {
+      if (busy) return;
+      busy = true;
+      try {
+        const res = await jsonpRequest(APPS_SCRIPT_URL, Object.assign({ sessionKey: sessionKey, id: memberId }, params));
+        if (res.error && res.success === undefined) { backToUnlock(); return; }
+        if (!res.success) { say(res.error || 'Could not save that.', 'bad'); return; }
+        overviewStale = true;        // the belt breakdown on Overview has changed
+        await selectMember(memberId);
+      } catch (err) {
+        say("Couldn't confirm that saved. Check your connection and try again.", 'bad');
+      } finally {
+        busy = false;
+      }
+    }
+    document.getElementById('beltSave').addEventListener('click', () => {
+      const chosen = document.getElementById('beltSelect').value;
+      const date = document.getElementById('beltDate').value;
+      const word = ((result.labels && result.labels.rank) || labels.rank).toLowerCase();
+      // Pressing Save without changing anything must not record a change by accident.
+      if (chosen.toLowerCase() === String(result.member.belt).toLowerCase() && date === todayText()) {
+        say('Choose a new ' + word + ', or change the date to when they received this one.', 'bad');
+        return;
+      }
+      send({ mode: 'setBelt', belt: document.getElementById('beltSelect').value, date: document.getElementById('beltDate').value, note: document.getElementById('beltNote').value });
+    });
+    const undo = document.getElementById('undoBeltBtn');
+    if (undo) undo.addEventListener('click', () => {
+      if (window.confirm('Undo the last ' + ((result.labels && result.labels.rank) || labels.rank).toLowerCase() + ' change for ' + result.member.name + '?')) send({ mode: 'undoBelt' });
+    });
+  }
+
+  function renderMemberDetail(result) {
+    const member = result.member;
+    const style = beltStyle(member.belt);
+    const visits = (result.visits || [])
+      .map(v => new Date(v))
+      .filter(d => !isNaN(d))
+      .sort((a, b) => b - a);
+
+    const shown = visits.slice(0, 40);
+    const rows = shown.map(d =>
+      `<div class="visit-row">
+         <span>${d.toLocaleDateString(undefined, { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })}</span>
+         <span style="color:var(--muted);">${d.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' })}</span>
+       </div>`
+    ).join('');
+
+    document.getElementById('memberDetail').innerHTML = `
+      <div class="member-detail-head">
+        <span class="sr-left" style="gap:10px;">
+          <span class="dot" style="background:${style.dot};${style.border ? 'border:1px solid var(--border);' : ''}"></span>
+          <span class="member-detail-name">${member.name}</span>
+        </span>
+        <button type="button" class="clear-btn" id="clearMemberBtn">Clear</button>
+      </div>
+      <div class="member-detail-meta">${esc((result.labels && result.labels.rank) || labels.rank)}: ${esc(member.belt)} &middot; ${visits.length} total check-in${visits.length === 1 ? '' : 's'}</div>
+      ${renderBeltJourney(result)}
+      <div class="visit-list">${rows || '<div style="color:var(--muted); font-size:13px;">No check-ins recorded yet.</div>'}</div>
+      ${visits.length > 40 ? `<div style="font-size:11px; color:var(--muted); margin-top:8px;">Showing the 40 most recent of ${visits.length}</div>` : ''}
+    `;
+    wireBeltJourney(result);
+    document.getElementById('clearMemberBtn').addEventListener('click', () => {
+      const box = document.getElementById('memberDetail');
+      box.style.display = 'none';
+      box.innerHTML = '';
+    });
+  }
+
+  // ---------- Check-ins tab ----------
+  let activeTab = 'overview';
+  let overviewStale = false;   // set when the coach changes a check-in, so Overview reloads next time
+  let ciData = null;
+  let ciBusy = false;
+  let ciMsgTimer = null;
+
+  function showTab(name) {
+    activeTab = name;
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === name));
+    document.getElementById('overviewTab').style.display = name === 'overview' ? 'block' : 'none';
+    document.getElementById('checkinsTab').style.display = name === 'checkins' ? 'block' : 'none';
+    if (name === 'checkins') ciRefresh();
+    else if (overviewStale) { overviewStale = false; loadData(); }
+    window.scrollTo(0, 0);
+  }
+
+  function ciShowMsg(text, kind, sticky) {
+    const el = document.getElementById('ciMsg');
+    clearTimeout(ciMsgTimer);
+    el.textContent = text;
+    el.className = 'ci-msg ' + kind;
+    if (!sticky) ciMsgTimer = setTimeout(() => { el.className = 'ci-msg'; }, 4500);
+  }
+
+  async function ciRefresh() {
+    try {
+      const data = await jsonpRequest(APPS_SCRIPT_URL, { mode: 'todayCheckins', gymId: gymName, sessionKey: sessionKey });
+      if (data.error) { backToUnlock(); return; }
+      ciRender(data);
+      document.getElementById('lastUpdated').textContent = 'Updated ' + new Date().toLocaleTimeString();
+    } catch (err) {
+      ciShowMsg('Could not load check-ins: ' + err.message, 'bad', true);
+    }
+  }
+
+  function ciTime(iso) {
+    return new Date(iso).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  }
+
+  function ciRender(data) {
+    ciData = data;
+    if (data.labels && data.labels.rank) labels.rank = data.labels.rank;
+    const c = data.counts || { active: 0, guests: 0 };
+    document.getElementById('ciDate').textContent = new Date().toLocaleDateString(undefined, { weekday: 'long', day: 'numeric', month: 'long' });
+    document.getElementById('ciCount').textContent = c.active + ' checked in' + (c.guests ? ' · ' + c.guests + (c.guests === 1 ? ' guest' : ' guests') : '');
+
+    const sel = document.getElementById('ciGuestRank');
+    const keep = sel.value;
+    sel.innerHTML = '<option value="">Unknown</option>' + (data.ranks || []).map(r => `<option value="${esc(r)}">${esc(r)}</option>`).join('');
+    sel.value = keep;
+    document.getElementById('ciGuestRankLabel').textContent = labels.rank + ' (optional)';
+
+    const list = document.getElementById('ciList');
+    if (!data.items.length) {
+      list.innerHTML = '<div class="ci-empty">No check-ins yet today.</div>';
+    } else {
+      list.innerHTML = data.items.map(it => {
+        const tag = it.source === 'guest' ? '<span class="tag guest">Guest</span>'
+                  : it.source === 'coach' ? '<span class="tag coach">Added by coach</span>'
+                  : '<span class="tag">Self</span>';
+        let rank = '';
+        if (it.source === 'guest' && it.rank) {
+          const st = beltStyle(it.rank);
+          rank = `<span class="ci-rank"><span class="dot" style="background:${st.dot};${st.border ? 'border:1px solid var(--border);' : ''}"></span>${esc(it.rank)}</span>`;
+        }
+        const meta = it.removed ? 'Removed, no longer counted' : `${esc(ciTime(it.time))}${tag}${rank}`;
+        return `<div class="ci-row">
+          <div style="min-width:0;">
+            <div class="ci-name${it.removed ? ' gone' : ''}">${esc(it.name)}</div>
+            <div class="ci-meta">${meta}</div>
+          </div>
+          <button type="button" class="mini-btn" data-row="${it.row}" data-stamp="${it.stamp}" data-undo="${it.removed ? 1 : 0}">${it.removed ? 'Undo' : 'Remove'}</button>
+        </div>`;
+      }).join('');
+    }
+    ciRenderResults();
+  }
+
+  function ciRenderResults() {
+    const q = document.getElementById('ciSearch').value.trim();
+    const box = document.getElementById('ciResults');
+    if (!q) { box.style.display = 'none'; box.innerHTML = ''; return; }
+    const lower = q.toLowerCase();
+    const already = {};
+    ((ciData && ciData.items) || []).forEach(it => { if (!it.removed && it.memberId) already[it.memberId] = true; });
+    const matches = allMembers.filter(m => m.name.toLowerCase().includes(lower)).slice(0, 6);
+    let html = matches.map(m => {
+      const st = beltStyle(m.belt);
+      const right = already[m.id]
+        ? '<span class="ci-done">✓ Checked in</span>'
+        : `<button type="button" class="mini-btn primary" data-add="${esc(m.id)}">Check in</button>`;
+      return `<div class="ci-result"><span class="sr-left"><span class="dot" style="background:${st.dot};${st.border ? 'border:1px solid var(--border);' : ''}"></span>${esc(m.name)}</span>${right}</div>`;
+    }).join('');
+    if (!matches.length) html = `<div class="ci-result" style="color:var(--muted);">No match for "${esc(q)}"</div>`;
+    html += '<div class="ci-result"><span style="color:var(--muted);">Not a member?</span><button type="button" class="mini-btn" data-guest="1">Add as guest</button></div>';
+    box.innerHTML = html;
+    box.style.display = 'block';
+  }
+
+  async function ciAction(mode, params, okText) {
+    if (ciBusy) return false;
+    ciBusy = true;
+    document.getElementById('checkinsTab').classList.add('busy');
+    try {
+      const result = await jsonpRequest(APPS_SCRIPT_URL, Object.assign({ mode: mode, gymId: gymName, sessionKey: sessionKey }, params));
+      if (result.error && result.success === undefined) { backToUnlock(); return false; }
+      if (!result.success) {
+        ciShowMsg(result.error || 'Could not save that.', 'bad');
+        if (result.reason === 'already') ciRefresh();
+        return false;
+      }
+      overviewStale = true;
+      ciRender(result);
+      if (okText) ciShowMsg(okText, 'ok');
+      return true;
+    } catch (err) {
+      ciShowMsg("Couldn't confirm that saved. Check your connection, then tap Refresh to see today's list.", 'bad', true);
+      return false;
+    } finally {
+      ciBusy = false;
+      document.getElementById('checkinsTab').classList.remove('busy');
+    }
+  }
+
+  function openGuestForm(prefill) {
+    document.getElementById('ciGuestForm').style.display = 'block';
+    document.getElementById('ciGuestBtn').style.display = 'none';
+    document.getElementById('ciResults').style.display = 'none';
+    const n = document.getElementById('ciGuestName');
+    n.value = prefill || '';
+    n.focus();
+  }
+
+  function closeGuestForm() {
+    document.getElementById('ciGuestForm').style.display = 'none';
+    document.getElementById('ciGuestBtn').style.display = 'block';
+    document.getElementById('ciGuestName').value = '';
+    document.getElementById('ciGuestRank').value = '';
+  }
+
+  async function ciSubmitGuest() {
+    const nameEl = document.getElementById('ciGuestName');
+    const name = nameEl.value.trim();
+    if (!name) { ciShowMsg("Enter the guest's name.", 'bad'); nameEl.focus(); return; }
+    const ok = await ciAction('addGuest', { name: name, rank: document.getElementById('ciGuestRank').value }, name + ' added as a guest.');
+    if (ok) { closeGuestForm(); document.getElementById('ciSearch').value = ''; ciRenderResults(); }
+  }
+
+  function init() {
+    // This page trusts login.html entirely — it never signs anyone in itself.
+    // No remembered identity, wrong role, or no session key for this tab = straight back.
+    let identity = null;
+    try { identity = JSON.parse(localStorage.getItem(IDENTITY_KEY)); } catch (e) { identity = null; }
+    try { sessionKey = sessionStorage.getItem(SESSION_KEY); } catch (e) { sessionKey = null; }
+
+    if (!identity || identity.role !== 'Coach') {
+      signOut();
+      return;
+    }
+    if (!sessionKey) {
+      backToUnlock();
+      return;
+    }
+
+    gymName = identity.gymId;
+    document.getElementById('redirecting').style.display = 'none';
+    document.getElementById('dash').style.display = 'block';
+    showAppName(identity.gymName || gymName);
+    loadData();
+  }
+
+  document.getElementById('refreshBtn').addEventListener('click', () => {
+    if (activeTab === 'checkins') { ciRefresh(); return; }
+    expandedBelt = null; loadData();
+  });
+  document.querySelectorAll('.tab-btn').forEach(b => b.addEventListener('click', () => showTab(b.dataset.tab)));
+  document.getElementById('ciSearch').addEventListener('input', ciRenderResults);
+  document.getElementById('ciResults').addEventListener('click', async (ev) => {
+    const b = ev.target.closest('button');
+    if (!b) return;
+    if (b.dataset.guest) { openGuestForm(document.getElementById('ciSearch').value.trim()); return; }
+    if (b.dataset.add) {
+      const m = allMembers.find(x => String(x.id) === b.dataset.add);
+      const ok = await ciAction('coachAddMember', { memberId: b.dataset.add }, (m ? m.name : 'Member') + ' checked in.');
+      if (ok) { document.getElementById('ciSearch').value = ''; ciRenderResults(); }
+    }
+  });
+  document.getElementById('ciList').addEventListener('click', (ev) => {
+    const b = ev.target.closest('button[data-row]');
+    if (!b) return;
+    const undo = b.dataset.undo === '1';
+    ciAction('removeCheckin', { row: b.dataset.row, stamp: b.dataset.stamp, undo: undo ? 1 : 0 }, undo ? 'Check-in restored.' : 'Check-in removed.');
+  });
+  document.getElementById('ciGuestBtn').addEventListener('click', () => openGuestForm(''));
+  document.getElementById('ciGuestSubmit').addEventListener('click', ciSubmitGuest);
+  document.getElementById('ciGuestCancel').addEventListener('click', closeGuestForm);
+  document.getElementById('ciGuestName').addEventListener('input', () => { document.getElementById('ciMsg').className = 'ci-msg'; });
+  document.getElementById('ciGuestName').addEventListener('keydown', (ev) => { if (ev.key === 'Enter') { ev.preventDefault(); ciSubmitGuest(); } });
+
+  document.getElementById('signOutBtn').addEventListener('click', signOut);
+  document.getElementById('calPrev').addEventListener('click', () => changeMonth(-1));
+  document.getElementById('calNext').addEventListener('click', () => changeMonth(1));
+
+  document.getElementById('calDayClose').addEventListener('click', () => {
+    expandedDay = null;
+    renderCalendar();
+    renderCalDayDetail();
+  });
+  document.getElementById('calModeAttended').addEventListener('click', () => { calViewMode = 'attended'; renderCalDayDetail(); });
+  document.getElementById('calModeAbsent').addEventListener('click', () => { calViewMode = 'absent'; renderCalDayDetail(); });
+
+  document.querySelectorAll('.kpi[data-kpi]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const key = btn.dataset.kpi;
+      if (key === 'today') { showTab('checkins'); return; }
+      expandedKpi = (expandedKpi === key) ? null : key;
+      renderKpiDetail();
+    });
+  });
+  document.getElementById('kpiDetailClose').addEventListener('click', () => {
+    expandedKpi = null;
+    renderKpiDetail();
+  });
+
+  document.getElementById('memberSearch').addEventListener('input', (e) => {
+    const q = e.target.value.trim().toLowerCase();
+    const box = document.getElementById('searchResults');
+    if (!q) { box.style.display = 'none'; box.innerHTML = ''; return; }
+    renderSearchResults(allMembers.filter(m => m.name.toLowerCase().includes(q)).slice(0, 8));
+  });
+
+  setInterval(() => {
+    if (gymName && sessionKey) { loadData(); if (activeTab === 'checkins') ciRefresh(); }
+  }, 15 * 60 * 1000);
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible' && gymName && sessionKey) { loadData(); if (activeTab === 'checkins') ciRefresh(); }
+  });
+
+  init();
+})();
+</script>
+
+</body>
+</html>
