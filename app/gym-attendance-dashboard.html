@@ -210,6 +210,33 @@
   .visit-list { display: flex; flex-direction: column; gap: 2px; max-height: 260px; overflow-y: auto; }
   .visit-row { display: flex; justify-content: space-between; font-size: 13px; padding: 7px 0; border-bottom: 1px solid var(--border); }
   .visit-row:last-child { border-bottom: none; }
+
+  /* ---------- laptop and desktop: the same page, spread across the wider screen ---------- */
+  @media (min-width: 900px) {
+    #dash { max-width: 1160px; margin: 0 auto; }
+    header { max-width: none; }
+    .tabs { max-width: 380px; margin: 0 0 20px; }
+    .panel, .kpis { max-width: none; }
+
+    /* Overview: a 12-column grid. Search and the four numbers run full width; below them panels sit side by side. */
+    /* the page switches #content to display:block itself, so this selector has to out-rank that */
+    #content[style*="block"] { display: grid !important; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 16px; align-items: start; }
+    /* calendar days stay a sensible size on a wide panel */
+    .cal-day { aspect-ratio: 1.7 / 1; }
+    #content > * { grid-column: 1 / -1; margin: 0; }
+    #content > .kpis { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    #content > #atRiskPanel { grid-column: span 5; }
+    #content > #calPanel { grid-column: span 7; }
+    #content > #beltPanel { grid-column: span 7; }
+    #content > #weekdayPanel { grid-column: span 5; }
+
+    /* Check-ins: today's list on the right, adding people on the left. */
+    #checkinsTab[style*="block"] { display: grid !important; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 16px; align-items: start; }
+    #checkinsTab > .panel { margin: 0; }
+    #checkinsTab > .panel:nth-child(1) { grid-column: 1; grid-row: 1; }
+    #checkinsTab > .panel:nth-child(2) { grid-column: 1; grid-row: 2; }
+    #checkinsTab > .panel:nth-child(3) { grid-column: 2; grid-row: 1 / span 2; }
+  }
 </style>
 </head>
 <body>
@@ -395,12 +422,8 @@
 
     try {
       const data = await dataPromise;
-      if (data.error) {
-        // Any error from a session-protected endpoint most likely means the
-        // session has expired — the quickest fix is just unlocking again.
-        backToUnlock();
-        return;
-      }
+      if (data.sessionExpired) { backToUnlock(); return; }
+      if (data.error) throw new Error(friendlyServerError(data.error));
       render(data);
       document.getElementById('lastUpdated').textContent = 'Updated ' + new Date().toLocaleTimeString();
     } catch (err) {
@@ -414,6 +437,14 @@
       const memberListResult = await membersPromise;
       if (memberListResult.members) allMembers = memberListResult.members;
     } catch (err) { /* search just won't have results if this fails */ }
+  }
+
+  // Turns the server's short error text into something a coach can act on.
+  function friendlyServerError(msg) {
+    if (/gym not found/i.test(msg)) {
+      return "Your gym isn't set up correctly. The Gym ID on your login doesn't match the Gyms tab. Check the spelling with whoever set LineUp up.";
+    }
+    return msg;
   }
 
   function jsonpRequest(baseUrl, params) {
@@ -836,7 +867,7 @@
       busy = true;
       try {
         const res = await jsonpRequest(APPS_SCRIPT_URL, Object.assign({ sessionKey: sessionKey, id: memberId }, params));
-        if (res.error && res.success === undefined) { backToUnlock(); return; }
+        if (res.sessionExpired) { backToUnlock(); return; }
         if (!res.success) { say(res.error || 'Could not save that.', 'bad'); return; }
         overviewStale = true;        // the belt breakdown on Overview has changed
         await selectMember(memberId);
@@ -928,7 +959,8 @@
   async function ciRefresh() {
     try {
       const data = await jsonpRequest(APPS_SCRIPT_URL, { mode: 'todayCheckins', gymId: gymName, sessionKey: sessionKey });
-      if (data.error) { backToUnlock(); return; }
+      if (data.sessionExpired) { backToUnlock(); return; }
+      if (data.error) { ciShowMsg(friendlyServerError(data.error), 'bad', true); return; }
       ciRender(data);
       document.getElementById('lastUpdated').textContent = 'Updated ' + new Date().toLocaleTimeString();
     } catch (err) {
@@ -1006,7 +1038,7 @@
     document.getElementById('checkinsTab').classList.add('busy');
     try {
       const result = await jsonpRequest(APPS_SCRIPT_URL, Object.assign({ mode: mode, gymId: gymName, sessionKey: sessionKey }, params));
-      if (result.error && result.success === undefined) { backToUnlock(); return false; }
+      if (result.sessionExpired) { backToUnlock(); return false; }
       if (!result.success) {
         ciShowMsg(result.error || 'Could not save that.', 'bad');
         if (result.reason === 'already') ciRefresh();
