@@ -41,7 +41,8 @@
   .j-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 11px 0; border-bottom: 1px solid var(--border); }
   .j-row:last-child { border-bottom: none; }
   .j-belt { font-size: 15px; }
-  .j-row.now .j-belt { color: var(--accent); font-weight: 600; }
+  .j-row.now .j-belt { font-weight: 600; }
+  .bdot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin: 0 7px 0 2px; vertical-align: -1px; }
   .j-dates { color: var(--muted); font-size: 12px; margin-top: 3px; }
   .j-count { font-weight: 600; font-size: 15px; white-space: nowrap; }
   .heatmap { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
@@ -207,7 +208,7 @@
     try {
       const data = await jsonpRequest(APPS_SCRIPT_URL, { mode: 'profile', sessionKey: sessionKey });
       if (data.sessionExpired) { backToUnlock(); return; }
-      if (data.error || !data.member) throw new Error('Profile not found');
+      if (data.error || !data.member) throw new Error(data.error && /gym not found/i.test(data.error) ? "Your gym isn't set up correctly. Please tell your coach." : (data.serverError ? data.error : 'Profile not found'));
       render(data);
       const today = todaysVisit();
       if (today) setCheckinState('done', today);
@@ -227,10 +228,44 @@
 
     document.getElementById('name').textContent = data.member.name || 'Member';
     const rankWord = (data.labels && data.labels.rank) || 'Belt';
-    document.getElementById('belt').textContent = data.member.belt ? rankWord + ': ' + data.member.belt : '';
+    rankColours = data.rankColours || {};
+    if (data.member.belt) {
+      const look = beltLook(data.member.belt);
+      document.getElementById('belt').innerHTML = escHtml(rankWord) + ': ' + beltDot(look) + '<span style="color:' + look.text + ';font-weight:600;">' + escHtml(data.member.belt) + '</span>';
+    } else {
+      document.getElementById('belt').textContent = '';
+    }
     document.getElementById('initial').textContent = (data.member.name || '?').charAt(0).toUpperCase();
     renderStats();
     renderJourney(data);
+  }
+
+  // A belt is always shown in its own colour. Very dark belts (black) switch to light text with a coloured dot.
+  const COMMON_COLOURS = {
+    white: '#F5F5F0', yellow: '#F5C400', orange: '#F57C00', green: '#2E9E4F', blue: '#2F6FED',
+    purple: '#8B5CF6', brown: '#8B5E34', red: '#D93025', pink: '#EC6FA8', grey: '#8A8F98',
+    gray: '#8A8F98', black: '#111111', gold: '#D4A017', silver: '#B8BCC4'
+  };
+  let rankColours = {};
+  function resolveColour(value) {
+    const v = String(value || '').trim();
+    if (/^#[0-9a-f]{3}([0-9a-f]{3})?$/i.test(v)) return v;
+    return COMMON_COLOURS[v.toLowerCase()] || null;
+  }
+  function brightness(hex) {
+    let h = hex.replace('#', '');
+    if (h.length === 3) h = h.split('').map(c => c + c).join('');
+    const r = parseInt(h.slice(0, 2), 16), g = parseInt(h.slice(2, 4), 16), b = parseInt(h.slice(4, 6), 16);
+    return (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+  }
+  function beltLook(name) {
+    const key = String(name || '').toLowerCase().trim();
+    const dot = resolveColour(rankColours[key]) || resolveColour(key) || '#6B7280';
+    const lum = brightness(dot);
+    return { dot: dot, text: lum < 0.22 ? '#F5F5F5' : dot, ring: lum < 0.22 || lum > 0.85 };
+  }
+  function beltDot(look) {
+    return '<span class="bdot" style="background:' + look.dot + ';' + (look.ring ? 'box-shadow:0 0 0 1.5px rgba(255,255,255,0.45);' : '') + '"></span>';
   }
 
   // The belt journey: sessions at each belt, newest first.
@@ -254,7 +289,7 @@
       else if (!seg.from) range = 'Before ' + dayText(seg.to);
       else range = dayText(seg.from) + ' to ' + dayText(seg.to);
       return `<div class="j-row${seg.current ? ' now' : ''}">
-        <div><div class="j-belt">${escHtml(seg.belt)}</div><div class="j-dates">${escHtml(range)}</div></div>
+        <div><div class="j-belt">${beltDot(beltLook(seg.belt))}<span style="color:${beltLook(seg.belt).text}">${escHtml(seg.belt)}</span></div><div class="j-dates">${escHtml(range)}</div></div>
         <div class="j-count">${seg.sessions} session${seg.sessions === 1 ? '' : 's'}</div>
       </div>`;
     }).join('');
