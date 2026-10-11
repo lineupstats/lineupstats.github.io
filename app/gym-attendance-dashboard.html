@@ -219,8 +219,12 @@
 
   /* ---------- laptop and desktop: the same page, spread across the wider screen ---------- */
   @media (min-width: 900px) {
+    /* a laptop browser reports no safe area at the top, so give the page its own breathing room */
+    body { padding-top: 28px; }
     #dash { max-width: 1160px; margin: 0 auto; }
-    header { max-width: none; }
+    /* header in one row, lined up with the page: gym name on the left, buttons on the right */
+    header { max-width: none; display: flex; align-items: center; justify-content: space-between; gap: 16px; text-align: left; margin-bottom: 20px; }
+    header h1 { margin: 0; }
     .tabs { max-width: 380px; margin: 0 0 20px; }
     .panel, .kpis { max-width: none; }
 
@@ -236,6 +240,12 @@
     #content > #beltPanel { grid-column: span 7; }
     #content > #benchPanel { grid-column: span 5; }
     #content > #weekdayPanel { grid-column: span 12; }
+    /* panels sharing a row are the same height, so the rows line up */
+    #content > #atRiskPanel, #content > #calPanel, #content > #beltPanel, #content > #benchPanel { align-self: stretch; }
+    /* if a panel's partner isn't showing, it takes the whole row instead of leaving a gap */
+    #content:has(> #atRiskPanel[style*="none"]) > #calPanel,
+    #content:has(> #beltPanel[style*="none"]) > #benchPanel { grid-column: 1 / -1; }
+    #content:has(> #atRiskPanel[style*="none"]) .cal-day { aspect-ratio: 2.6 / 1; }
 
     /* Check-ins: today's list on the right, adding people on the left. */
     #checkinsTab[style*="block"] { display: grid !important; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 16px; align-items: start; }
@@ -243,6 +253,10 @@
     #checkinsTab > .panel:nth-child(1) { grid-column: 1; grid-row: 1; }
     #checkinsTab > .panel:nth-child(2) { grid-column: 1; grid-row: 2; }
     #checkinsTab > .panel:nth-child(3) { grid-column: 2; grid-row: 1 / span 2; }
+  }
+  /* phones: an empty at-risk panel stays hidden, as before */
+  @media (max-width: 899px) {
+    #atRiskPanel[data-empty="true"] { display: none !important; }
   }
 </style>
 </head>
@@ -556,7 +570,7 @@
       const st = beltStyle(r.belt);
       return `<div class="bench-row">
         <div>
-          <div class="bench-belt"><span class="dot" style="background:${st.dot};${st.border ? 'border:1px solid var(--border);' : ''}"></span>${esc(r.belt)}</div>
+          <div class="bench-belt"><span class="dot" style="background:${st.dot};${st.border ? 'border:1px solid rgba(255,255,255,0.45);' : ''}"></span>${esc(r.belt)}</div>
           <div class="bench-sub">${r.promotions} promotion${r.promotions === 1 ? '' : 's'}, from ${r.minSessions} to ${r.maxSessions} sessions</div>
         </div>
         <div class="bench-avg">${r.avgSessions} sessions</div>
@@ -578,8 +592,9 @@
 
     const atRiskPanel = document.getElementById('atRiskPanel');
     const atRiskList = document.getElementById('atRiskList');
+    atRiskPanel.style.display = 'block';
     if (data.atRisk && data.atRisk.length) {
-      atRiskPanel.style.display = 'block';
+      delete atRiskPanel.dataset.empty;
       atRiskList.innerHTML = data.atRisk.map(m =>
         `<div class="risk-row">
            <div class="risk-left">${m.name}</div>
@@ -590,7 +605,8 @@
          </div>`
       ).join('');
     } else {
-      atRiskPanel.style.display = 'none';
+      atRiskPanel.dataset.empty = 'true';
+      atRiskList.innerHTML = '<div class="bench-empty">Nobody has been away for 10+ days. Anyone who is will show up here.</div>';
     }
 
     renderBeltList(data);
@@ -626,7 +642,7 @@
         <div class="belt-item${isOpen ? ' expanded' : ''}">
           <button type="button" class="belt-row" data-idx="${i}">
             <span class="belt-left">
-              <span class="dot" style="background:${style.dot};${style.border ? 'border:1px solid var(--border);' : ''}"></span>
+              <span class="dot" style="background:${style.dot};${style.border ? 'border:1px solid rgba(255,255,255,0.45);' : ''}"></span>
               <span class="belt-name">${esc(b.belt)}</span>
               <span class="belt-count">${b.memberCount} ${esc(labels.member.toLowerCase())}</span>
             </span>
@@ -808,7 +824,7 @@
       const style = beltStyle(m.belt);
       return `<div class="search-result" data-id="${m.id}">
         <span class="sr-left">
-          <span class="dot" style="background:${style.dot};${style.border ? 'border:1px solid var(--border);' : ''}"></span>
+          <span class="dot" style="background:${style.dot};${style.border ? 'border:1px solid rgba(255,255,255,0.45);' : ''}"></span>
           ${m.name}
         </span>
         <span class="sr-belt">${esc(m.belt)}</span>
@@ -858,7 +874,7 @@
       const note = seg.note ? ' (' + seg.note + ')' : '';
       return `<div class="j-row${seg.current ? ' now' : ''}">
         <div>
-          <div class="j-belt"><span class="dot" style="background:${st.dot};${st.border ? 'border:1px solid var(--border);' : ''}"></span><span style="color:${beltTextColour(seg.belt)}">${esc(seg.belt)}</span></div>
+          <div class="j-belt"><span class="dot" style="background:${st.dot};${st.border ? 'border:1px solid rgba(255,255,255,0.45);' : ''}"></span><span style="color:${beltTextColour(seg.belt)}">${esc(seg.belt)}</span></div>
           <div class="j-dates">${esc(range + note)}</div>
         </div>
         <div class="j-count">${seg.sessions} session${seg.sessions === 1 ? '' : 's'}</div>
@@ -957,7 +973,7 @@
     document.getElementById('memberDetail').innerHTML = `
       <div class="member-detail-head">
         <span class="sr-left" style="gap:10px;">
-          <span class="dot" style="background:${style.dot};${style.border ? 'border:1px solid var(--border);' : ''}"></span>
+          <span class="dot" style="background:${style.dot};${style.border ? 'border:1px solid rgba(255,255,255,0.45);' : ''}"></span>
           <span class="member-detail-name">${member.name}</span>
         </span>
         <button type="button" class="clear-btn" id="clearMemberBtn">Clear</button>
@@ -1040,7 +1056,7 @@
         let rank = '';
         if (it.source === 'guest' && it.rank) {
           const st = beltStyle(it.rank);
-          rank = `<span class="ci-rank"><span class="dot" style="background:${st.dot};${st.border ? 'border:1px solid var(--border);' : ''}"></span>${esc(it.rank)}</span>`;
+          rank = `<span class="ci-rank"><span class="dot" style="background:${st.dot};${st.border ? 'border:1px solid rgba(255,255,255,0.45);' : ''}"></span>${esc(it.rank)}</span>`;
         }
         const meta = it.removed ? 'Removed, no longer counted' : `${esc(ciTime(it.time))}${tag}${rank}`;
         return `<div class="ci-row">
@@ -1068,7 +1084,7 @@
       const right = already[m.id]
         ? '<span class="ci-done">✓ Checked in</span>'
         : `<button type="button" class="mini-btn primary" data-add="${esc(m.id)}">Check in</button>`;
-      return `<div class="ci-result"><span class="sr-left"><span class="dot" style="background:${st.dot};${st.border ? 'border:1px solid var(--border);' : ''}"></span>${esc(m.name)}</span>${right}</div>`;
+      return `<div class="ci-result"><span class="sr-left"><span class="dot" style="background:${st.dot};${st.border ? 'border:1px solid rgba(255,255,255,0.45);' : ''}"></span>${esc(m.name)}</span>${right}</div>`;
     }).join('');
     if (!matches.length) html = `<div class="ci-result" style="color:var(--muted);">No match for "${esc(q)}"</div>`;
     html += '<div class="ci-result"><span style="color:var(--muted);">Not a member?</span><button type="button" class="mini-btn" data-guest="1">Add as guest</button></div>';
