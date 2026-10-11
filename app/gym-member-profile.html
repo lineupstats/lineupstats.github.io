@@ -136,16 +136,26 @@
   // Shared with login.html and gym-attendance-dashboard.html — same origin, same keys.
   const IDENTITY_KEY = 'gymAppIdentity';
   const SESSION_KEY = 'gymAppSessionKey';
+  const PROFILE_STASH_KEY = 'gymAppProfileStash'; // sessionStorage — fresh profile handed over by login.html right after unlock
+  const LAST_PROFILE_KEY = 'gymAppLastProfile';   // localStorage — the last profile shown on this device, shown instantly next time
 
   let member = null; // { name, gymId, gymName, memberId } — from the remembered device identity
   let sessionKey = null; // proof of this unlock, sent with every request for private data
   let visits = [];            // this member's visits, newest first
   let checkinState = null;    // 'locating' | 'away' | 'nolocation' | 'notsetup' | 'error' | 'ready' | 'done'
   let locationCheckRunning = false;
+  let currentData = null;     // the profile data on screen
+  let gymLocation;            // { lat, lng, radius } from the profile; undefined = ask the server instead
+  let justCheckedInAt = null; // a check-in made on this screen, kept even if slightly older data arrives
 
   // Sign out: forget this person on this device completely.
   function signOut() {
-    try { localStorage.removeItem(IDENTITY_KEY); sessionStorage.removeItem(SESSION_KEY); } catch (e) {}
+    try {
+      localStorage.removeItem(IDENTITY_KEY);
+      localStorage.removeItem(LAST_PROFILE_KEY);
+      sessionStorage.removeItem(SESSION_KEY);
+      sessionStorage.removeItem(PROFILE_STASH_KEY);
+    } catch (e) {}
     window.location.href = 'login.html';
   }
 
@@ -199,26 +209,101 @@
     return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
   }
 
-  async function loadAndShowProfile() {
+  // ---------- Loading the profile, as fast as possible ----------
+  // 1. Just unlocked: the sign-in page hands over the profile it got with the PIN
+  //    check, so nothing needs to be fetched at all.
+  // 2. Otherwise: show what this phone saw last time straight away, then refresh
+  //    it from the server in the background.
+
+  // Reads saved profile data, but only if it belongs to the person signed in here.
+  function readSaved(storage, key, maxAgeMs) {
+    try {
+      const saved = JSON.parse(storage.getItem(key));
+      if (!saved || !saved.data || !saved.data.member) return null;
+      if (String(saved.memberId) !== String(member.memberId)) return null;
+      if (String(saved.gymId).toLowerCase() !== String(member.gymId).toLowerCase()) return null;
+      if (maxAgeMs && !(Date.now() - saved.savedAt < maxAgeMs)) return null;
+      return saved.data;
+    } catch (e) { return null; }
+  }
+
+  function takeStash() {
+    const data = readSaved(sessionStorage, PROFILE_STASH_KEY, 2 * 60 * 1000);
+    try { sessionStorage.removeItem(PROFILE_STASH_KEY); } catch (e) {}
+    return data;
+  }
+
+  function saveLastProfile(data) {
+    try {
+      localStorage.setItem(LAST_PROFILE_KEY, JSON.stringify({
+        gymId: member.gymId, memberId: member.memberId, savedAt: Date.now(), data: data
+      }));
+    } catch (e) {}
+  }
+
+  function showLoading() {
     document.getElementById('redirecting').style.display = 'none';
     document.getElementById('profile').style.display = 'block';
     document.getElementById('loading').style.display = 'block';
     document.getElementById('err').style.display = 'none';
     document.getElementById('content').style.display = 'none';
-    try {
-      const data = await jsonpRequest(APPS_SCRIPT_URL, { mode: 'profile', sessionKey: sessionKey });
-      if (data.sessionExpired) { backToUnlock(); return; }
-      if (data.error || !data.member) throw new Error(data.error && /gym not found/i.test(data.error) ? "Your gym isn't set up correctly. Please tell your coach." : (data.serverError ? data.error : 'Profile not found'));
-      render(data);
-      const today = todaysVisit();
-      if (today) setCheckinState('done', today);
-      else checkIfNearGym(true);
-    } catch (err) {
-      document.getElementById('loading').style.display = 'none';
-      const e = document.getElementById('err');
-      e.style.display = 'block';
-      e.textContent = 'Could not load profile: ' + err.message;
+  }
+
+  function showLoadError(message) {
+    document.getElementById('redirecting').style.display = 'none';
+    document.getElementById('profile').style.display = 'block';
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('content').style.display = 'none';
+    const e = document.getElementById('err');
+    e.style.display = 'block';
+    e.textContent = 'Could not load profile: ' + message;
+  }
+
+  function showProfileData(data) {
+    document.getElementById('redirecting').style.display = 'none';
+    document.getElementById('profile').style.display = 'block';
+    document.getElementById('err').style.display = 'none';
+    currentData = data;
+    gymLocation = data.gym || undefined;
+    render(data);
+    // A check-in made on this screen stays, even if the data that just arrived was read a moment before it.
+    if (justCheckedInAt && !todaysVisit()) { visits.unshift(justCheckedInAt); renderStats(); }
+    const today = todaysVisit();
+    if (today) {
+      setCheckinState('done', today);
+    } else if (checkinState === null || checkinState === 'done' || checkinState === 'notsetup') {
+      checkinState = null;
+      checkIfNearGym(true);
     }
+  }
+
+  async function loadAndShowProfile() {
+    const stashed = takeStash();
+    if (stashed) {
+      showProfileData(stashed);
+      saveLastProfile(stashed);
+      return;
+    }
+
+    const last = readSaved(localStorage, LAST_PROFILE_KEY, 0);
+    if (last) showProfileData(last);
+    else showLoading();
+
+    let data;
+    try {
+      data = await jsonpRequest(APPS_SCRIPT_URL, { mode: 'profile', sessionKey: sessionKey });
+    } catch (err) {
+      // No connection: keep showing the saved copy if there is one; it refreshes next time.
+      if (!last) showLoadError(err.message);
+      return;
+    }
+    if (data.sessionExpired) { backToUnlock(); return; }
+    if (data.error || !data.member) {
+      showLoadError(data.error && /gym not found/i.test(data.error) ? "Your gym isn't set up correctly. Please tell your coach." : (data.serverError ? data.error : 'Profile not found'));
+      return;
+    }
+    showProfileData(data);
+    saveLastProfile(data);
   }
 
   function render(data) {
@@ -378,6 +463,17 @@
     }
   }
 
+  // Straight-line distance in metres — the same formula the server uses.
+  function distanceMeters(lat1, lon1, lat2, lon2) {
+    const R = 6371000;
+    const toRad = deg => deg * Math.PI / 180;
+    const dLat = toRad(lat2 - lat1);
+    const dLon = toRad(lon2 - lon1);
+    const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+              Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  }
+
   // showProgress = true when the person is waiting on it (first load, "Check again");
   // the background re-checks every 2 minutes update quietly instead.
   async function checkIfNearGym(showProgress) {
@@ -386,13 +482,26 @@
     // still checks the distance properly when they press Check In.
     if (checkinState === 'ready' && !showProgress) return;
 
+    // The gym's location came with the profile but isn't filled in: no need to ask for the phone's location.
+    if (gymLocation && (gymLocation.lat === null || gymLocation.lng === null)) {
+      setCheckinState('notsetup');
+      return;
+    }
+
     locationCheckRunning = true;
     if (showProgress) setCheckinState('locating');
     try {
       const loc = await getLocation();
-      const result = await jsonpRequest(APPS_SCRIPT_URL, {
-        mode: 'checkProximity', gymId: member.gymId, lat: loc.lat, lng: loc.lng
-      });
+      let result;
+      if (gymLocation) {
+        // Worked out on the phone, with no trip to the server. This only decides
+        // whether to show the PIN box; the server checks the distance again on check-in.
+        result = { withinRange: distanceMeters(loc.lat, loc.lng, gymLocation.lat, gymLocation.lng) <= gymLocation.radius };
+      } else {
+        result = await jsonpRequest(APPS_SCRIPT_URL, {
+          mode: 'checkProximity', gymId: member.gymId, lat: loc.lat, lng: loc.lng
+        });
+      }
       if (checkinState === 'done') return;
       if (result.notSetUp) setCheckinState('notsetup');
       else if (result.withinRange === true) setCheckinState('ready');
@@ -429,9 +538,11 @@
       input.value = '';
       if (result.success) {
         const now = new Date();
+        justCheckedInAt = now;
         visits.unshift(now);  // show the new visit in the stats straight away
         renderStats();
         setCheckinState('done', now);
+        if (currentData) { currentData.visits = visits.slice(); saveLastProfile(currentData); }
         return;
       }
       if (result.reason === 'already') { setCheckinState('done'); return; }

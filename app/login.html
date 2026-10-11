@@ -128,6 +128,7 @@
   const NONCE_KEY = 'gymAppNonce';         // sessionStorage — one-time value for the Google redirect only
   const LAST_EMAIL_KEY = 'gymAppLastEmail'; // localStorage — pre-fills the email box next time
   const GYM_NAME_KEY = 'gymAppGymName';     // localStorage — which gym this device belongs to, for the app's name
+  const PROFILE_STASH_KEY = 'gymAppProfileStash'; // sessionStorage — the member's profile, handed to the profile page so it shows instantly
   const BRAND = 'LineUp';
 
   const DESTINATIONS = { Coach: 'gym-attendance-dashboard.html', Member: 'gym-member-profile.html' };
@@ -182,7 +183,11 @@
         if (script.parentNode) script.parentNode.removeChild(script);
       }
 
-      window[cbName] = (data) => { cleanup(); resolve(data); };
+      window[cbName] = (data) => {
+        cleanup();
+        if (data && data.serverError && !data.message) data.message = data.error;
+        resolve(data);
+      };
 
       const qs = Object.keys(params).map(k => k + '=' + encodeURIComponent(params[k])).join('&');
       const script = document.createElement('script');
@@ -384,7 +389,7 @@
       showError(errorBoxId, 'This account is not set up for coach or member access.');
       return;
     }
-    pendingLogin = { sessionKey: result.sessionKey, profile: result.profile };
+    pendingLogin = { sessionKey: result.sessionKey, profile: result.profile, memberData: result.memberData || null };
     document.getElementById('skipPinBtn').style.display = result.profile.hasPin ? 'block' : 'none';
     document.getElementById('newPinInput').value = '';
     hideMessage('pinSetupError');
@@ -402,7 +407,10 @@
     showScreen('signinScreen');
   }
 
-  function rememberDeviceAndGo(profile, sessionKey) {
+  // memberData (optional) is the member's profile, sent back by the server with
+  // the unlock. Passing it on means the profile page appears straight away
+  // instead of asking the server for the same thing again.
+  function rememberDeviceAndGo(profile, sessionKey, memberData) {
     const identity = { role: profile.role, gymId: profile.gymId, gymName: profile.gymName, name: profile.name };
     if (profile.role === 'Member') identity.memberId = profile.memberId;
     if (profile.role === 'Coach') identity.email = profile.email;
@@ -410,6 +418,12 @@
     try {
       localStorage.setItem(IDENTITY_KEY, JSON.stringify(identity));
       sessionStorage.setItem(SESSION_KEY, sessionKey);
+      sessionStorage.removeItem(PROFILE_STASH_KEY);
+      if (profile.role === 'Member' && memberData && memberData.member) {
+        sessionStorage.setItem(PROFILE_STASH_KEY, JSON.stringify({
+          gymId: profile.gymId, memberId: profile.memberId, savedAt: Date.now(), data: memberData
+        }));
+      }
     } catch (e) {}
 
     window.location.href = DESTINATIONS[profile.role];
@@ -431,8 +445,15 @@
         showError('pinSetupError', result.message || 'Could not save PIN.');
         return;
       }
-      // Setting a PIN doesn't itself return a session key, so unlock immediately
-      // afterward with the PIN just chosen — same request a returning device makes.
+      // Members: this sign-in already proved who they are, so go straight in with it
+      // (the same as "Keep my current PIN" does) instead of a second unlock request.
+      if (pendingLogin.profile.role === 'Member') {
+        leaving = true;
+        const profile = Object.assign({}, pendingLogin.profile, { hasPin: true });
+        rememberDeviceAndGo(profile, pendingLogin.sessionKey, result.memberData || null);
+        return;
+      }
+      // Coaches: unlock with the PIN just chosen — same request a returning device makes.
       const unlockResult = await unlockWithGivenPin(pendingLogin.profile, pin);
       if (!unlockResult.success) {
         showError('pinSetupError', unlockResult.message || 'PIN saved, but could not finish signing you in. Please try unlocking again.');
@@ -452,7 +473,7 @@
   function skipPin() {
     const login = pendingLogin;
     pendingLogin = null;
-    rememberDeviceAndGo(login.profile, login.sessionKey);
+    rememberDeviceAndGo(login.profile, login.sessionKey, login.memberData);
   }
 
   // ---------- PIN verification (used both right after setting a PIN, and on every return visit) ----------
@@ -496,7 +517,7 @@
         return;
       }
       leaving = true;
-      rememberDeviceAndGo(result.profile, result.sessionKey);
+      rememberDeviceAndGo(result.profile, result.sessionKey, result.memberData);
     } catch (err) {
       showError('unlockError', 'Could not reach the server: ' + err.message);
     } finally {
@@ -558,7 +579,11 @@
       if (dv) dv.style.display = 'none';
     }
     brandFromDevice();
-    brandFromLink();
+    // A device someone has already signed in on knows its gym's name, so it skips
+    // this lookup and the server is left free to answer the PIN unlock.
+    let signedInHere = null;
+    try { signedInHere = localStorage.getItem(IDENTITY_KEY); } catch (e) {}
+    if (!signedInHere) brandFromLink();
     const returnedToken = consumeAuthRedirect();
     if (returnedToken) {
       onGoogleLogin(returnedToken);
