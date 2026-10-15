@@ -60,6 +60,9 @@
   .screen-note { color: #69db7c; font-size: 13px; margin-top: 14px; display: none; }
   .screen-error { color: #ff6b6b; font-size: 13px; margin-top: 14px; display: none; }
   #loadingScreen { color: var(--muted); font-size: 14px; }
+  /* Hidden username field: lets iPhone/Android save the PIN and fill it with Face ID or fingerprint */
+  .pm-username { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+  .pin-form { width: 100%; display: flex; flex-direction: column; align-items: center; }
 </style>
 </head>
 <body>
@@ -98,19 +101,25 @@
 <div id="pinSetupScreen" class="screen">
   <h1>Set your PIN</h1>
   <p>This 4-digit PIN unlocks the app quickly next time, so you won't need to sign in again on this device.</p>
-  <input id="newPinInput" class="pin-input" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="••••" autocomplete="off" autocapitalize="off" spellcheck="false">
-  <button class="btn" id="savePinBtn">Save PIN</button>
-  <button class="link-btn" id="skipPinBtn" style="display:none;">Keep my current PIN</button>
+  <form id="pinSetupForm" class="pin-form" action="#" method="post" autocomplete="on">
+    <input id="pinSetupUser" class="pm-username" type="text" name="username" autocomplete="username" tabindex="-1" aria-hidden="true">
+    <input id="newPinInput" class="pin-input" type="password" name="password" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="••••" autocomplete="new-password" autocapitalize="off" spellcheck="false">
+    <button type="submit" class="btn" id="savePinBtn">Save PIN</button>
+  </form>
+  <button type="button" class="link-btn" id="skipPinBtn" style="display:none;">Keep my current PIN</button>
   <div class="screen-error" id="pinSetupError"></div>
 </div>
 
 <!-- Device already known, just needs the PIN to unlock -->
 <div id="unlockScreen" class="screen">
   <h1 id="unlockGreeting">Welcome back</h1>
-  <p>Enter your PIN to continue.</p>
-  <input id="unlockPinInput" class="pin-input" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="••••" autocomplete="off" autocapitalize="off" spellcheck="false">
-  <button class="btn" id="unlockBtn">Unlock</button>
-  <button class="link-btn" id="forgotPinBtn">Forgot your PIN? Sign in again</button>
+  <p>Enter your PIN to continue, or use Face ID if your phone offers it.</p>
+  <form id="unlockForm" class="pin-form" action="#" method="post" autocomplete="on">
+    <input id="unlockUser" class="pm-username" type="text" name="username" autocomplete="username" tabindex="-1" aria-hidden="true">
+    <input id="unlockPinInput" class="pin-input" type="password" name="password" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="••••" autocomplete="current-password" autocapitalize="off" spellcheck="false">
+    <button type="submit" class="btn" id="unlockBtn">Unlock</button>
+  </form>
+  <button type="button" class="link-btn" id="forgotPinBtn">Forgot your PIN? Sign in again</button>
   <div class="screen-error" id="unlockError"></div>
 </div>
 
@@ -392,6 +401,7 @@
     pendingLogin = { sessionKey: result.sessionKey, profile: result.profile, memberData: result.memberData || null };
     document.getElementById('skipPinBtn').style.display = result.profile.hasPin ? 'block' : 'none';
     document.getElementById('newPinInput').value = '';
+    document.getElementById('pinSetupUser').value = savedLoginName(result.profile);
     hideMessage('pinSetupError');
     showScreen('pinSetupScreen');
   }
@@ -414,6 +424,7 @@
     const identity = { role: profile.role, gymId: profile.gymId, gymName: profile.gymName, name: profile.name };
     if (profile.role === 'Member') identity.memberId = profile.memberId;
     if (profile.role === 'Coach') identity.email = profile.email;
+    identity.loginName = savedLoginName(profile);
 
     try {
       localStorage.setItem(IDENTITY_KEY, JSON.stringify(identity));
@@ -427,6 +438,27 @@
     } catch (e) {}
 
     window.location.href = DESTINATIONS[profile.role];
+  }
+
+  // ---------- Face ID / fingerprint via the phone's saved passwords ----------
+  // The PIN boxes are real login forms with a hidden username, so iPhone (iCloud
+  // Keychain) and Android (Google Password Manager) offer to save the PIN and then
+  // fill it in with Face ID or a fingerprint next time. The PIN never leaves the phone's
+  // own password manager; nothing extra is stored by LineUp.
+  function savedLoginName(profileOrIdentity) {
+    let lastEmail = '';
+    try { lastEmail = localStorage.getItem(LAST_EMAIL_KEY) || ''; } catch (e) {}
+    const p = profileOrIdentity || {};
+    return p.loginName || p.email || lastEmail ||
+      ((p.gymName ? p.gymName + ' - ' : '') + (p.name || 'LineUp'));
+  }
+  async function offerToSavePin(loginName, pin) {
+    // Chrome/Android can be asked directly; Safari shows its own prompt after the form submits.
+    try {
+      if (window.PasswordCredential && navigator.credentials && navigator.credentials.store) {
+        await navigator.credentials.store(new PasswordCredential({ id: loginName, password: pin, name: 'LineUp' }));
+      }
+    } catch (e) {}
   }
 
   async function savePin() {
@@ -449,6 +481,7 @@
       // (the same as "Keep my current PIN" does) instead of a second unlock request.
       if (pendingLogin.profile.role === 'Member') {
         leaving = true;
+        await offerToSavePin(document.getElementById('pinSetupUser').value, pin);
         const profile = Object.assign({}, pendingLogin.profile, { hasPin: true });
         rememberDeviceAndGo(profile, pendingLogin.sessionKey, result.memberData || null);
         return;
@@ -460,6 +493,7 @@
         return;
       }
       leaving = true;
+      await offerToSavePin(document.getElementById('pinSetupUser').value, pin);
       rememberDeviceAndGo(unlockResult.profile, unlockResult.sessionKey);
     } catch (err) {
       showError('pinSetupError', 'Could not reach the server: ' + err.message);
@@ -488,6 +522,7 @@
   function showUnlockScreen(identity) {
     document.getElementById('unlockGreeting').textContent = 'Welcome back' + (identity.name ? ', ' + identity.name.split(' ')[0] : '');
     document.getElementById('unlockPinInput').value = '';
+    document.getElementById('unlockUser').value = savedLoginName(identity);
     document.getElementById('unlockError').style.display = 'none';
     showScreen('unlockScreen');
   }
@@ -517,6 +552,7 @@
         return;
       }
       leaving = true;
+      await offerToSavePin(document.getElementById('unlockUser').value, pin);
       rememberDeviceAndGo(result.profile, result.sessionKey, result.memberData);
     } catch (err) {
       showError('unlockError', 'Could not reach the server: ' + err.message);
@@ -601,9 +637,9 @@
   }
 
   document.getElementById('googleSignInBtn').addEventListener('click', startGoogleSignIn);
-  document.getElementById('savePinBtn').addEventListener('click', savePin);
+  document.getElementById('pinSetupForm').addEventListener('submit', ev => { ev.preventDefault(); savePin(); });
   document.getElementById('skipPinBtn').addEventListener('click', skipPin);
-  document.getElementById('unlockBtn').addEventListener('click', unlockWithPin);
+  document.getElementById('unlockForm').addEventListener('submit', ev => { ev.preventDefault(); unlockWithPin(); });
   document.getElementById('forgotPinBtn').addEventListener('click', forgotPin);
   document.getElementById('sendCodeBtn').addEventListener('click', sendCodeFromSigninScreen);
   document.getElementById('verifyCodeBtn').addEventListener('click', verifyCode);
@@ -616,8 +652,6 @@
   }
   onEnter('emailInput', sendCodeFromSigninScreen);
   onEnter('codeInput', verifyCode);
-  onEnter('newPinInput', savePin);
-  onEnter('unlockPinInput', unlockWithPin);
 
   // Codes and unlock PINs submit themselves as soon as the last digit goes in
   // (including when iPhone auto-fills the code straight from the email).
@@ -625,9 +659,11 @@
     ev.target.value = ev.target.value.replace(/\D/g, '').slice(0, 6);
     if (ev.target.value.length === 6) verifyCode();
   });
-  document.getElementById('unlockPinInput').addEventListener('input', ev => {
-    ev.target.value = ev.target.value.replace(/\D/g, '').slice(0, 4);
-    if (ev.target.value.length === 4) unlockWithPin();
+  ['input', 'change'].forEach(evName => {
+    document.getElementById('unlockPinInput').addEventListener(evName, ev => {
+      ev.target.value = ev.target.value.replace(/\D/g, '').slice(0, 4);
+      if (ev.target.value.length === 4) unlockWithPin();
+    });
   });
 
   init();
