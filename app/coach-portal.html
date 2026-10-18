@@ -42,8 +42,8 @@ body.super .topbar{border-bottom-color:rgba(244,122,18,.45)}
 @media(max-width:760px){.table th:nth-child(3),.table td:nth-child(3){display:table-cell}.table th:nth-child(4),.table td:nth-child(4){display:none}}
 </style></head><body>
 <div class="shell"><aside class="sidebar" id="sidebar"><div class="brand"><div class="brand-mark">L</div><h1 id="brand-name">Oak Valley BJJ<br>LineUp</h1><p id="brand-role">Coach workspace</p></div><div class="nav-label">WORKSPACE</div><nav class="nav" aria-label="Main navigation"><button class="active" data-page="overview"><span class="ico">▦</span>Overview</button><button data-page="members"><span class="ico">♙</span>Members</button><button data-page="checkins"><span class="ico">✓</span>Check-ins</button><button data-page="setup"><span class="ico">⚙</span>Academy setup</button></nav>
-<div class="sidebar-bottom"><div id="gym-picker-wrap" hidden><div class="role-label">SUPER USER: GYM</div><select class="field" id="gym-picker" style="width:100%;margin-bottom:10px" aria-label="Choose gym"></select></div><div id="role-help"></div><button class="btn" id="signout-btn" style="width:100%;margin-top:12px">Sign out</button></div></aside><div class="overlay" id="overlay"></div>
-<main class="main"><header class="topbar"><div style="display:flex;align-items:center;gap:12px"><button class="hamb" id="hamb">☰</button><div><div class="crumb" id="crumb">OAK VALLEY BJJ / COACH PORTAL</div><h2 id="top-title">Overview</h2></div></div><div class="top-actions"><button class="btn" id="refresh-btn">Refresh</button><button class="btn hide-mobile" id="export-btn">Export members</button><button class="btn primary" id="top-add">＋ Add member</button></div></header><div class="content">
+<div class="sidebar-bottom"><div id="gym-picker-wrap" hidden><div class="role-label">SUPER USER: GYM</div><select class="field" id="gym-picker" style="width:100%;margin-bottom:10px" aria-label="Choose gym"></select></div><button class="btn" id="coach-preview-btn" hidden style="width:100%;margin-bottom:10px">Preview as coach</button><div id="role-help"></div><button class="btn" id="signout-btn" style="width:100%;margin-top:12px">Sign out</button></div></aside><div class="overlay" id="overlay"></div>
+<main class="main"><header class="topbar"><div style="display:flex;align-items:center;gap:12px"><button class="hamb" id="hamb">☰</button><div><div class="crumb" id="crumb">OAK VALLEY BJJ / COACH PORTAL</div><h2 id="top-title">Overview</h2></div></div><div class="top-actions"><button class="btn" id="refresh-btn">Refresh</button><button class="btn hide-mobile" id="export-btn">Export members</button><button class="btn primary" id="top-add">＋ Add member</button></div></header><div class="content"><div class="notice" id="coach-preview-banner" hidden style="margin-bottom:16px"></div>
 
 <section class="page active" id="page-overview"><div class="page-intro"><div><h3>Academy overview</h3><p>Who's training, who's drifting and how full your plan is.</p></div><span class="badge"><span class="dot"></span> <span id="view-badge">Coach view</span></span></div>
 <div class="grid kpis">
@@ -147,7 +147,10 @@ function failed(err,what){if(err&&err.message===ENDED)return;toast(what+(err&&er
 function showState(kind,text){const s=$('state');if(kind==='ready'){s.hidden=true;return}s.hidden=false;$('state-text').textContent=text||'Loading your academy…';$('retry-btn').hidden=kind!=='error';$('state-spin').hidden=kind==='error'}
 
 // ---------- Helpers ----------
-function isSuper(){return role==='super'}
+let previewCoach=false;
+function realSuper(){return role==='super'}
+// While previewing as a coach, the screens behave exactly as a coach's would (locks included).
+function isSuper(){return role==='super'&&!previewCoach}
 function can(p){return isSuper()||!!(settings&&settings.perms[p])}
 function accessOf(m){return !m.email?'noemail':m.signedIn?'signedin':'invited'}
 function statusHTML(m){return m.active?dotBadge('Active','#F47A12'):dotBadge('Inactive','#4A4D52')}
@@ -190,8 +193,12 @@ function applyRole(){
  $('crumb').textContent=(gymName()+(isSuper()?' / Super user':' / Coach portal')).toUpperCase();
  $('setup-intro').textContent=isSuper()?'Everything is editable in the super user view, including the plan and coach permissions.':'Configure the portal to match your academy.';
  document.querySelectorAll('[data-super-only]').forEach(x=>x.hidden=!isSuper());
- $('gym-picker-wrap').hidden=!(isSuper()&&gyms.length>1);
- if(isSuper())$('gym-picker').innerHTML=gyms.map(g=>`<option value="${esc(g.id)}" ${g.id===gymId?'selected':''}>${esc(g.name)}</option>`).join('');
+ $('gym-picker-wrap').hidden=!(realSuper()&&gyms.length>1);
+ $('coach-preview-btn').hidden=!realSuper();
+ $('coach-preview-btn').textContent=previewCoach?'Back to super user view':'Preview as coach';
+ $('coach-preview-banner').hidden=!previewCoach;
+ $('coach-preview-banner').textContent=`Previewing ${gymName()} as a coach. Locked sections and buttons are exactly what their coaches see. You're still signed in as super user.`;
+ if(realSuper())$('gym-picker').innerHTML=gyms.map(g=>`<option value="${esc(g.id)}" ${g.id===gymId?'selected':''}>${esc(g.name)}</option>`).join('');
  if(!isSuper()&&document.querySelector('.setting-tab.active')?.dataset.setting==='permissions')showSetting('academy');
  ['top-add','add-member'].forEach(id=>$(id).hidden=!can('addMembers'));
  $('export-btn').hidden=!can('export');
@@ -279,7 +286,7 @@ function renderDetail(){
  <div class="detail-field"><label for="edit-notes">Notes</label><input class="field" id="edit-notes" value="${esc(m.notes||'')}" placeholder="Optional coach notes" ${dis}></div>
  ${ed?'<button class="btn primary" id="save-member-detail">Save changes</button>':'<p class="hint">Member details are locked for coaches.</p>'}
  <p class="hint">Inactive members keep their record and attendance history.</p>`;
- $('preview-member').onclick=()=>{window.location.href=MEMBER_APP_URL+'?preview='+encodeURIComponent(m.id)+(isSuper()?'&gym='+encodeURIComponent(gymId):'')};
+ $('preview-member').onclick=()=>{window.location.href=MEMBER_APP_URL+'?preview='+encodeURIComponent(m.id)+(realSuper()?'&gym='+encodeURIComponent(gymId):'')};
  $('toggle-active').onclick=async()=>{
   if(busy)return;
   if(!m.active&&seatsFree()<=0){toast(seatFullMsg());return}
@@ -422,6 +429,7 @@ $('hamb').onclick=()=>{$('sidebar').classList.add('open');$('overlay').classList
 $('overlay').onclick=()=>{$('sidebar').classList.remove('open');$('overlay').classList.remove('show')};
 $('signout-btn').onclick=()=>{if(confirm('Sign out of LineUp on this device?'))signOut()};
 $('refresh-btn').onclick=()=>{loadAll(true).then(()=>toast('Up to date'));if($('page-checkins').classList.contains('active'))ciRefresh()};
+$('coach-preview-btn').onclick=()=>{previewCoach=!previewCoach;applyRole();toast(previewCoach?'Previewing as a coach':'Back to super user view')};
 $('retry-btn').onclick=()=>loadAll(false);
 $('gym-picker').onchange=e=>{pickedGym=e.target.value;try{sessionStorage.setItem(GYM_PICK_KEY,pickedGym)}catch(err){}selectedId=null;closeGuest();$('checkin-search').value='';loadAll(false).then(()=>{if($('page-checkins').classList.contains('active'))ciRefresh()})};
 
