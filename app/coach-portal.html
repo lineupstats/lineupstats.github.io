@@ -34,6 +34,25 @@
 .join-banner{display:block;width:100%;text-align:left;cursor:pointer;font:inherit;font-size:13px}
 .invite-actions{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.invite-actions .btn{text-decoration:none;flex:1;text-align:center}
 .link-plain{background:none;border:0;color:var(--muted);text-decoration:underline;font-size:12px;padding:0;margin-top:4px}
+.plan-locked{position:relative;overflow:hidden}
+.plan-locked > *:not(.plan-lock){filter:blur(5px);opacity:.45;pointer-events:none;user-select:none}
+.plan-lock{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;text-align:center;padding:12px;z-index:2}
+.plan-lock span{font-weight:700;font-size:13px;background:#1f2125;border:1px solid var(--border);border-radius:30px;padding:6px 12px}
+.plan-lock small{color:var(--muted);font-size:12px}
+.small-btn:disabled{opacity:.35;cursor:not-allowed}
+.bar-btn{background:transparent;border:0;padding:0;cursor:pointer;font:inherit;color:inherit}
+.bar-btn:hover .bar,.bar-btn.sel .bar{outline:2px solid var(--orange);outline-offset:2px}
+.field-ro{opacity:.6;cursor:not-allowed}
+.plan-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:16px}.plan-head .btn{text-decoration:none}
+.plan-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.plan-card{border:1px solid var(--border);border-radius:12px;padding:16px;background:#121315;display:flex;flex-direction:column}
+.plan-card.current{border-color:var(--orange);background:rgba(244,122,18,.06)}.plan-card.next{border-style:dashed;border-color:rgba(244,122,18,.55)}
+.plan-top{display:flex;justify-content:space-between;align-items:center;gap:8px}.plan-top h4{margin:0;font:600 18px 'Oswald',sans-serif;text-transform:uppercase}
+.plan-badge{background:var(--orange);color:var(--bg);border-color:var(--orange);font-weight:700}
+.plan-blurb{font-size:12px;margin:4px 0 10px}.plan-plus{font-size:12px;color:var(--soft);margin:0 0 6px;font-weight:600}
+.plan-card ul{margin:0 0 14px;padding-left:18px;font-size:12.5px;color:var(--soft);line-height:1.55;flex:1}
+.plan-cta{text-decoration:none;text-align:center}
+@media(max-width:900px){.plan-grid{grid-template-columns:1fr}}
 .gone{text-decoration:line-through;opacity:.55}
 .busy{opacity:.6;pointer-events:none}
 .checkin-item{justify-content:space-between}
@@ -65,26 +84,26 @@ body.super .topbar{border-bottom-color:rgba(244,122,18,.45)}
 </style></head><body>
 <div class="shell"><aside class="sidebar" id="sidebar"><div class="brand"><div class="brand-mark">L</div><h1 id="brand-name">Oak Valley BJJ<br>LineUp</h1><p id="brand-role">Coach workspace</p></div><div class="nav-label">WORKSPACE</div><nav class="nav" aria-label="Main navigation"><button class="active" data-page="overview"><span class="ico">▦</span>Overview</button><button data-page="members"><span class="ico">♙</span>Members<span class="nav-badge" id="join-badge" hidden></span></button><button data-page="checkins"><span class="ico">✓</span>Check-ins</button><button data-page="setup"><span class="ico">⚙</span>Academy setup</button></nav>
 <div class="sidebar-bottom"><div id="gym-picker-wrap" hidden><div class="role-label">SUPER USER: GYM</div><select class="field" id="gym-picker" style="width:100%;margin-bottom:10px" aria-label="Choose gym"></select></div><button class="btn" id="coach-preview-btn" hidden style="width:100%;margin-bottom:10px">Preview as coach</button><div id="role-help"></div><button class="btn" id="signout-btn" style="width:100%;margin-top:12px">Sign out</button></div></aside><div class="overlay" id="overlay"></div>
-<main class="main"><header class="topbar"><div style="display:flex;align-items:center;gap:12px"><button class="hamb" id="hamb">☰</button><div><div class="crumb" id="crumb">OAK VALLEY BJJ / COACH PORTAL</div><h2 id="top-title">Overview</h2></div></div><div class="top-actions"><button class="btn" id="refresh-btn">Refresh</button><button class="btn hide-mobile" id="export-btn">Export members</button><button class="btn primary" id="top-add">＋ Invite members</button></div></header><div class="content"><div class="notice" id="coach-preview-banner" hidden style="margin-bottom:16px"></div>
+<main class="main"><header class="topbar"><div style="display:flex;align-items:center;gap:12px"><button class="hamb" id="hamb">☰</button><div><div class="crumb" id="crumb">OAK VALLEY BJJ / COACH PORTAL</div><h2 id="top-title">Overview</h2></div></div><div class="top-actions"><button class="btn" id="refresh-btn">Refresh</button><button class="btn hide-mobile" id="export-btn">Export members</button><button class="btn primary" id="top-add">＋ Invite members</button></div></header><div class="content"><div class="notice" id="account-banner" hidden style="margin-bottom:16px;border-color:rgba(255,158,143,.5)"></div><div class="notice" id="coach-preview-banner" hidden style="margin-bottom:16px"></div>
 
 <section class="page active" id="page-overview"><div class="page-intro"><div><h3>Academy overview</h3><p>Who's training, who's drifting and how full your plan is.</p></div><span class="badge"><span class="dot"></span> <span id="view-badge">Coach view</span></span></div>
 <button class="notice join-banner" id="join-banner" hidden><strong>New join requests.</strong> <span id="join-banner-text"></span></button>
 <div class="grid kpis">
 <div class="card kpi-card" data-kpi="active" role="button" tabindex="0"><div class="kpi-head">Active members <span class="kpi-icon">♙</span></div><div class="kpi-value" id="kpi-active">0</div><div class="kpi-note" id="kpi-active-note"></div></div>
 <div class="card kpi-card" data-kpi="week" role="button" tabindex="0"><div class="kpi-head">Check-ins this week <span class="kpi-icon">↗</span></div><div class="kpi-value" id="kpi-week">0</div><div class="kpi-note" id="kpi-week-note"></div></div>
-<div class="card kpi-card" data-kpi="avg" role="button" tabindex="0"><div class="kpi-head">Visits per active member <span class="kpi-icon">◷</span></div><div class="kpi-value" id="kpi-avg">0</div><div class="kpi-note">Average over the last 28 days</div></div>
+<div class="card kpi-card" data-plan="standard" data-kpi="avg" role="button" tabindex="0"><div class="kpi-head">Visits per active member <span class="kpi-icon">◷</span></div><div class="kpi-value" id="kpi-avg">0</div><div class="kpi-note">Average over the last 28 days</div></div>
 <div class="card"><div class="kpi-head">Member seats <span class="kpi-icon">▤</span></div><div class="kpi-value"><span id="kpi-seats-used">0</span><span style="font-size:18px;color:var(--muted)"> / <span id="kpi-seats">0</span></span></div><div class="progress" id="seats-progress"><span id="seats-bar" style="width:0%"></span></div><div class="kpi-note" style="margin-top:8px" id="kpi-seats-note"></div></div>
 </div>
 <div class="card" id="kpi-detail" hidden style="margin-bottom:15px"><div class="card-head"><h4 id="kpi-detail-title"></h4><button class="small-btn" id="kpi-detail-close">Close</button></div><div class="mini-list scroll-list" id="kpi-detail-body"></div></div>
 <div class="grid dashboard-grid">
 <div class="card"><div class="card-head"><div><h4>Attendance this week</h4><div class="muted" style="font-size:12px;margin-top:3px">Daily check-ins compared with last week</div></div><span class="badge">Busiest: <strong id="busiest-day" style="color:var(--text)">—</strong></span></div><div class="chart" id="attendance-chart"></div><div class="chart-legend"><span><span class="swatch" style="background:var(--orange)"></span>This week <span class="swatch" style="background:#3a3d42;margin-left:12px"></span>Last week</span><strong id="week-total" style="color:var(--text)">— visits</strong></div></div>
 <div class="card"><div class="card-head"><div><h4>Needs a nudge</h4><div class="muted" style="font-size:12px;margin-top:3px" id="nudge-sub">Active members with no visit recently</div></div><span class="badge" id="nudge-count">0</span></div><div class="mini-list" id="nudge-list"></div></div>
-<div class="card span2 dash-extra"><div class="card-head"><div><h4>Attendance calendar</h4><div class="muted" style="font-size:12px;margin-top:3px">Tap a day to see who came and who didn't</div></div><div style="display:flex;gap:6px;align-items:center"><button class="small-btn" id="cal-prev" aria-label="Previous month">‹</button><strong id="cal-label" style="min-width:130px;text-align:center"></strong><button class="small-btn" id="cal-next" aria-label="Next month">›</button></div></div><div class="cal-head"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div><div class="cal-grid" id="cal-grid"></div><div id="cal-day" hidden><div class="card-head" style="margin:16px 0 6px"><h4 id="cal-day-title"></h4><div class="seg"><button data-calmode="attended">Came</button><button data-calmode="absent">Didn't come</button></div></div><div class="mini-list scroll-list" id="cal-day-body"></div></div></div>
-<div class="card dash-extra"><div class="card-head"><div><h4 id="belt-word">Belt breakdown</h4><div class="muted" style="font-size:12px;margin-top:3px">Tap a belt to see its students</div></div></div><div id="belt-breakdown"></div></div>
-<div class="card dash-extra"><div class="card-head"><div><h4 id="bench-title">Time at each belt</h4><div class="muted" style="font-size:12px;margin-top:3px">Average sessions before a promotion</div></div></div><div class="mini-list" id="bench-list"></div></div>
-<div class="card"><div class="card-head"><div><h4>Training frequency</h4><div class="muted" style="font-size:12px;margin-top:3px">Active members by visits in the last 28 days</div></div></div><div id="freq-list"></div></div>
+<div class="card span2 dash-extra"><div class="card-head"><div><h4>Attendance calendar</h4><div class="muted" style="font-size:12px;margin-top:3px" id="cal-sub">Tap a day to see who came and who didn't</div></div><div style="display:flex;gap:6px;align-items:center"><button class="small-btn" id="cal-prev" aria-label="Previous month">‹</button><strong id="cal-label" style="min-width:130px;text-align:center"></strong><button class="small-btn" id="cal-next" aria-label="Next month">›</button></div></div><div class="cal-head"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div><div class="cal-grid" id="cal-grid"></div><div id="cal-day" hidden><div class="card-head" style="margin:16px 0 6px"><h4 id="cal-day-title"></h4><div class="seg"><button data-calmode="attended">Came</button><button data-calmode="absent">Didn't come</button></div></div><div class="mini-list scroll-list" id="cal-day-body"></div></div></div>
+<div class="card dash-extra" data-plan="standard"><div class="card-head"><div><h4 id="belt-word">Belt breakdown</h4><div class="muted" style="font-size:12px;margin-top:3px">Tap a belt to see its students</div></div></div><div id="belt-breakdown"></div></div>
+<div class="card dash-extra" data-plan="standard"><div class="card-head"><div><h4 id="bench-title">Time at each belt</h4><div class="muted" style="font-size:12px;margin-top:3px">Average sessions before a promotion</div></div></div><div class="mini-list" id="bench-list"></div></div>
+<div class="card" data-plan="standard"><div class="card-head"><div><h4>Training frequency</h4><div class="muted" style="font-size:12px;margin-top:3px">Active members by visits in the last 28 days</div></div></div><div id="freq-list"></div></div>
 <div class="card"><div class="card-head"><div><h4>App sign-in</h4><div class="muted" style="font-size:12px;margin-top:3px">Active members, updated automatically</div></div></div><div id="access-breakdown"></div><div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center"><span class="muted" style="font-size:12px">Signed in so far</span><strong class="accent" id="access-rate">0%</strong></div></div>
-<div class="card dash-extra"><div class="card-head"><div><h4>Busiest days</h4><div class="muted" style="font-size:12px;margin-top:3px">All check-ins by day of the week</div></div></div><div class="chart" id="weekday-chart"></div></div>
+<div class="card dash-extra" data-plan="standard"><div class="card-head"><div><h4>Busiest days</h4><div class="muted" style="font-size:12px;margin-top:3px">All check-ins by day of the week. Tap a day to see who comes.</div></div></div><div class="chart" id="weekday-chart"></div><div id="weekday-detail" hidden><div class="card-head" style="margin:16px 0 6px"><h4 id="weekday-detail-title"></h4><button class="small-btn" id="weekday-close">Close</button></div><div class="mini-list scroll-list" id="weekday-detail-body"></div></div></div>
 <div class="card"><div class="card-head"><h4>Recent member activity</h4><button class="small-btn" data-goto="members">View members</button></div><div class="mini-list" id="recent-activity"></div></div>
 <div class="card"><div class="card-head"><h4>Academy snapshot</h4></div><div class="mini-row"><span class="kpi-icon">＋</span><div class="row-main"><strong>New this month</strong><small id="new-note">Joined this month</small></div><strong id="new-count">0</strong></div><div class="mini-row"><span class="kpi-icon">♧</span><div class="row-main"><strong>Most common belt</strong><small>Across active members</small></div><strong id="common-belt">—</strong></div><div class="mini-row"><span class="kpi-icon">⏸</span><div class="row-main"><strong>Inactive members</strong><small>Kept on record, not using a seat</small></div><strong id="inactive-count">0</strong></div><div style="padding-top:12px"><strong style="font-size:13px">Belt mix</strong><div class="stack" id="belt-stack"></div><div class="stack-legend" id="belt-legend"></div></div></div>
 </div>
@@ -96,11 +115,11 @@ body.super .topbar{border-bottom-color:rgba(244,122,18,.45)}
 <section class="page" id="page-checkins"><div class="page-intro"><div><h3>Check-ins</h3><p>Add anyone who forgot to check in, add guests, or remove a mistake.</p></div><span class="badge" id="checkin-date"></span></div><div class="checkin-layout"><div class="card"><div class="card-head"><h4>Add a check-in</h4></div><input class="field" style="width:100%" id="checkin-search" placeholder="Search a member's name…" autocomplete="off"><div id="checkin-results" style="margin-top:10px"></div><button class="btn" id="guest-open" style="margin-top:12px;width:100%">＋ Add a guest</button><div id="guest-form" hidden style="margin-top:14px"><div class="detail-field"><label for="guest-name">Guest's name</label><input class="field" id="guest-name" style="width:100%"></div><div class="detail-field"><label for="guest-belt">Belt (optional)</label><select class="field" id="guest-belt" style="width:100%"></select></div><div style="display:flex;gap:8px;justify-content:flex-end"><button class="btn" id="guest-cancel">Cancel</button><button class="btn primary" id="guest-add">Add guest</button></div></div></div><div class="card"><div class="card-head"><h4>Checked in today</h4><button class="small-btn" id="ci-refresh">Refresh</button></div><div class="kpi-value" id="today-count">0</div><div class="muted" id="today-sub">members checked in today</div><div class="mini-list" id="today-list" style="margin-top:12px"></div></div></div></section>
 
 <section class="page" id="page-setup"><div class="page-intro"><div><h3>Academy setup</h3><p id="setup-intro">Configure the portal to match your academy.</p></div><button class="btn primary" id="save-settings">Save settings</button></div>
-<div class="setting-tabs"><button class="setting-tab active" data-setting="academy">Academy</button><button class="setting-tab" data-setting="plan">Plan and seats</button><button class="setting-tab" data-setting="grading">Belt grading</button><button class="setting-tab soon" data-setting="profiles" disabled title="Coming soon">Profile fields <span class="soon-tag">Coming soon</span></button><button class="setting-tab soon" data-setting="features" disabled title="Coming soon">Features <span class="soon-tag">Coming soon</span></button><button class="setting-tab soon" data-setting="memberships" disabled title="Coming soon">Memberships <span class="soon-tag">Coming soon</span></button><button class="setting-tab super-tab" data-setting="permissions" data-super-only hidden>Coach permissions</button></div>
+<div class="setting-tabs"><button class="setting-tab active" data-setting="academy">Academy</button><button class="setting-tab" data-setting="plan" id="plan-tab">Plan and seats</button><button class="setting-tab" data-setting="grading">Belt grading</button><button class="setting-tab soon" data-setting="profiles" disabled title="Coming soon">Profile fields <span class="soon-tag">Coming soon</span></button><button class="setting-tab soon" data-setting="features" disabled title="Coming soon">Features <span class="soon-tag">Coming soon</span></button><button class="setting-tab soon" data-setting="memberships" disabled title="Coming soon">Memberships <span class="soon-tag">Coming soon</span></button><button class="setting-tab super-tab" data-setting="permissions" data-super-only hidden>Coach permissions</button></div>
 
-<div class="card settings-panel active" id="settings-academy" data-perm="academy"><div class="lock-note" hidden></div><div class="panel-body"><h4 style="margin:0 0 12px">Academy details</h4><div class="setting-row"><div><strong>Academy name</strong><small>Name shown in the coach portal.</small></div><input class="field" id="academy-name" style="max-width:280px;width:48%"></div><div class="setting-row"><div><strong>Coach display name</strong><small>Shown in the coach workspace.</small></div><input class="field" id="coach-name" style="max-width:280px;width:48%"></div><div class="setting-row"><div><strong>Nudge after</strong><small>Days without a visit before an active member shows in "Needs a nudge".</small></div><input class="field" id="alert-days" type="number" min="1" style="width:110px"></div></div></div>
+<div class="card settings-panel active" id="settings-academy" data-perm="academy"><div class="lock-note" hidden></div><div class="panel-body"><h4 style="margin:0 0 12px">Academy details</h4><div class="setting-row"><div><strong>Academy name</strong><small id="academy-name-hint">Name shown in the coach portal.</small></div><input class="field" id="academy-name" style="max-width:280px;width:48%"></div><div class="setting-row"><div><strong>Coach display name</strong><small>Shown in the coach workspace.</small></div><input class="field" id="coach-name" style="max-width:280px;width:48%"></div><div class="setting-row"><div><strong>Nudge after</strong><small>Days without a visit before an active member shows in "Needs a nudge".</small></div><input class="field" id="alert-days" type="number" min="1" style="width:110px"></div></div></div>
 
-<div class="card settings-panel" id="settings-plan" data-perm="plan"><div class="lock-note" hidden></div><div class="panel-body"><h4 style="margin:0 0 4px">Plan and seats</h4><p class="muted" style="margin:0 0 12px;font-size:12px">Set by LineUp for this academy.</p><div class="setting-row"><div><strong>Plan</strong><small>Decides which features the academy can use.</small></div><select class="field" id="plan-tier"><option value="basic">Basic</option><option value="standard">Standard</option><option value="premium">Premium</option></select></div><div class="setting-row"><div><strong>Account status</strong><small>Free month, paying or paused.</small></div><select class="field" id="plan-status"><option value="trial">Free month</option><option value="active">Paying</option><option value="paused">Paused</option></select></div><div class="setting-row"><div><strong>Member seats</strong><small>How many active members this plan allows.</small></div><input class="field" id="member-capacity" type="number" min="1" style="width:110px"></div><div class="setting-row"><div><strong>Join link</strong><small>Let people ask to join with the coach's link. Their coach still approves each one.</small></div><button class="switch on" id="join-enabled" role="switch" aria-checked="true" aria-label="Join link"></button></div><div class="setting-row"><div><strong>Seats in use</strong><small>Counted automatically from active members. Inactive members don't use a seat.</small></div><strong id="seats-in-use" style="font:600 20px 'Oswald',sans-serif">0</strong></div></div></div>
+<div class="card settings-panel" id="settings-plan" data-perm="plan"><div class="lock-note" hidden></div><div id="plan-compare"></div><div class="panel-body"><h4 style="margin:0 0 4px">Plan and seats</h4><p class="muted" style="margin:0 0 12px;font-size:12px">Set by LineUp for this academy.</p><div class="setting-row"><div><strong>Plan</strong><small>Basic: attendance, check-ins, members and the core overview. Standard: adds past months, insights and export. Premium: adds membership and payments when they arrive.</small></div><select class="field" id="plan-tier"><option value="basic">Basic</option><option value="standard">Standard</option><option value="premium">Premium</option></select></div><div class="setting-row"><div><strong>Account status</strong><small>Paused or Inactive blocks this academy's coaches and members until you set it back to Active.</small></div><select class="field" id="plan-status"><option value="active">Active</option><option value="paused">Paused</option><option value="inactive">Inactive</option></select></div><div class="setting-row"><div><strong>Member seats</strong><small>How many active members this plan allows.</small></div><input class="field" id="member-capacity" type="number" min="1" style="width:110px"></div><div class="setting-row"><div><strong>Join link</strong><small>Let people ask to join with the coach's link. Their coach still approves each one.</small></div><button class="switch on" id="join-enabled" role="switch" aria-checked="true" aria-label="Join link"></button></div><div class="setting-row"><div><strong>Seats in use</strong><small>Counted automatically from active members. Inactive members don't use a seat.</small></div><strong id="seats-in-use" style="font:600 20px 'Oswald',sans-serif">0</strong></div></div></div>
 
 <div class="card settings-panel" id="settings-grading" data-perm="grading"><div class="lock-note" hidden></div><div class="panel-body"><h4 style="margin:0 0 4px">Belt progression</h4><p class="muted" style="margin:0 0 14px;font-size:12px">Set the belt order and colours members see in their app. Stripes are coming soon.</p><div class="setting-row" hidden><div><strong>Grading system</strong><small>Choose how progression is represented.</small></div><select class="field" id="grading-system"><option value="belts-stripes">Belts and stripes</option><option value="belts">Belts only</option><option value="stripes">Stripes only</option><option value="custom">Custom levels</option></select></div><div class="setting-row" hidden><div><strong>Maximum stripes per belt</strong><small>Used when stripes are enabled.</small></div><select class="field" id="stripes-count"><option>0</option><option>2</option><option>4</option><option>5</option></select></div><div style="margin-top:17px"><div class="card-head"><h4>Belt order</h4></div><div id="belt-list"></div><div style="display:flex;gap:8px;margin-top:13px"><input class="field" id="new-belt-name" placeholder="New belt / level name"><input class="field" id="new-belt-color" type="color" value="#55585D" style="width:55px;padding:4px"><button class="btn" id="add-belt">Add level</button></div></div></div></div>
 
@@ -123,7 +142,7 @@ body.super .topbar{border-bottom-color:rgba(244,122,18,.45)}
 <div class="modal-actions" style="justify-content:space-between;align-items:center"><button class="link-plain" id="invite-manual" style="margin:0">Add someone without a link</button><button class="btn" id="invite-close">Close</button></div></div></div>
 <div class="modal" id="member-modal"><div class="modal-box"><h3>Add someone without a link</h3><form id="member-form"><div class="form-grid"><div class="detail-field"><label for="form-name">Full name</label><input class="field" id="form-name" required style="width:100%"></div><div class="detail-field"><label for="form-email">Email</label><input class="field" id="form-email" type="email" style="width:100%"></div><div class="detail-field"><label for="form-belt">Belt</label><select class="field" id="form-belt" style="width:100%"></select></div></div><p class="hint" style="margin-top:12px">They sign in to LineUp with this email, and their app status updates by itself once they do. Leave it blank to check them in manually.</p><p class="hint" id="seat-hint" style="margin-top:6px"></p><div class="modal-actions"><button class="btn" type="button" id="cancel-modal">Cancel</button><button class="btn primary" type="submit">Add member</button></div></form></div></div>
 <div class="toast" id="toast" role="status"></div>
-<div class="state" id="state"><div class="state-box"><div class="spinner" id="state-spin"></div><p id="state-text">Loading your academy…</p><button class="btn primary" id="retry-btn" hidden>Try again</button></div></div>
+<div class="state" id="state"><div class="state-box"><div class="spinner" id="state-spin"></div><h3 id="state-title" hidden style="font:600 22px 'Oswald',sans-serif;margin:14px 0 0;color:var(--text)"></h3><p id="state-text">Loading your academy…</p><button class="btn primary" id="retry-btn" hidden>Try again</button><button class="btn" id="state-signout" hidden style="margin-left:8px">Sign out</button></div></div>
 
 <script src="./config.js"></script>
 <script>
@@ -171,16 +190,20 @@ function jsonpRequest(baseUrl,params){return new Promise((resolve,reject)=>{cons
  window[cb]=data=>{cleanup();resolve(data)};
  const qs=Object.keys(params).map(k=>k+'='+encodeURIComponent(params[k])).join('&');
  const script=document.createElement('script');script.src=baseUrl+(baseUrl.includes('?')?'&':'?')+qs+'&callback='+cb;script.onerror=()=>{cleanup();reject(new Error('Could not reach LineUp'))};document.body.appendChild(script)})}
-const ENDED='Session ended';
+const ENDED='Session ended';let blockedStatus=null;
 async function api(mode,params){
  const p=Object.assign({mode:mode,sessionKey:sessionKey,gymId:gymId||identity.gymId},params||{});
  if(pickedGym)p.asGym=pickedGym;                       // only honoured by the server for super users
  const res=await jsonpRequest(APPS_SCRIPT_URL,p);
  if(res&&res.sessionExpired){backToUnlock();throw new Error(ENDED)}
+ // Paused or Inactive academy: the server refuses everything, so show that instead of the portal.
+ if(res&&res.accountStatus&&!res.success){blockedStatus=res.accountStatus;showState('blocked',res.error);throw new Error(ENDED)}
  return res;
 }
 function failed(err,what){if(err&&err.message===ENDED)return;toast(what+(err&&err.message?': '+err.message:''))}
-function showState(kind,text){const s=$('state');if(kind==='ready'){s.hidden=true;return}s.hidden=false;$('state-text').textContent=text||'Loading your academy…';$('retry-btn').hidden=kind!=='error';$('state-spin').hidden=kind==='error'}
+function showState(kind,text){const s=$('state');if(kind==='ready'){s.hidden=true;return}s.hidden=false;$('state-text').textContent=text||'Loading your academy…';
+ $('retry-btn').hidden=kind==='loading';$('retry-btn').textContent=kind==='blocked'?'Check again':'Try again';$('state-spin').hidden=kind!=='loading';$('state-signout').hidden=kind==='loading';
+ $('state-title').hidden=kind!=='blocked';$('state-title').textContent='Account '+(blockedStatus||'paused')}
 
 // ---------- Helpers ----------
 let previewCoach=false;
@@ -207,7 +230,7 @@ async function loadAll(quiet){
   if(!d.success){if(quiet){toast(friendlyServerError(d.error));return}showState('error',friendlyServerError(d.error));return}
   role=d.role;gymId=d.gymId;gyms=d.gyms||[];members=d.members||[];settings=d.settings;
   if(!settings.belts||!settings.belts.length)settings.belts=clone(DEFAULT_BELTS);
-  WEEK.now=d.week.now;WEEK.prev=d.week.prev;lastLoaded=new Date();useDash(both[1]);profiles={};if(d.join)join=d.join;
+  WEEK.now=d.week.now;WEEK.prev=d.week.prev;weekdayPeople=d.weekdayPeople||[[],[],[],[],[],[],[]];lastLoaded=new Date();useDash(both[1]);profiles={};if(d.join)join=d.join;
   if(!members.some(m=>m.id===selectedId))selectedId=members[0]?.id;
   showState('ready');
   if(!quiet||!$('page-setup').classList.contains('active'))fillSettingInputs();
@@ -227,21 +250,65 @@ function applyRole(){
  $('view-badge').textContent=isSuper()?'Super user view':'Coach view';
  $('role-help').textContent=isSuper()?'You can change the plan, seats and what coaches are allowed to edit.':'Plan and seats are managed by LineUp.';
  $('crumb').textContent=(gymName()+(isSuper()?' / Super user':' / Coach portal')).toUpperCase();
+ $('academy-name').readOnly=!isSuper();$('academy-name').classList.toggle('field-ro',!isSuper());
+ $('academy-name-hint').textContent=isSuper()?'Name shown in the portal and member app.':'Set by LineUp. Contact LineUp to change it.';
  $('setup-intro').textContent=isSuper()?'Everything is editable in the super user view, including the plan and coach permissions.':'Configure the portal to match your academy.';
  document.querySelectorAll('[data-super-only]').forEach(x=>x.hidden=!isSuper());
  $('gym-picker-wrap').hidden=!(realSuper()&&gyms.length>1);
  $('coach-preview-btn').hidden=!realSuper();
  $('coach-preview-btn').textContent=previewCoach?'Back to super user view':'Preview as coach';
  $('coach-preview-banner').hidden=!previewCoach;
+ const acct=settings.account||'active';$('account-banner').hidden=!(realSuper()&&acct!=='active');
+ $('account-banner').textContent=`${gymName()} is ${acct==='paused'?'Paused':'Inactive'}. Its coaches and members can't use LineUp until you set Account status back to Active in Plan and seats.`;
  $('coach-preview-banner').textContent=`Previewing ${gymName()} as a coach. Locked sections and buttons are exactly what their coaches see. You're still signed in as super user.`;
  if(realSuper())$('gym-picker').innerHTML=gyms.map(g=>`<option value="${esc(g.id)}" ${g.id===gymId?'selected':''}>${esc(g.name)}</option>`).join('');
  if(!isSuper()&&document.querySelector('.setting-tab.active')?.dataset.setting==='permissions')showSetting('academy');
  ['top-add','add-member'].forEach(id=>$(id).hidden=!can('addMembers'));
- $('export-btn').hidden=!can('export');
+ $('export-btn').hidden=!(can('export')&&hasPlan('standard'));
  $('updated-note').textContent=lastLoaded?'Updated '+lastLoaded.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})+'. Tap Refresh for the latest figures.':'';
  renderSettings();renderDashboard();renderMembers();renderJoin();
 }
 
+// ---------- Plans: Basic, Standard, Premium ----------
+// Cards marked data-plan="standard" (or "premium") show a lock for gyms on a lower plan.
+// Super users always see everything; Preview as coach shows the gym's real plan.
+const PLAN_RANK={basic:0,standard:1,premium:2},PLAN_NAME={basic:'Basic',standard:'Standard',premium:'Premium'};
+function hasPlan(p){return isSuper()||(PLAN_RANK[(settings&&settings.plan)||'standard']??1)>=PLAN_RANK[p]}
+function renderPlanLocks(){
+ document.querySelectorAll('[data-plan]').forEach(card=>{
+  const need=card.dataset.plan,locked=!hasPlan(need);
+  let lock=card.querySelector(':scope > .plan-lock');
+  if(locked&&!lock){lock=document.createElement('div');lock.className='plan-lock';card.appendChild(lock)}
+  if(lock){lock.hidden=!locked;lock.innerHTML=`<span>🔒 Included in ${PLAN_NAME[need]}</span><button class="link-plain see-plans" style="pointer-events:auto">See plans</button>`;lock.querySelector('.see-plans').onclick=openPlans}
+  card.classList.toggle('plan-locked',locked);card.toggleAttribute('aria-disabled',locked);
+ });
+ const pastOk=hasPlan('standard');
+ $('cal-prev').disabled=!pastOk;$('cal-prev').title=pastOk?'Previous month':'Past months are included in Standard';
+ $('cal-sub').textContent=pastOk?"Tap a day to see who came and who didn't":"Tap a day to see who came and who didn't. Past months are included in Standard.";
+ $('export-btn').hidden=!(can('export')&&hasPlan('standard'));
+}
+// ---------- Your plan (what each plan includes) ----------
+const LINEUP_EMAIL='cismafree@gmail.com';
+const PLAN_FEATURES={
+ basic:['Members check in on their phone with a PIN','Check-ins page: add members who forgot, guests, corrections','Members list, join link and approvals','Belt changes, belt journey and check-in history','Overview: active members, this week, Needs a nudge, app sign-in','Attendance calendar for this month'],
+ standard:['Attendance calendar for every past month','Visits per member and training frequency','Belt breakdown and time at each belt','Busiest days, with who comes on each day','Export your member list'],
+ premium:['Membership and payment tracking (coming soon)','Messages to members (coming soon)','Custom member profile fields (coming soon)','Priority set-up help']
+};
+const PLAN_BLURB={basic:'Attendance and members',standard:'Adds insights and history',premium:'Adds running the gym'};
+function openPlans(){page('setup');showSetting('plan')}
+function renderPlanPage(){
+ const cur=(settings&&settings.plan)||'standard',order=['basic','standard','premium'],ci=order.indexOf(cur),next=order[ci+1];
+ const used=activeMembers().length,seats=hasLimit()?`${used} of ${settings.capacity} member seats used`:`${used} active members, no seat limit`;
+ const acct={active:'Active',paused:'Paused',inactive:'Inactive'}[settings.account]||'Active';
+ const mail=(subject)=>`mailto:${LINEUP_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent('Hi LineUp,\n\nAcademy: '+gymName()+'\n\n')}`;
+ const cards=order.map((k,i)=>{const isCur=k===cur,isNext=k===next;
+  const list=i===0?PLAN_FEATURES.basic:PLAN_FEATURES[k];
+  return `<div class="plan-card${isCur?' current':''}${isNext?' next':''}"><div class="plan-top"><h4>${PLAN_NAME[k]}</h4>${isCur?'<span class="badge plan-badge">Your plan</span>':isNext?'<span class="badge">Next step up</span>':''}</div>
+  <p class="muted plan-blurb">${PLAN_BLURB[k]}</p>${i>0?`<p class="plan-plus">Everything in ${PLAN_NAME[order[i-1]]}, plus:</p>`:''}
+  <ul>${list.map(f=>`<li>${esc(f)}</li>`).join('')}</ul>
+  ${isNext&&!isSuper()?`<a class="btn primary plan-cta" href="${mail('Upgrade '+gymName()+' to '+PLAN_NAME[k])}">Ask about ${PLAN_NAME[k]}</a>`:''}</div>`}).join('');
+ $('plan-compare').innerHTML=`<div class="plan-head"><div><h4 style="margin:0 0 4px">${isSuper()?'Plans':'Your plan: '+PLAN_NAME[cur]}</h4><p class="muted" style="margin:0;font-size:12px">${esc(seats)} · Account ${acct}${next?'':' · You have every feature'}</p></div>${!isSuper()?`<a class="btn" href="${mail('Question about '+gymName()+"'s LineUp plan")}">Contact LineUp</a>`:''}</div><div class="plan-grid">${cards}</div>${isSuper()?'<p class="hint" style="margin:14px 0 0">Coaches see this page with their own plan highlighted and an upgrade button. Change the plan below.</p>':''}`;
+}
 // ---------- Overview ----------
 function renderDashboard(){
  if(!settings)return;
@@ -290,11 +357,12 @@ function renderDashboard(){
  $('belt-stack').innerHTML=order.map(n=>`<span style="width:${bc[n]/Math.max(1,act.length)*100}%;background:${beltColor(n)}" title="${esc(n)}: ${bc[n]}"></span>`).join('');
  $('belt-legend').innerHTML=order.map(n=>`<span><span class="swatch" style="background:${beltColor(n)}"></span>${esc(n)} ${bc[n]}</span>`).join('');
  document.querySelectorAll('#page-overview [data-open]').forEach(r=>{const go=()=>{selectedId=r.dataset.open;page('members')};r.onclick=go;r.onkeydown=e=>{if(e.key==='Enter')go()}});
- renderExtras();
+ renderExtras();renderPlanLocks();
 }
 
 // ---------- Step 3: features carried over from the old dashboard ----------
 // They use the same requests the old dashboard used: data, calendar, profile, setBelt, undoBelt.
+let weekdayPeople=[[],[],[],[],[],[],[]],openDay=null;
 let dash=null,profiles={},cal={year:null,month:null,days:{}},calDay=null,calMode='attended',openBelt=null,openKpi=null;
 const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
 function isLight(hex){const h=String(hex||'').replace('#','');if(h.length!==6)return false;const r=parseInt(h.slice(0,2),16),g=parseInt(h.slice(2,4),16),b=parseInt(h.slice(4,6),16);return r*.299+g*.587+b*.114>200}
@@ -323,7 +391,7 @@ function renderKpiDetail(){
  $('kpi-detail-body').innerHTML=rows.map(([id,n,b,t])=>`<div class="mini-row ${id?'link':''}" ${id?`data-open="${esc(id)}" tabindex="0"`:''}>${avatar(n)}<div class="row-main"><strong>${esc(n)}</strong><small>${esc(b)}</small></div><span class="muted" style="font-size:12px">${esc(t)}</span></div>`).join('')||'<div class="empty">Nothing to show yet.</div>';
  $('kpi-detail-body').querySelectorAll('[data-open]').forEach(r=>{r.onclick=()=>openMember(r.dataset.open);r.onkeydown=e=>{if(e.key==='Enter')openMember(r.dataset.open)}});
 }
-document.querySelectorAll('.kpi-card').forEach(c=>{const t=()=>{openKpi=openKpi===c.dataset.kpi?null:c.dataset.kpi;renderKpiDetail()};c.onclick=t;c.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();t()}}});
+document.querySelectorAll('.kpi-card').forEach(c=>{const t=()=>{if(c.classList.contains('plan-locked'))return;openKpi=openKpi===c.dataset.kpi?null:c.dataset.kpi;renderKpiDetail()};c.onclick=t;c.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();t()}}});
 $('kpi-detail-close').onclick=()=>{openKpi=null;renderKpiDetail()};
 
 function renderCalendar(){
@@ -346,8 +414,9 @@ function renderCalendar(){
  $('cal-day-body').innerHTML=list.map(n=>`<div class="mini-row" style="padding:8px 0">${avatar(n)}<div class="row-main"><strong>${esc(n)}</strong></div></div>`).join('')||`<div class="empty" style="padding:14px">${calMode==='attended'?'Nobody checked in this day.':'Every active member checked in this day.'}</div>`;
 }
 document.querySelectorAll('[data-calmode]').forEach(b=>b.onclick=()=>{calMode=b.dataset.calmode;renderCalendar()});
-async function changeMonth(delta){let m=cal.month+delta,y=cal.year;if(m<0){m=11;y--}if(m>11){m=0;y++}
+async function changeMonth(delta){if(delta<0&&!hasPlan('standard')){toast('Past months are included in Standard. Contact LineUp to upgrade.');return}let m=cal.month+delta,y=cal.year;if(m<0){m=11;y--}if(m>11){m=0;y++}
  try{const r=await api('calendar',{year:y,month:m});if(r.error){toast(friendlyServerError(r.error));return}cal={year:r.year,month:r.month,days:r.days||{}};calDay=null;renderCalendar()}catch(err){failed(err,"Couldn't load that month")}}
+$('weekday-close').onclick=()=>{openDay=null;renderWeekdays()};
 $('cal-prev').onclick=()=>changeMonth(-1);$('cal-next').onclick=()=>changeMonth(1);
 
 function renderBeltBreakdown(){
@@ -362,9 +431,16 @@ function renderBench(){
  $('bench-list').innerHTML=rows.map(r=>`<div class="mini-row"><div class="row-main"><strong>${beltDot(r.belt)} ${esc(r.belt)}</strong><small>${r.promotions} promotion${r.promotions===1?'':'s'}, from ${r.minSessions} to ${r.maxSessions} sessions</small></div><strong class="accent">${r.avgSessions} sessions</strong></div>`).join('')
   ||`<div class="empty" style="padding:16px">This fills in as gradings are recorded. Open a member, tap Change ${esc(w)}, and record when they got their current ${esc(w)} and each promotion after it.</div>`;
 }
+const DAY_PLURAL=['Mondays','Tuesdays','Wednesdays','Thursdays','Fridays','Saturdays','Sundays'];
 function renderWeekdays(){
  const v=(dash&&dash.weekdayTotals)||[0,0,0,0,0,0,0],max=Math.max(...v,1),peak=v.indexOf(Math.max(...v));
- $('weekday-chart').innerHTML=WEEK.days.map((d,i)=>`<div class="bar-group"><span class="bar-val">${v[i]||0}</span><div class="bar${i===peak&&v[i]?'':' prev'}" style="height:${(v[i]||0)/max*100}%"></div><span class="bar-label">${d}</span></div>`).join('');
+ $('weekday-chart').innerHTML=WEEK.days.map((d,i)=>`<button class="bar-group bar-btn${openDay===i?' sel':''}" data-wd="${i}" aria-label="${DAY_PLURAL[i]}: ${v[i]||0} check-ins. Show who came"><span class="bar-val">${v[i]||0}</span><div class="bar${i===peak&&v[i]?'':' prev'}" style="height:${(v[i]||0)/max*100}%"></div><span class="bar-label">${d}</span></button>`).join('');
+ $('weekday-chart').querySelectorAll('[data-wd]').forEach(b=>b.onclick=()=>{const i=+b.dataset.wd;openDay=openDay===i?null:i;renderWeekdays()});
+ const box=$('weekday-detail');if(openDay===null){box.hidden=true;return}box.hidden=false;
+ const list=weekdayPeople[openDay]||[];
+ $('weekday-detail-title').textContent=`Who trains on ${DAY_PLURAL[openDay]}`;
+ $('weekday-detail-body').innerHTML=list.map(p=>`<div class="mini-row link" data-open="${esc(p.id)}" tabindex="0" style="padding:8px 0">${avatar(p.name)}<div class="row-main"><strong>${esc(p.name)}</strong></div><span class="muted" style="font-size:12px">${p.count} ${p.count===1?DAY_PLURAL[openDay].slice(0,-1):DAY_PLURAL[openDay]}</span></div>`).join('')||`<div class="empty" style="padding:14px">No member check-ins on ${DAY_PLURAL[openDay]} yet.</div>`;
+ $('weekday-detail-body').querySelectorAll('[data-open]').forEach(r=>{r.onclick=()=>openMember(r.dataset.open);r.onkeydown=e=>{if(e.key==='Enter')openMember(r.dataset.open)}});
 }
 
 // ---------- Member history: belt journey, belt changes and check-ins ----------
@@ -586,7 +662,8 @@ function renderSettings(){
  $('perm-list').innerHTML=PERMS.filter(p=>!SOON.includes(p[0])).map(([k,l,d])=>`<div class="setting-row"><div><strong>${l}</strong><small>${d}</small></div><button class="switch ${settings.perms[k]?'on':''}" data-perm-switch="${k}" role="switch" aria-checked="${!!settings.perms[k]}" aria-label="${l}"></button></div>`).join('');
  document.querySelectorAll('[data-perm-switch]').forEach(x=>x.onclick=()=>{const k=x.dataset.permSwitch;settings.perms[k]=!settings.perms[k];renderSettings()});
  document.querySelectorAll('.settings-panel[data-perm]').forEach(p=>{
-  const key=p.dataset.perm,locked=!isSuper()&&(key==='plan'||!settings.perms[key]),note=p.querySelector('.lock-note');
+  const key=p.dataset.perm,coachPlan=key==='plan'&&!isSuper(),locked=!isSuper()&&key!=='plan'&&!settings.perms[key],note=p.querySelector('.lock-note');
+  if(key==='plan'){p.querySelector('.panel-body').hidden=coachPlan;$('plan-tab').textContent=isSuper()?'Plan and seats':'Your plan';renderPlanPage()}
   p.classList.toggle('locked',locked);p.querySelector('.panel-body').toggleAttribute('inert',locked);note.hidden=!locked;
   note.textContent=key==='plan'?'🔒 Managed by LineUp. Contact LineUp to change your plan or add seats.':'🔒 Locked for coaches at this academy. Contact LineUp if you need this changed.';
  });
@@ -637,7 +714,8 @@ $('overlay').onclick=()=>{$('sidebar').classList.remove('open');$('overlay').cla
 $('signout-btn').onclick=()=>{if(confirm('Sign out of LineUp on this device?'))signOut()};
 $('refresh-btn').onclick=()=>{loadAll(true).then(()=>toast('Up to date'));if($('page-checkins').classList.contains('active'))ciRefresh()};
 $('coach-preview-btn').onclick=()=>{previewCoach=!previewCoach;applyRole();toast(previewCoach?'Previewing as a coach':'Back to super user view')};
-$('retry-btn').onclick=()=>loadAll(false);
+$('retry-btn').onclick=()=>{blockedStatus=null;loadAll(false)};
+$('state-signout').onclick=()=>signOut();
 $('gym-picker').onchange=e=>{pickedGym=e.target.value;try{sessionStorage.setItem(GYM_PICK_KEY,pickedGym)}catch(err){}selectedId=null;cal={year:null,month:null,days:{}};calDay=null;openBelt=null;openKpi=null;closeGuest();$('checkin-search').value='';loadAll(false).then(()=>{if($('page-checkins').classList.contains('active'))ciRefresh()})};
 
 (function init(){
