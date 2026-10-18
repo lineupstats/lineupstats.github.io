@@ -14,6 +14,22 @@
 .small-btn.primary-btn{background:var(--orange);border-color:var(--orange);color:var(--bg);font-weight:700}
 .setting-tab.soon{opacity:.45;cursor:not-allowed}
 .soon-tag{font-size:10px;margin-left:4px;padding:1px 6px;border-radius:20px;border:1px solid var(--border);color:var(--muted)}
+.span2{grid-column:1/-1}
+.kpi-card{cursor:pointer;transition:border-color .15s}.kpi-card:hover,.kpi-card.open{border-color:rgba(244,122,18,.55)}
+.scroll-list{max-height:320px;overflow:auto}
+.cal-head,.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.cal-head span{font-size:11px;color:var(--muted);text-align:center;padding-bottom:4px}
+.cal-day{height:40px;border-radius:9px;border:1px solid var(--border);background:#121315;color:var(--soft);font-size:12px}
+.cal-day.blank{visibility:hidden}.cal-day.today{box-shadow:inset 0 0 0 2px var(--orange)}.cal-day.selected{outline:2px solid var(--text);outline-offset:1px}
+.seg{display:inline-flex;border:1px solid var(--border);border-radius:9px;overflow:hidden}.seg button{border:0;background:transparent;color:var(--muted);padding:6px 10px;font-size:12px}.seg button.active{background:var(--orange);color:var(--bg);font-weight:700}
+.bdot{display:inline-block;width:10px;height:10px;border-radius:50%;vertical-align:-1px;margin-right:4px}
+.belt-item{border-bottom:1px solid #25272b}.belt-item:last-child{border-bottom:0}
+.belt-line{width:100%;display:flex;justify-content:space-between;align-items:center;gap:10px;background:transparent;border:0;color:var(--text);padding:12px 0;font-size:13px;text-align:left}
+.bl-left{display:flex;align-items:center;gap:8px}.chev{display:inline-block;margin-left:6px;transition:transform .15s}.belt-item.open .chev{transform:rotate(90deg)}
+.roster{padding:0 0 10px 18px}.roster-row{display:flex;justify-content:space-between;gap:10px;font-size:12px;padding:6px 0;border-bottom:1px solid #202226}.roster-row:last-child{border-bottom:0}
+.history-block{border-top:1px solid var(--border);padding-top:14px}
+.belt-form{background:#0c0d0f;border:1px solid #292b2f;border-radius:10px;padding:12px;margin-top:10px;display:grid;gap:10px}
+.visit-list{max-height:260px;overflow:auto}
 .gone{text-decoration:line-through;opacity:.55}
 .busy{opacity:.6;pointer-events:none}
 .checkin-item{justify-content:space-between}
@@ -49,16 +65,21 @@ body.super .topbar{border-bottom-color:rgba(244,122,18,.45)}
 
 <section class="page active" id="page-overview"><div class="page-intro"><div><h3>Academy overview</h3><p>Who's training, who's drifting and how full your plan is.</p></div><span class="badge"><span class="dot"></span> <span id="view-badge">Coach view</span></span></div>
 <div class="grid kpis">
-<div class="card"><div class="kpi-head">Active members <span class="kpi-icon">♙</span></div><div class="kpi-value" id="kpi-active">0</div><div class="kpi-note" id="kpi-active-note"></div></div>
-<div class="card"><div class="kpi-head">Check-ins this week <span class="kpi-icon">↗</span></div><div class="kpi-value" id="kpi-week">0</div><div class="kpi-note" id="kpi-week-note"></div></div>
-<div class="card"><div class="kpi-head">Visits per active member <span class="kpi-icon">◷</span></div><div class="kpi-value" id="kpi-avg">0</div><div class="kpi-note">Average over the last 28 days</div></div>
+<div class="card kpi-card" data-kpi="active" role="button" tabindex="0"><div class="kpi-head">Active members <span class="kpi-icon">♙</span></div><div class="kpi-value" id="kpi-active">0</div><div class="kpi-note" id="kpi-active-note"></div></div>
+<div class="card kpi-card" data-kpi="week" role="button" tabindex="0"><div class="kpi-head">Check-ins this week <span class="kpi-icon">↗</span></div><div class="kpi-value" id="kpi-week">0</div><div class="kpi-note" id="kpi-week-note"></div></div>
+<div class="card kpi-card" data-kpi="avg" role="button" tabindex="0"><div class="kpi-head">Visits per active member <span class="kpi-icon">◷</span></div><div class="kpi-value" id="kpi-avg">0</div><div class="kpi-note">Average over the last 28 days</div></div>
 <div class="card"><div class="kpi-head">Member seats <span class="kpi-icon">▤</span></div><div class="kpi-value"><span id="kpi-seats-used">0</span><span style="font-size:18px;color:var(--muted)"> / <span id="kpi-seats">0</span></span></div><div class="progress" id="seats-progress"><span id="seats-bar" style="width:0%"></span></div><div class="kpi-note" style="margin-top:8px" id="kpi-seats-note"></div></div>
 </div>
+<div class="card" id="kpi-detail" hidden style="margin-bottom:15px"><div class="card-head"><h4 id="kpi-detail-title"></h4><button class="small-btn" id="kpi-detail-close">Close</button></div><div class="mini-list scroll-list" id="kpi-detail-body"></div></div>
 <div class="grid dashboard-grid">
 <div class="card"><div class="card-head"><div><h4>Attendance this week</h4><div class="muted" style="font-size:12px;margin-top:3px">Daily check-ins compared with last week</div></div><span class="badge">Busiest: <strong id="busiest-day" style="color:var(--text)">—</strong></span></div><div class="chart" id="attendance-chart"></div><div class="chart-legend"><span><span class="swatch" style="background:var(--orange)"></span>This week <span class="swatch" style="background:#3a3d42;margin-left:12px"></span>Last week</span><strong id="week-total" style="color:var(--text)">— visits</strong></div></div>
 <div class="card"><div class="card-head"><div><h4>Needs a nudge</h4><div class="muted" style="font-size:12px;margin-top:3px" id="nudge-sub">Active members with no visit recently</div></div><span class="badge" id="nudge-count">0</span></div><div class="mini-list" id="nudge-list"></div></div>
+<div class="card span2 dash-extra"><div class="card-head"><div><h4>Attendance calendar</h4><div class="muted" style="font-size:12px;margin-top:3px">Tap a day to see who came and who didn't</div></div><div style="display:flex;gap:6px;align-items:center"><button class="small-btn" id="cal-prev" aria-label="Previous month">‹</button><strong id="cal-label" style="min-width:130px;text-align:center"></strong><button class="small-btn" id="cal-next" aria-label="Next month">›</button></div></div><div class="cal-head"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div><div class="cal-grid" id="cal-grid"></div><div id="cal-day" hidden><div class="card-head" style="margin:16px 0 6px"><h4 id="cal-day-title"></h4><div class="seg"><button data-calmode="attended">Came</button><button data-calmode="absent">Didn't come</button></div></div><div class="mini-list scroll-list" id="cal-day-body"></div></div></div>
+<div class="card dash-extra"><div class="card-head"><div><h4 id="belt-word">Belt breakdown</h4><div class="muted" style="font-size:12px;margin-top:3px">Tap a belt to see its students</div></div></div><div id="belt-breakdown"></div></div>
+<div class="card dash-extra"><div class="card-head"><div><h4 id="bench-title">Time at each belt</h4><div class="muted" style="font-size:12px;margin-top:3px">Average sessions before a promotion</div></div></div><div class="mini-list" id="bench-list"></div></div>
 <div class="card"><div class="card-head"><div><h4>Training frequency</h4><div class="muted" style="font-size:12px;margin-top:3px">Active members by visits in the last 28 days</div></div></div><div id="freq-list"></div></div>
 <div class="card"><div class="card-head"><div><h4>App sign-in</h4><div class="muted" style="font-size:12px;margin-top:3px">Active members, updated automatically</div></div></div><div id="access-breakdown"></div><div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center"><span class="muted" style="font-size:12px">Signed in so far</span><strong class="accent" id="access-rate">0%</strong></div></div>
+<div class="card dash-extra"><div class="card-head"><div><h4>Busiest days</h4><div class="muted" style="font-size:12px;margin-top:3px">All check-ins by day of the week</div></div></div><div class="chart" id="weekday-chart"></div></div>
 <div class="card"><div class="card-head"><h4>Recent member activity</h4><button class="small-btn" data-goto="members">View members</button></div><div class="mini-list" id="recent-activity"></div></div>
 <div class="card"><div class="card-head"><h4>Academy snapshot</h4></div><div class="mini-row"><span class="kpi-icon">＋</span><div class="row-main"><strong>New this month</strong><small id="new-note">Joined this month</small></div><strong id="new-count">0</strong></div><div class="mini-row"><span class="kpi-icon">♧</span><div class="row-main"><strong>Most common belt</strong><small>Across active members</small></div><strong id="common-belt">—</strong></div><div class="mini-row"><span class="kpi-icon">⏸</span><div class="row-main"><strong>Inactive members</strong><small>Kept on record, not using a seat</small></div><strong id="inactive-count">0</strong></div><div style="padding-top:12px"><strong style="font-size:13px">Belt mix</strong><div class="stack" id="belt-stack"></div><div class="stack-legend" id="belt-legend"></div></div></div>
 </div>
@@ -170,11 +191,11 @@ function gymName(){return settings?settings.academy:(identity.gymName||identity.
 async function loadAll(quiet){
  if(!quiet)showState('loading');
  try{
-  const d=await api('portalData');
+  const both=await Promise.all([api('portalData'),api('data').catch(()=>null)]);const d=both[0];
   if(!d.success){if(quiet){toast(friendlyServerError(d.error));return}showState('error',friendlyServerError(d.error));return}
   role=d.role;gymId=d.gymId;gyms=d.gyms||[];members=d.members||[];settings=d.settings;
   if(!settings.belts||!settings.belts.length)settings.belts=clone(DEFAULT_BELTS);
-  WEEK.now=d.week.now;WEEK.prev=d.week.prev;lastLoaded=new Date();
+  WEEK.now=d.week.now;WEEK.prev=d.week.prev;lastLoaded=new Date();useDash(both[1]);profiles={};
   if(!members.some(m=>m.id===selectedId))selectedId=members[0]?.id;
   showState('ready');
   if(!quiet||!$('page-setup').classList.contains('active'))fillSettingInputs();
@@ -257,6 +278,129 @@ function renderDashboard(){
  $('belt-stack').innerHTML=order.map(n=>`<span style="width:${bc[n]/Math.max(1,act.length)*100}%;background:${beltColor(n)}" title="${esc(n)}: ${bc[n]}"></span>`).join('');
  $('belt-legend').innerHTML=order.map(n=>`<span><span class="swatch" style="background:${beltColor(n)}"></span>${esc(n)} ${bc[n]}</span>`).join('');
  document.querySelectorAll('#page-overview [data-open]').forEach(r=>{const go=()=>{selectedId=r.dataset.open;page('members')};r.onclick=go;r.onkeydown=e=>{if(e.key==='Enter')go()}});
+ renderExtras();
+}
+
+// ---------- Step 3: features carried over from the old dashboard ----------
+// They use the same requests the old dashboard used: data, calendar, profile, setBelt, undoBelt.
+let dash=null,profiles={},cal={year:null,month:null,days:{}},calDay=null,calMode='attended',openBelt=null,openKpi=null;
+const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+function isLight(hex){const h=String(hex||'').replace('#','');if(h.length!==6)return false;const r=parseInt(h.slice(0,2),16),g=parseInt(h.slice(2,4),16),b=parseInt(h.slice(4,6),16);return r*.299+g*.587+b*.114>200}
+function beltDot(b){const c=beltColor(b);return `<span class="bdot" style="background:${c};${isLight(c)?'border:1px solid #6b6e73;':''}"></span>`}
+function rankWord(){return (settings&&settings.rankLabel)||'Belt'}
+function pad2(n){return String(n).padStart(2,'0')}
+function todayISO(){const d=new Date();return d.getFullYear()+'-'+pad2(d.getMonth()+1)+'-'+pad2(d.getDate())}
+function dayText(s){if(!s)return '';const p=s.split('-').map(Number);return new Date(p[0],p[1]-1,p[2]).toLocaleDateString(undefined,{day:'numeric',month:'short',year:'numeric'})}
+function openMember(id){selectedId=id;page('members')}
+function useDash(d){
+ dash=d&&!d.error?d:null;
+ if(dash&&dash.calendarMonth){const cm=dash.calendarMonth;if(cal.year===null||(cal.year===cm.year&&cal.month===cm.month)){cal={year:cm.year,month:cm.month,days:cm.days||{}}}}
+}
+function renderExtras(){renderKpiDetail();renderCalendar();renderBeltBreakdown();renderBench();renderWeekdays();
+ document.querySelectorAll('.dash-extra').forEach(x=>x.hidden=!dash)}
+
+function renderKpiDetail(){
+ document.querySelectorAll('.kpi-card').forEach(c=>c.classList.toggle('open',c.dataset.kpi===openKpi));
+ const box=$('kpi-detail');if(!openKpi){box.hidden=true;return}box.hidden=false;
+ let title='',rows=[];
+ if(openKpi==='active'){title='Active members';rows=activeMembers().slice().sort((a,b)=>a.name.localeCompare(b.name)).map(m=>[m.id,m.name,m.belt,'Last visit '+lastText(m.lastDays).toLowerCase()])}
+ if(openKpi==='week'){title='Who trained this week';const by={};members.forEach(m=>by[m.name.toLowerCase()]=m);
+  rows=((dash&&dash.allMembers)||[]).filter(x=>x.visitsThisWeek>0).sort((a,b)=>b.visitsThisWeek-a.visitsThisWeek).map(x=>{const m=by[String(x.name).toLowerCase()];return [m?m.id:'',x.name,x.belt,x.visitsThisWeek+(x.visitsThisWeek===1?' visit':' visits')]})}
+ if(openKpi==='avg'){title='Visits in the last 28 days';rows=activeMembers().slice().sort((a,b)=>b.visits-a.visits).map(m=>[m.id,m.name,m.belt,m.visits+(m.visits===1?' visit':' visits')])}
+ $('kpi-detail-title').textContent=title;
+ $('kpi-detail-body').innerHTML=rows.map(([id,n,b,t])=>`<div class="mini-row ${id?'link':''}" ${id?`data-open="${esc(id)}" tabindex="0"`:''}>${avatar(n)}<div class="row-main"><strong>${esc(n)}</strong><small>${esc(b)}</small></div><span class="muted" style="font-size:12px">${esc(t)}</span></div>`).join('')||'<div class="empty">Nothing to show yet.</div>';
+ $('kpi-detail-body').querySelectorAll('[data-open]').forEach(r=>{r.onclick=()=>openMember(r.dataset.open);r.onkeydown=e=>{if(e.key==='Enter')openMember(r.dataset.open)}});
+}
+document.querySelectorAll('.kpi-card').forEach(c=>{const t=()=>{openKpi=openKpi===c.dataset.kpi?null:c.dataset.kpi;renderKpiDetail()};c.onclick=t;c.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();t()}}});
+$('kpi-detail-close').onclick=()=>{openKpi=null;renderKpiDetail()};
+
+function renderCalendar(){
+ if(cal.year===null)return;
+ $('cal-label').textContent=MONTHS[cal.month]+' '+cal.year;
+ const first=new Date(cal.year,cal.month,1),lead=(first.getDay()+6)%7,dim=new Date(cal.year,cal.month+1,0).getDate();
+ const counts=Object.values(cal.days).map(n=>n.length),max=counts.length?Math.max(...counts):0;
+ const now=new Date(),cur=now.getFullYear()===cal.year&&now.getMonth()===cal.month;
+ let h='';for(let i=0;i<lead;i++)h+='<span class="cal-day blank"></span>';
+ for(let d=1;d<=dim;d++){const key=cal.year+'-'+pad2(cal.month+1)+'-'+pad2(d),n=(cal.days[key]||[]).length;let st='';
+  if(n&&max){const o=(.25+n/max*.75).toFixed(2);st=`background:rgba(244,122,18,${o});border-color:transparent;${o>=.9?'color:#0A0B0C;font-weight:700;':''}`}
+  h+=`<button class="cal-day${cur&&d===now.getDate()?' today':''}${calDay===key?' selected':''}" data-day="${key}" style="${st}" aria-label="${d} ${MONTHS[cal.month]}: ${n} check-ins">${d}</button>`}
+ $('cal-grid').innerHTML=h;
+ $('cal-grid').querySelectorAll('[data-day]').forEach(b=>b.onclick=()=>{calDay=calDay===b.dataset.day?null:b.dataset.day;renderCalendar()});
+ const box=$('cal-day');if(!calDay){box.hidden=true;return}box.hidden=false;
+ const p=calDay.split('-').map(Number);$('cal-day-title').textContent=new Date(p[0],p[1]-1,p[2]).toLocaleDateString(undefined,{weekday:'long',day:'numeric',month:'long'});
+ document.querySelectorAll('[data-calmode]').forEach(b=>b.classList.toggle('active',b.dataset.calmode===calMode));
+ const came=cal.days[calDay]||[],cameL=came.map(n=>String(n).toLowerCase());
+ const list=calMode==='attended'?came:activeMembers().map(m=>m.name).filter(n=>!cameL.includes(n.toLowerCase()));
+ $('cal-day-body').innerHTML=list.map(n=>`<div class="mini-row" style="padding:8px 0">${avatar(n)}<div class="row-main"><strong>${esc(n)}</strong></div></div>`).join('')||`<div class="empty" style="padding:14px">${calMode==='attended'?'Nobody checked in this day.':'Every active member checked in this day.'}</div>`;
+}
+document.querySelectorAll('[data-calmode]').forEach(b=>b.onclick=()=>{calMode=b.dataset.calmode;renderCalendar()});
+async function changeMonth(delta){let m=cal.month+delta,y=cal.year;if(m<0){m=11;y--}if(m>11){m=0;y++}
+ try{const r=await api('calendar',{year:y,month:m});if(r.error){toast(friendlyServerError(r.error));return}cal={year:r.year,month:r.month,days:r.days||{}};calDay=null;renderCalendar()}catch(err){failed(err,"Couldn't load that month")}}
+$('cal-prev').onclick=()=>changeMonth(-1);$('cal-next').onclick=()=>changeMonth(1);
+
+function renderBeltBreakdown(){
+ const list=(dash&&dash.beltBreakdown)||[];$('belt-word').textContent=rankWord()+' breakdown';
+ $('belt-breakdown').innerHTML=list.map((b,i)=>{const open=openBelt===b.belt;
+  return `<div class="belt-item${open?' open':''}"><button class="belt-line" data-bi="${i}" aria-expanded="${open}"><span class="bl-left">${beltDot(b.belt)}<strong>${esc(b.belt)}</strong><span class="muted">${b.memberCount} ${b.memberCount===1?'member':'members'}</span></span><span class="muted">${b.avgVisits} avg visits <span class="chev">›</span></span></button>
+  ${open?`<div class="roster">${(b.members||[]).map(r=>`<div class="roster-row"><span>${esc(r.name)}</span><span class="muted">${esc(r.label)}</span></div>`).join('')||'<div class="roster-row muted">Nobody here yet</div>'}</div>`:''}</div>`}).join('')||'<div class="empty">No members yet.</div>';
+ $('belt-breakdown').querySelectorAll('[data-bi]').forEach(b=>b.onclick=()=>{const x=list[+b.dataset.bi];openBelt=openBelt===x.belt?null:x.belt;renderBeltBreakdown()});
+}
+function renderBench(){
+ const rows=(dash&&dash.beltBenchmarks)||[],w=rankWord().toLowerCase();$('bench-title').textContent='Time at each '+w;
+ $('bench-list').innerHTML=rows.map(r=>`<div class="mini-row"><div class="row-main"><strong>${beltDot(r.belt)} ${esc(r.belt)}</strong><small>${r.promotions} promotion${r.promotions===1?'':'s'}, from ${r.minSessions} to ${r.maxSessions} sessions</small></div><strong class="accent">${r.avgSessions} sessions</strong></div>`).join('')
+  ||`<div class="empty" style="padding:16px">This fills in as gradings are recorded. Open a member, tap Change ${esc(w)}, and record when they got their current ${esc(w)} and each promotion after it.</div>`;
+}
+function renderWeekdays(){
+ const v=(dash&&dash.weekdayTotals)||[0,0,0,0,0,0,0],max=Math.max(...v,1),peak=v.indexOf(Math.max(...v));
+ $('weekday-chart').innerHTML=WEEK.days.map((d,i)=>`<div class="bar-group"><span class="bar-val">${v[i]||0}</span><div class="bar${i===peak&&v[i]?'':' prev'}" style="height:${(v[i]||0)/max*100}%"></div><span class="bar-label">${d}</span></div>`).join('');
+}
+
+// ---------- Member history: belt journey, belt changes and check-ins ----------
+async function loadProfile(id,force){
+ if(profiles[id]&&!force){renderHistory(id);return}
+ if($('member-history'))$('member-history').innerHTML='<p class="hint">Loading belt journey and check-ins…</p>';
+ try{const r=await api('profile',{id:id});
+  if(r.error||!r.member){if(selectedId===id&&$('member-history'))$('member-history').innerHTML='<p class="hint">Couldn\'t load this member\'s history.</p>';return}
+  profiles[id]=r;const m=members.find(x=>x.id===id);if(m&&r.member.belt&&m.belt!==r.member.belt){m.belt=r.member.belt;renderMembers();return}
+  renderHistory(id);
+ }catch(err){if(err.message!==ENDED&&selectedId===id&&$('member-history'))$('member-history').innerHTML='<p class="hint">Couldn\'t load this member\'s history. Tap Refresh to try again.</p>'}
+}
+function renderHistory(id){
+ const box=$('member-history'),r=profiles[id];if(!box||!r||selectedId!==id)return;
+ const w=(r.labels&&r.labels.rank)||rankWord(),wl=w.toLowerCase(),ed=can('editMembers');
+ const segs=(r.beltJourney||[]).slice().reverse();
+ const jr=segs.map(s=>{let range;if(s.current)range=s.from?'Since '+dayText(s.from):'Since records began';else if(!s.from)range='Before '+dayText(s.to);else range=dayText(s.from)+' to '+dayText(s.to);
+  return `<div class="mini-row" style="padding:9px 0"><div class="row-main"><strong>${beltDot(s.belt)} ${esc(s.belt)}${s.current?' <span class="badge" style="margin-left:4px">Now</span>':''}</strong><small>${esc(range+(s.note?' ('+s.note+')':''))}</small></div><span class="muted" style="font-size:12px">${s.sessions} session${s.sessions===1?'':'s'}</span></div>`}).join('');
+ const opts=[...new Set((r.rankOptions||[]).concat(settings.belts.map(b=>b.name)).concat([r.member.belt]).filter(Boolean))];
+ const visits=(r.visits||[]).map(v=>new Date(v)).filter(d=>!isNaN(d)).sort((a,b)=>b-a);
+ box.innerHTML=`<div class="history-block"><div class="card-head" style="margin-bottom:6px"><h4>${esc(w)} journey</h4><div style="display:flex;gap:6px">${ed&&r.beltChanges>0?'<button class="small-btn" id="undo-belt">Undo last</button>':''}${ed?`<button class="small-btn primary-btn" id="change-belt">Change ${esc(wl)}</button>`:''}</div></div>
+  ${jr||'<p class="hint">No '+esc(wl)+' changes recorded yet.</p>'}
+  <div id="belt-form" hidden class="belt-form"><div class="detail-field"><label for="bf-belt">New ${esc(wl)}</label><select class="field" id="bf-belt">${opts.map(o=>`<option ${o===r.member.belt?'selected':''}>${esc(o)}</option>`).join('')}</select></div>
+  <div class="detail-field"><label for="bf-date">Date awarded</label><input class="field" type="date" id="bf-date" value="${todayISO()}" max="${todayISO()}"></div>
+  <div class="detail-field"><label for="bf-note">Note (optional)</label><input class="field" id="bf-note" maxlength="80" placeholder="For example: grading day"></div>
+  <p class="hint">Choosing their current ${esc(wl)} with the date they received it starts the session count from that day.</p>
+  <div style="display:flex;gap:8px;justify-content:flex-end"><button class="btn" id="bf-cancel">Cancel</button><button class="btn primary" id="bf-save">Save</button></div></div></div>
+  <div class="history-block"><div class="card-head" style="margin-bottom:6px"><h4>Check-ins</h4><span class="muted" style="font-size:12px">${visits.length} in total</span></div>
+  <div class="visit-list">${visits.slice(0,40).map(d=>`<div class="roster-row"><span>${d.toLocaleDateString(undefined,{weekday:'short',day:'numeric',month:'short',year:'numeric'})}</span><span class="muted">${d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</span></div>`).join('')||'<p class="hint">No check-ins recorded yet.</p>'}</div>
+  ${visits.length>40?`<p class="hint">Showing the 40 most recent of ${visits.length}.</p>`:''}</div>`;
+ if(!ed)return;
+ const form=$('belt-form');
+ $('change-belt').onclick=()=>{form.hidden=!form.hidden};
+ $('bf-cancel').onclick=()=>{form.hidden=true};
+ $('bf-save').onclick=async()=>{
+  const belt=$('bf-belt').value,date=$('bf-date').value,note=$('bf-note').value.trim();
+  if(belt.toLowerCase()===String(r.member.belt).toLowerCase()&&date===todayISO()){toast('Choose a new '+wl+', or change the date to when they received this one.');return}
+  if(busy)return;busy=true;$('bf-save').disabled=true;$('bf-save').textContent='Saving…';
+  try{const res=await api('setBelt',{id:id,belt:belt,date:date,note:note});
+   if(!res.success){toast(res.error||"Couldn't save that.");return}
+   const m=members.find(x=>x.id===id);if(m)m.belt=belt;toast(w+' updated');refreshSoon();renderMembers();await loadProfile(id,true);
+  }catch(err){failed(err,"Couldn't confirm that saved")}finally{busy=false;if($('bf-save')){$('bf-save').disabled=false;$('bf-save').textContent='Save'}}
+ };
+ const u=$('undo-belt');if(u)u.onclick=async()=>{
+  if(!confirm(`Undo the last ${wl} change for ${r.member.name}?`)||busy)return;busy=true;
+  try{const res=await api('undoBelt',{id:id});if(!res.success){toast(res.error||"Couldn't undo that.");return}toast('Last '+wl+' change undone');refreshSoon();await loadProfile(id,true)}
+  catch(err){failed(err,"Couldn't confirm that saved")}finally{busy=false}
+ };
 }
 
 // ---------- Members ----------
@@ -285,10 +429,11 @@ function renderDetail(){
  <div><button class="btn" id="preview-member" style="width:100%">View their app</button><p class="hint" style="margin-top:6px">Opens the member app exactly as ${esc(m.name.split(' ')[0])} sees it. Check-in is off and nothing is saved.</p></div>
  <div class="detail-field"><label for="edit-name">Full name</label><input class="field" id="edit-name" value="${esc(m.name)}" ${dis}></div>
  <div class="detail-field"><label for="edit-email">Email</label><input class="field" id="edit-email" type="email" value="${esc(m.email)}" placeholder="No email: can't sign in" ${dis}></div>
- <div class="detail-field"><label for="edit-belt">${esc(settings.rankLabel||'Belt')}</label><select class="field" id="edit-belt" ${dis}>${beltNames.map(n=>`<option ${n===m.belt?'selected':''}>${esc(n)}</option>`).join('')}</select></div>
  <div class="detail-field"><label for="edit-notes">Notes</label><input class="field" id="edit-notes" value="${esc(m.notes||'')}" placeholder="Optional coach notes" ${dis}></div>
  ${ed?'<button class="btn primary" id="save-member-detail">Save changes</button>':'<p class="hint">Member details are locked for coaches.</p>'}
- <p class="hint">Inactive members keep their record and attendance history.</p>`;
+ <p class="hint">Inactive members keep their record and attendance history.</p>
+ <div id="member-history"></div>`;
+ loadProfile(m.id);
  $('preview-member').onclick=()=>{window.location.href=MEMBER_APP_URL+'?preview='+encodeURIComponent(m.id)+(realSuper()?'&gym='+encodeURIComponent(gymId):'')};
  $('toggle-active').onclick=async()=>{
   if(busy)return;
@@ -301,7 +446,7 @@ function renderDetail(){
  };
  if(ed)$('save-member-detail').onclick=async()=>{
   if(busy)return;
-  const name=$('edit-name').value.trim(),email=$('edit-email').value.trim(),notes=$('edit-notes').value,belt=$('edit-belt').value;
+  const name=$('edit-name').value.trim(),email=$('edit-email').value.trim(),notes=$('edit-notes').value;
   if(!name){toast('Enter their name.');return}
   if(email!==m.email&&m.email&&!confirm(email?`Change ${m.name}'s email? They'll need to sign in again with the new email and set a new PIN.`:`Remove ${m.name}'s email? They won't be able to sign in to the app.`))return;
   busy=true;const btn=$('save-member-detail');btn.disabled=true;btn.textContent='Saving…';
@@ -309,8 +454,7 @@ function renderDetail(){
    const r=await api('portalSaveMember',{id:m.id,name:name,email:email,notes:notes});
    if(!r.success){toast(r.error||"Couldn't save that.");return}
    Object.assign(m,{name:r.member.name,email:r.member.email,notes:r.member.notes,signedIn:r.member.signedIn});
-   let msg=r.pinCleared?'Saved. They\'ll sign in with the new email and set a new PIN.':'Member updated';
-   if(belt!==m.belt){const b=await api('setBelt',{id:m.id,belt:belt});if(b.success)m.belt=belt;else msg='Details saved, but the belt change failed: '+(b.error||'try again')}
+   const msg=r.pinCleared?'Saved. They\'ll sign in with the new email and set a new PIN.':'Member updated';
    toast(msg);renderMembers();renderDashboard();
   }catch(err){failed(err,"Couldn't confirm that saved")}finally{busy=false;if($('save-member-detail')){$('save-member-detail').disabled=false;$('save-member-detail').textContent='Save changes'}}
  };
@@ -431,7 +575,7 @@ $('signout-btn').onclick=()=>{if(confirm('Sign out of LineUp on this device?'))s
 $('refresh-btn').onclick=()=>{loadAll(true).then(()=>toast('Up to date'));if($('page-checkins').classList.contains('active'))ciRefresh()};
 $('coach-preview-btn').onclick=()=>{previewCoach=!previewCoach;applyRole();toast(previewCoach?'Previewing as a coach':'Back to super user view')};
 $('retry-btn').onclick=()=>loadAll(false);
-$('gym-picker').onchange=e=>{pickedGym=e.target.value;try{sessionStorage.setItem(GYM_PICK_KEY,pickedGym)}catch(err){}selectedId=null;closeGuest();$('checkin-search').value='';loadAll(false).then(()=>{if($('page-checkins').classList.contains('active'))ciRefresh()})};
+$('gym-picker').onchange=e=>{pickedGym=e.target.value;try{sessionStorage.setItem(GYM_PICK_KEY,pickedGym)}catch(err){}selectedId=null;cal={year:null,month:null,days:{}};calDay=null;openBelt=null;openKpi=null;closeGuest();$('checkin-search').value='';loadAll(false).then(()=>{if($('page-checkins').classList.contains('active'))ciRefresh()})};
 
 (function init(){
  // This page trusts login.html completely, exactly like the old dashboard:
