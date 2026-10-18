@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Join on LineUp</title>
+<meta name="theme-color" content="#0A0B0C">
+<link rel="icon" href="./member-icon-192.png">
+<style>
+  :root { --bg:#0A0B0C; --card:#151618; --accent:#F47A12; --text:#F5F5F5; --muted:#9A9DA1; --border:#2C2F33; --bad:#FF9E8F; }
+  * { box-sizing: border-box; }
+  html, body { margin:0; padding:0; background:var(--bg); color:var(--text); min-height:100%;
+    font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+  body { padding: env(safe-area-inset-top, 20px) 16px calc(env(safe-area-inset-bottom, 20px) + 16px); }
+  .screen { max-width:420px; margin:56px auto; display:none; }
+  .screen.active { display:block; }
+  .mark { width:44px; height:44px; border-radius:12px; background:var(--accent); color:var(--bg); display:grid; place-items:center;
+    font-weight:900; font-size:22px; margin:0 auto 18px; }
+  h1 { font-size:21px; margin:0 0 8px; text-align:center; }
+  p.lead { color:var(--muted); font-size:14px; margin:0 0 24px; text-align:center; line-height:1.5; }
+  label { display:block; font-size:13px; color:var(--muted); margin:0 0 6px; }
+  .text-input { width:100%; padding:14px 16px; border-radius:12px; margin-bottom:14px; border:1px solid var(--border);
+    background:var(--card); color:var(--text); font-size:16px; font-family:inherit; }
+  .text-input:focus { outline:none; border-color:var(--accent); }
+  .code-input { font-size:26px; letter-spacing:10px; text-align:center; }
+  .btn { padding:14px 28px; border-radius:12px; border:none; width:100%; background:var(--accent); color:#0A0B0C;
+    font-weight:700; font-size:15px; cursor:pointer; font-family:inherit; }
+  .btn:disabled { opacity:.6; cursor:default; }
+  .link-btn { all:unset; cursor:pointer; color:var(--muted); font-size:13px; text-decoration:underline; display:block; margin:16px auto 0; text-align:center; }
+  .msg { min-height:20px; font-size:13px; color:var(--bad); margin-top:12px; text-align:center; }
+  .small { font-size:12px; color:var(--muted); text-align:center; margin-top:20px; line-height:1.5; }
+  .hp { position:absolute; left:-9999px; }
+  .spinner { width:30px; height:30px; margin:0 auto; border:3px solid var(--border); border-top-color:var(--accent); border-radius:50%; animation:spin .8s linear infinite; }
+  @keyframes spin { to { transform:rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<div class="screen active" id="s-loading"><div class="spinner"></div></div>
+
+<div class="screen" id="s-problem">
+  <div class="mark">L</div>
+  <h1 id="problem-title">Can't open this link</h1>
+  <p class="lead" id="problem-text"></p>
+</div>
+
+<div class="screen" id="s-form">
+  <div class="mark">L</div>
+  <h1>Join <span class="gym-name"></span></h1>
+  <p class="lead">Ask to join on LineUp. Your coach will approve you, then you can check in from your phone.</p>
+  <label for="name">Your name</label>
+  <input class="text-input" id="name" autocomplete="name" maxlength="60">
+  <label for="email">Your email</label>
+  <input class="text-input" id="email" type="email" autocomplete="email" inputmode="email">
+  <label for="belt" id="belt-label">Your belt</label>
+  <select class="text-input" id="belt"><option value="">Not sure</option></select>
+  <input class="hp" id="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+  <button class="btn" id="send-code">Send me a code</button>
+  <div class="msg" id="form-msg" role="status"></div>
+  <p class="small">We'll email you a code to check the address is yours. Your coach will see your name, email and belt.</p>
+</div>
+
+<div class="screen" id="s-code">
+  <div class="mark">L</div>
+  <h1>Check your email</h1>
+  <p class="lead">We sent a 6-digit code to <strong id="sent-to"></strong>. It can take a minute, so check your spam folder too.</p>
+  <input class="text-input code-input" id="code" inputmode="numeric" autocomplete="one-time-code" maxlength="6" aria-label="6-digit code">
+  <button class="btn" id="submit">Send my request</button>
+  <div class="msg" id="code-msg" role="status"></div>
+  <button class="link-btn" id="resend">Send a new code</button>
+  <button class="link-btn" id="back">Change my details</button>
+</div>
+
+<div class="screen" id="s-done">
+  <div class="mark">✓</div>
+  <h1>Request sent</h1>
+  <p class="lead">Your coach at <strong class="gym-name"></strong> will approve you. You'll get an email with a sign-in link when they do.</p>
+  <p class="small">You can close this page now.</p>
+</div>
+
+<div class="screen" id="s-member">
+  <div class="mark">L</div>
+  <h1>You're already on LineUp</h1>
+  <p class="lead">This email already has a LineUp login, so there's nothing to request. Sign in instead.</p>
+  <a class="btn" id="signin-link" style="display:block;text-align:center;text-decoration:none" href="login.html">Sign in</a>
+</div>
+
+<script src="./config.js"></script>
+<script>
+(function () {
+  const APPS_SCRIPT_URL = (window.LINEUP_CONFIG || {}).APPS_SCRIPT_URL;
+  const params = new URLSearchParams(window.location.search);
+  const G = (params.get('g') || '').trim(), K = (params.get('k') || '').trim();
+  const $ = id => document.getElementById(id);
+  let busy = false;
+
+  function show(id) { document.querySelectorAll('.screen').forEach(s => s.classList.toggle('active', s.id === id)); }
+  function problem(text, title) { $('problem-text').textContent = text; if (title) $('problem-title').textContent = title; show('s-problem'); }
+
+  function jsonpRequest(params) {
+    return new Promise((resolve, reject) => {
+      const cb = 'jsonp_cb_' + Math.random().toString(36).slice(2);
+      const timer = setTimeout(() => { cleanup(); reject(new Error('timeout')); }, 20000);
+      function cleanup() { clearTimeout(timer); delete window[cb]; if (script.parentNode) script.parentNode.removeChild(script); }
+      window[cb] = data => { cleanup(); resolve(data); };
+      const qs = Object.keys(params).map(k => k + '=' + encodeURIComponent(params[k])).join('&');
+      const script = document.createElement('script');
+      script.src = APPS_SCRIPT_URL + (APPS_SCRIPT_URL.includes('?') ? '&' : '?') + qs + '&callback=' + cb;
+      script.onerror = () => { cleanup(); reject(new Error('network')); };
+      document.body.appendChild(script);
+    });
+  }
+  const call = (mode, extra) => jsonpRequest(Object.assign({ mode: mode, g: G, k: K }, extra || {}));
+  const OFFLINE = "Couldn't reach LineUp. Check your connection and try again.";
+
+  function details() { return { name: $('name').value.trim(), email: $('email').value.trim().toLowerCase(), belt: $('belt').value }; }
+
+  async function sendCode(msgBox) {
+    const d = details();
+    if (!d.name) { msgBox.textContent = 'Please enter your name.'; return false; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.email)) { msgBox.textContent = 'Please enter a valid email address.'; return false; }
+    if (busy) return false;
+    busy = true; msgBox.textContent = '';
+    try {
+      const r = await call('portalJoinCode', { email: d.email, website: $('website').value });
+      if (!r.success) { msgBox.textContent = r.message || 'Something went wrong. Please try again.'; return false; }
+      $('sent-to').textContent = d.email;
+      return true;
+    } catch (e) { msgBox.textContent = OFFLINE; return false; }
+    finally { busy = false; }
+  }
+
+  $('send-code').onclick = async () => {
+    const b = $('send-code'); b.disabled = true; b.textContent = 'Sending…';
+    if (await sendCode($('form-msg'))) { show('s-code'); $('code').value = ''; $('code').focus(); }
+    b.disabled = false; b.textContent = 'Send me a code';
+  };
+  $('resend').onclick = async () => { if (await sendCode($('code-msg'))) { $('code-msg').style.color = '#69db7c'; $('code-msg').textContent = 'New code sent.'; setTimeout(() => { $('code-msg').style.color = ''; }, 4000); } };
+  $('back').onclick = () => show('s-form');
+
+  $('submit').onclick = async () => {
+    const code = $('code').value.replace(/\D/g, '');
+    if (code.length !== 6) { $('code-msg').textContent = 'Enter the 6-digit code from the email.'; return; }
+    if (busy) return;
+    busy = true; const b = $('submit'); b.disabled = true; b.textContent = 'Sending…'; $('code-msg').textContent = '';
+    try {
+      const d = details();
+      const r = await call('portalJoinSubmit', { email: d.email, name: d.name, belt: d.belt, code: code });
+      if (!r.success) { $('code-msg').textContent = r.message || 'Something went wrong. Please try again.'; return; }
+      if (r.alreadyMember) { $('signin-link').href = 'login.html?g=' + encodeURIComponent(r.gymId || G); show('s-member'); return; }
+      show('s-done');
+    } catch (e) { $('code-msg').textContent = OFFLINE; }
+    finally { busy = false; b.disabled = false; b.textContent = 'Send my request'; }
+  };
+  $('code').addEventListener('keydown', e => { if (e.key === 'Enter') $('submit').click(); });
+
+  (async function init() {
+    if (!APPS_SCRIPT_URL) { problem('LineUp is missing its connection settings.'); return; }
+    if (!G || !K) { problem('This link is incomplete. Ask your coach to send it again.'); return; }
+    try {
+      const r = await call('portalJoinInfo');
+      if (r.gymName) document.querySelectorAll('.gym-name').forEach(x => x.textContent = r.gymName);
+      if (!r.success) { problem(r.message || 'This join link is not valid any more.'); return; }
+      document.title = 'Join ' + r.gymName + ' on LineUp';
+      const word = r.rankLabel || 'Belt';
+      $('belt-label').textContent = 'Your ' + word.toLowerCase();
+      $('belt').innerHTML = '<option value="">Not sure</option>' + (r.ranks || []).map(x => {
+        const o = document.createElement('option'); o.textContent = x; return o.outerHTML; }).join('');
+      show('s-form');
+      $('name').focus();
+    } catch (e) { problem(OFFLINE, "Couldn't connect"); }
+  })();
+})();
+</script>
+</body>
+</html>

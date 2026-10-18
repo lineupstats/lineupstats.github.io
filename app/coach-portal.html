@@ -30,6 +30,10 @@
 .history-block{border-top:1px solid var(--border);padding-top:14px}
 .belt-form{background:#0c0d0f;border:1px solid #292b2f;border-radius:10px;padding:12px;margin-top:10px;display:grid;gap:10px}
 .visit-list{max-height:260px;overflow:auto}
+.nav-badge{margin-left:auto;background:var(--orange);color:var(--bg);border-radius:20px;font-size:11px;font-weight:800;padding:1px 7px}
+.join-banner{display:block;width:100%;text-align:left;cursor:pointer;font:inherit;font-size:13px}
+.invite-actions{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.invite-actions .btn{text-decoration:none;flex:1;text-align:center}
+.link-plain{background:none;border:0;color:var(--muted);text-decoration:underline;font-size:12px;padding:0;margin-top:4px}
 .gone{text-decoration:line-through;opacity:.55}
 .busy{opacity:.6;pointer-events:none}
 .checkin-item{justify-content:space-between}
@@ -59,11 +63,12 @@ body.super .topbar{border-bottom-color:rgba(244,122,18,.45)}
 .progress.over span{background:var(--red)}
 @media(max-width:760px){.table th:nth-child(3),.table td:nth-child(3){display:table-cell}.table th:nth-child(4),.table td:nth-child(4){display:none}}
 </style></head><body>
-<div class="shell"><aside class="sidebar" id="sidebar"><div class="brand"><div class="brand-mark">L</div><h1 id="brand-name">Oak Valley BJJ<br>LineUp</h1><p id="brand-role">Coach workspace</p></div><div class="nav-label">WORKSPACE</div><nav class="nav" aria-label="Main navigation"><button class="active" data-page="overview"><span class="ico">▦</span>Overview</button><button data-page="members"><span class="ico">♙</span>Members</button><button data-page="checkins"><span class="ico">✓</span>Check-ins</button><button data-page="setup"><span class="ico">⚙</span>Academy setup</button></nav>
+<div class="shell"><aside class="sidebar" id="sidebar"><div class="brand"><div class="brand-mark">L</div><h1 id="brand-name">Oak Valley BJJ<br>LineUp</h1><p id="brand-role">Coach workspace</p></div><div class="nav-label">WORKSPACE</div><nav class="nav" aria-label="Main navigation"><button class="active" data-page="overview"><span class="ico">▦</span>Overview</button><button data-page="members"><span class="ico">♙</span>Members<span class="nav-badge" id="join-badge" hidden></span></button><button data-page="checkins"><span class="ico">✓</span>Check-ins</button><button data-page="setup"><span class="ico">⚙</span>Academy setup</button></nav>
 <div class="sidebar-bottom"><div id="gym-picker-wrap" hidden><div class="role-label">SUPER USER: GYM</div><select class="field" id="gym-picker" style="width:100%;margin-bottom:10px" aria-label="Choose gym"></select></div><button class="btn" id="coach-preview-btn" hidden style="width:100%;margin-bottom:10px">Preview as coach</button><div id="role-help"></div><button class="btn" id="signout-btn" style="width:100%;margin-top:12px">Sign out</button></div></aside><div class="overlay" id="overlay"></div>
-<main class="main"><header class="topbar"><div style="display:flex;align-items:center;gap:12px"><button class="hamb" id="hamb">☰</button><div><div class="crumb" id="crumb">OAK VALLEY BJJ / COACH PORTAL</div><h2 id="top-title">Overview</h2></div></div><div class="top-actions"><button class="btn" id="refresh-btn">Refresh</button><button class="btn hide-mobile" id="export-btn">Export members</button><button class="btn primary" id="top-add">＋ Add member</button></div></header><div class="content"><div class="notice" id="coach-preview-banner" hidden style="margin-bottom:16px"></div>
+<main class="main"><header class="topbar"><div style="display:flex;align-items:center;gap:12px"><button class="hamb" id="hamb">☰</button><div><div class="crumb" id="crumb">OAK VALLEY BJJ / COACH PORTAL</div><h2 id="top-title">Overview</h2></div></div><div class="top-actions"><button class="btn" id="refresh-btn">Refresh</button><button class="btn hide-mobile" id="export-btn">Export members</button><button class="btn primary" id="top-add">＋ Invite members</button></div></header><div class="content"><div class="notice" id="coach-preview-banner" hidden style="margin-bottom:16px"></div>
 
 <section class="page active" id="page-overview"><div class="page-intro"><div><h3>Academy overview</h3><p>Who's training, who's drifting and how full your plan is.</p></div><span class="badge"><span class="dot"></span> <span id="view-badge">Coach view</span></span></div>
+<button class="notice join-banner" id="join-banner" hidden><strong>New join requests.</strong> <span id="join-banner-text"></span></button>
 <div class="grid kpis">
 <div class="card kpi-card" data-kpi="active" role="button" tabindex="0"><div class="kpi-head">Active members <span class="kpi-icon">♙</span></div><div class="kpi-value" id="kpi-active">0</div><div class="kpi-note" id="kpi-active-note"></div></div>
 <div class="card kpi-card" data-kpi="week" role="button" tabindex="0"><div class="kpi-head">Check-ins this week <span class="kpi-icon">↗</span></div><div class="kpi-value" id="kpi-week">0</div><div class="kpi-note" id="kpi-week-note"></div></div>
@@ -86,7 +91,7 @@ body.super .topbar{border-bottom-color:rgba(244,122,18,.45)}
 <p class="hint" id="updated-note" style="margin:16px 0 0"></p>
 </section>
 
-<section class="page" id="page-members"><div class="page-intro"><div><h3>Members</h3><p>Member directory, belt progression and app access.</p></div><button class="btn primary" id="add-member">＋ Add member</button></div><div class="toolbar"><input class="field search" id="member-search" placeholder="Search name or email…"><select class="field" id="belt-filter"><option value="all">All belts</option></select><select class="field" id="status-filter"><option value="all">Active and inactive</option><option value="active">Active</option><option value="inactive">Inactive</option></select><select class="field" id="access-filter"><option value="all">Any app access</option><option value="signedin">Signed in</option><option value="invited">Not signed in yet</option><option value="noemail">No email</option></select></div><div class="members-layout"><div class="card" style="padding:10px;overflow:auto"><table class="table"><thead><tr><th>Member</th><th>Belt</th><th>Status</th><th>App</th><th>Last visit</th></tr></thead><tbody id="member-table"></tbody></table><div class="empty" id="member-empty" style="display:none">No members match. Try another search or filter.</div></div><aside class="card detail-card" id="member-detail"><div class="empty">Choose a member to view their profile.</div></aside></div></section>
+<section class="page" id="page-members"><div class="page-intro"><div><h3>Members</h3><p>Member directory, belt progression and app access.</p></div><button class="btn primary" id="add-member">＋ Invite members</button></div><div class="card" id="join-card" hidden style="margin-bottom:15px;border-color:rgba(244,122,18,.45)"><div class="card-head" style="margin-bottom:4px"><div><h4>Join requests</h4><div class="muted" style="font-size:12px;margin-top:3px">People who asked to join with your link. Approving adds them and emails them a sign-in link.</div></div></div><div class="mini-list" id="join-list"></div></div><div class="toolbar"><input class="field search" id="member-search" placeholder="Search name or email…"><select class="field" id="belt-filter"><option value="all">All belts</option></select><select class="field" id="status-filter"><option value="all">Active and inactive</option><option value="active">Active</option><option value="inactive">Inactive</option></select><select class="field" id="access-filter"><option value="all">Any app access</option><option value="signedin">Signed in</option><option value="invited">Not signed in yet</option><option value="noemail">No email</option></select></div><div class="members-layout"><div class="card" style="padding:10px;overflow:auto"><table class="table"><thead><tr><th>Member</th><th>Belt</th><th>Status</th><th>App</th><th>Last visit</th></tr></thead><tbody id="member-table"></tbody></table><div class="empty" id="member-empty" style="display:none">No members match. Try another search or filter.</div></div><aside class="card detail-card" id="member-detail"><div class="empty">Choose a member to view their profile.</div></aside></div></section>
 
 <section class="page" id="page-checkins"><div class="page-intro"><div><h3>Check-ins</h3><p>Add anyone who forgot to check in, add guests, or remove a mistake.</p></div><span class="badge" id="checkin-date"></span></div><div class="checkin-layout"><div class="card"><div class="card-head"><h4>Add a check-in</h4></div><input class="field" style="width:100%" id="checkin-search" placeholder="Search a member's name…" autocomplete="off"><div id="checkin-results" style="margin-top:10px"></div><button class="btn" id="guest-open" style="margin-top:12px;width:100%">＋ Add a guest</button><div id="guest-form" hidden style="margin-top:14px"><div class="detail-field"><label for="guest-name">Guest's name</label><input class="field" id="guest-name" style="width:100%"></div><div class="detail-field"><label for="guest-belt">Belt (optional)</label><select class="field" id="guest-belt" style="width:100%"></select></div><div style="display:flex;gap:8px;justify-content:flex-end"><button class="btn" id="guest-cancel">Cancel</button><button class="btn primary" id="guest-add">Add guest</button></div></div></div><div class="card"><div class="card-head"><h4>Checked in today</h4><button class="small-btn" id="ci-refresh">Refresh</button></div><div class="kpi-value" id="today-count">0</div><div class="muted" id="today-sub">members checked in today</div><div class="mini-list" id="today-list" style="margin-top:12px"></div></div></div></section>
 
@@ -95,7 +100,7 @@ body.super .topbar{border-bottom-color:rgba(244,122,18,.45)}
 
 <div class="card settings-panel active" id="settings-academy" data-perm="academy"><div class="lock-note" hidden></div><div class="panel-body"><h4 style="margin:0 0 12px">Academy details</h4><div class="setting-row"><div><strong>Academy name</strong><small>Name shown in the coach portal.</small></div><input class="field" id="academy-name" style="max-width:280px;width:48%"></div><div class="setting-row"><div><strong>Coach display name</strong><small>Shown in the coach workspace.</small></div><input class="field" id="coach-name" style="max-width:280px;width:48%"></div><div class="setting-row"><div><strong>Nudge after</strong><small>Days without a visit before an active member shows in "Needs a nudge".</small></div><input class="field" id="alert-days" type="number" min="1" style="width:110px"></div></div></div>
 
-<div class="card settings-panel" id="settings-plan" data-perm="plan"><div class="lock-note" hidden></div><div class="panel-body"><h4 style="margin:0 0 4px">Plan and seats</h4><p class="muted" style="margin:0 0 12px;font-size:12px">Set by LineUp for this academy.</p><div class="setting-row"><div><strong>Plan</strong><small>Decides which features the academy can use.</small></div><select class="field" id="plan-tier"><option value="basic">Basic</option><option value="standard">Standard</option><option value="premium">Premium</option></select></div><div class="setting-row"><div><strong>Account status</strong><small>Free month, paying or paused.</small></div><select class="field" id="plan-status"><option value="trial">Free month</option><option value="active">Paying</option><option value="paused">Paused</option></select></div><div class="setting-row"><div><strong>Member seats</strong><small>How many active members this plan allows.</small></div><input class="field" id="member-capacity" type="number" min="1" style="width:110px"></div><div class="setting-row"><div><strong>Seats in use</strong><small>Counted automatically from active members. Inactive members don't use a seat.</small></div><strong id="seats-in-use" style="font:600 20px 'Oswald',sans-serif">0</strong></div></div></div>
+<div class="card settings-panel" id="settings-plan" data-perm="plan"><div class="lock-note" hidden></div><div class="panel-body"><h4 style="margin:0 0 4px">Plan and seats</h4><p class="muted" style="margin:0 0 12px;font-size:12px">Set by LineUp for this academy.</p><div class="setting-row"><div><strong>Plan</strong><small>Decides which features the academy can use.</small></div><select class="field" id="plan-tier"><option value="basic">Basic</option><option value="standard">Standard</option><option value="premium">Premium</option></select></div><div class="setting-row"><div><strong>Account status</strong><small>Free month, paying or paused.</small></div><select class="field" id="plan-status"><option value="trial">Free month</option><option value="active">Paying</option><option value="paused">Paused</option></select></div><div class="setting-row"><div><strong>Member seats</strong><small>How many active members this plan allows.</small></div><input class="field" id="member-capacity" type="number" min="1" style="width:110px"></div><div class="setting-row"><div><strong>Join link</strong><small>Let people ask to join with the coach's link. Their coach still approves each one.</small></div><button class="switch on" id="join-enabled" role="switch" aria-checked="true" aria-label="Join link"></button></div><div class="setting-row"><div><strong>Seats in use</strong><small>Counted automatically from active members. Inactive members don't use a seat.</small></div><strong id="seats-in-use" style="font:600 20px 'Oswald',sans-serif">0</strong></div></div></div>
 
 <div class="card settings-panel" id="settings-grading" data-perm="grading"><div class="lock-note" hidden></div><div class="panel-body"><h4 style="margin:0 0 4px">Belt progression</h4><p class="muted" style="margin:0 0 14px;font-size:12px">Set the belt order and colours members see in their app. Stripes are coming soon.</p><div class="setting-row" hidden><div><strong>Grading system</strong><small>Choose how progression is represented.</small></div><select class="field" id="grading-system"><option value="belts-stripes">Belts and stripes</option><option value="belts">Belts only</option><option value="stripes">Stripes only</option><option value="custom">Custom levels</option></select></div><div class="setting-row" hidden><div><strong>Maximum stripes per belt</strong><small>Used when stripes are enabled.</small></div><select class="field" id="stripes-count"><option>0</option><option>2</option><option>4</option><option>5</option></select></div><div style="margin-top:17px"><div class="card-head"><h4>Belt order</h4></div><div id="belt-list"></div><div style="display:flex;gap:8px;margin-top:13px"><input class="field" id="new-belt-name" placeholder="New belt / level name"><input class="field" id="new-belt-color" type="color" value="#55585D" style="width:55px;padding:4px"><button class="btn" id="add-belt">Add level</button></div></div></div></div>
 
@@ -109,7 +114,14 @@ body.super .topbar{border-bottom-color:rgba(244,122,18,.45)}
 </section>
 </div></main></div>
 
-<div class="modal" id="member-modal"><div class="modal-box"><h3>Add member</h3><form id="member-form"><div class="form-grid"><div class="detail-field"><label for="form-name">Full name</label><input class="field" id="form-name" required style="width:100%"></div><div class="detail-field"><label for="form-email">Email</label><input class="field" id="form-email" type="email" style="width:100%"></div><div class="detail-field"><label for="form-belt">Belt</label><select class="field" id="form-belt" style="width:100%"></select></div></div><p class="hint" style="margin-top:12px">They sign in to LineUp with this email, and their app status updates by itself once they do. Leave it blank to check them in manually.</p><p class="hint" id="seat-hint" style="margin-top:6px"></p><div class="modal-actions"><button class="btn" type="button" id="cancel-modal">Cancel</button><button class="btn primary" type="submit">Add member</button></div></form></div></div>
+<div class="modal" id="invite-modal"><div class="modal-box"><h3>Invite members</h3>
+<div id="invite-on"><p class="muted" style="margin:0 0 14px;font-size:13px">Send this link to new members. They fill in their details on their phone, then you approve them under Members.</p>
+<div style="display:flex;gap:8px"><input class="field" id="invite-link" readonly style="flex:1;min-width:0" aria-label="Join link"><button class="btn primary" id="invite-copy">Copy</button></div>
+<div class="invite-actions"><a class="btn" id="invite-wa" target="_blank" rel="noopener">WhatsApp</a><a class="btn" id="invite-mail">Email</a><button class="btn" id="invite-share">Share…</button></div>
+<button class="link-plain" id="invite-new">Make a new link (the old one stops working)</button></div>
+<div id="invite-off" hidden><div class="lock-note">🔒 Joining by link is switched off for your academy. Contact LineUp to switch it on.</div></div>
+<div class="modal-actions" style="justify-content:space-between;align-items:center"><button class="link-plain" id="invite-manual" style="margin:0">Add someone without a link</button><button class="btn" id="invite-close">Close</button></div></div></div>
+<div class="modal" id="member-modal"><div class="modal-box"><h3>Add someone without a link</h3><form id="member-form"><div class="form-grid"><div class="detail-field"><label for="form-name">Full name</label><input class="field" id="form-name" required style="width:100%"></div><div class="detail-field"><label for="form-email">Email</label><input class="field" id="form-email" type="email" style="width:100%"></div><div class="detail-field"><label for="form-belt">Belt</label><select class="field" id="form-belt" style="width:100%"></select></div></div><p class="hint" style="margin-top:12px">They sign in to LineUp with this email, and their app status updates by itself once they do. Leave it blank to check them in manually.</p><p class="hint" id="seat-hint" style="margin-top:6px"></p><div class="modal-actions"><button class="btn" type="button" id="cancel-modal">Cancel</button><button class="btn primary" type="submit">Add member</button></div></form></div></div>
 <div class="toast" id="toast" role="status"></div>
 <div class="state" id="state"><div class="state-box"><div class="spinner" id="state-spin"></div><p id="state-text">Loading your academy…</p><button class="btn primary" id="retry-btn" hidden>Try again</button></div></div>
 
@@ -195,7 +207,7 @@ async function loadAll(quiet){
   if(!d.success){if(quiet){toast(friendlyServerError(d.error));return}showState('error',friendlyServerError(d.error));return}
   role=d.role;gymId=d.gymId;gyms=d.gyms||[];members=d.members||[];settings=d.settings;
   if(!settings.belts||!settings.belts.length)settings.belts=clone(DEFAULT_BELTS);
-  WEEK.now=d.week.now;WEEK.prev=d.week.prev;lastLoaded=new Date();useDash(both[1]);profiles={};
+  WEEK.now=d.week.now;WEEK.prev=d.week.prev;lastLoaded=new Date();useDash(both[1]);profiles={};if(d.join)join=d.join;
   if(!members.some(m=>m.id===selectedId))selectedId=members[0]?.id;
   showState('ready');
   if(!quiet||!$('page-setup').classList.contains('active'))fillSettingInputs();
@@ -227,7 +239,7 @@ function applyRole(){
  ['top-add','add-member'].forEach(id=>$(id).hidden=!can('addMembers'));
  $('export-btn').hidden=!can('export');
  $('updated-note').textContent=lastLoaded?'Updated '+lastLoaded.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})+'. Tap Refresh for the latest figures.':'';
- renderSettings();renderDashboard();renderMembers();
+ renderSettings();renderDashboard();renderMembers();renderJoin();
 }
 
 // ---------- Overview ----------
@@ -403,6 +415,57 @@ function renderHistory(id){
  };
 }
 
+// ---------- Join link and join requests ----------
+let join={enabled:true,code:'',pending:[]};
+function joinUrl(){return new URL('join.html?g='+encodeURIComponent(gymId)+'&k='+encodeURIComponent(join.code),window.location.href).href}
+function inviteText(){return `Join ${gymName()} on LineUp so you can check in from your phone: ${joinUrl()}`}
+function renderJoin(){
+ const n=join.pending.length,show=can('addMembers');
+ $('join-badge').hidden=!(show&&n);$('join-badge').textContent=n;
+ $('join-banner').hidden=!(show&&n);
+ $('join-banner-text').textContent=`${n} ${n===1?'person has':'people have'} asked to join. Approve them in Members.`;
+ $('join-card').hidden=!(show&&n);
+ $('join-list').innerHTML=join.pending.map(r=>`<div class="mini-row">${avatar(r.name)}<div class="row-main"><strong>${esc(r.name)}</strong><small>${esc(r.email)}${r.belt?' · '+esc(r.belt):''} · asked ${esc(r.received)}</small></div><div style="display:flex;gap:6px"><button class="small-btn" data-decline="${esc(r.id)}">Decline</button><button class="small-btn primary-btn" data-approve="${esc(r.id)}">Approve</button></div></div>`).join('');
+ const sw=$('join-enabled');if(sw){sw.classList.toggle('on',join.enabled);sw.setAttribute('aria-checked',join.enabled)}
+}
+$('join-list').addEventListener('click',async ev=>{
+ const b=ev.target.closest('button[data-approve],button[data-decline]');if(!b||busy)return;
+ const approve=!!b.dataset.approve,id=approve?b.dataset.approve:b.dataset.decline,req=join.pending.find(r=>r.id===id);
+ if(!req)return;
+ if(!approve&&!confirm(`Decline ${req.name}'s request? They won't be told, and can ask again with the link.`))return;
+ if(approve&&seatsFree()<=0){toast(seatFullMsg());return}
+ busy=true;b.disabled=true;b.textContent=approve?'Approving…':'Declining…';
+ try{const r=await api('portalDecideJoin',{id:id,decision:approve?'approve':'decline'});
+  if(!r.success){toast(r.error||"Couldn't save that.");if(r.gone){join.pending=join.pending.filter(x=>x.id!==id);renderJoin()}return}
+  join.pending=join.pending.filter(x=>x.id!==id);
+  if(approve){members.push(r.member);toast(r.emailed?`${req.name} approved and emailed a sign-in link`:`${req.name} approved. The email didn't send, so share the sign-in link with them.`);renderMembers();renderDashboard();renderSettings()}
+  else toast(`${req.name}'s request declined`);
+  renderJoin();
+ }catch(err){failed(err,"Couldn't confirm that saved. Tap Refresh to check")}
+ finally{busy=false;if(b.isConnected){b.disabled=false;b.textContent=approve?'Approve':'Decline'}}
+});
+$('join-banner').onclick=()=>page('members');
+function openInvite(){
+ const on=join.enabled;
+ $('invite-on').hidden=!on;$('invite-off').hidden=on;
+ if(on){$('invite-link').value=joinUrl();$('invite-wa').href='https://wa.me/?text='+encodeURIComponent(inviteText());$('invite-mail').href='mailto:?subject='+encodeURIComponent('Join '+gymName()+' on LineUp')+'&body='+encodeURIComponent(inviteText())}
+ $('invite-manual').hidden=!can('addMembers');
+ $('invite-modal').classList.add('open');
+}
+function closeInvite(){$('invite-modal').classList.remove('open')}
+$('invite-close').onclick=closeInvite;
+$('invite-modal').onclick=e=>{if(e.target.id==='invite-modal')closeInvite()};
+$('invite-copy').onclick=async()=>{try{await navigator.clipboard.writeText(joinUrl());toast('Link copied')}catch(e){$('invite-link').select();document.execCommand('copy');toast('Link copied')}};
+$('invite-share').hidden=!navigator.share;
+$('invite-share').onclick=()=>{navigator.share({title:'Join '+gymName()+' on LineUp',text:inviteText()}).catch(()=>{})};
+$('invite-manual').onclick=()=>{closeInvite();openModal()};
+$('invite-new').onclick=async()=>{
+ if(busy||!confirm('Make a new link? The current link stops working straight away, so anyone you sent it to will need the new one.'))return;
+ busy=true;try{const r=await api('portalNewJoinLink');if(!r.success){toast(r.error||"Couldn't make a new link.");return}join.code=r.code;openInvite();toast('New link ready. The old one no longer works.')}
+ catch(err){failed(err,"Couldn't make a new link")}finally{busy=false}
+};
+$('join-enabled').onclick=()=>{join.enabled=!join.enabled;renderJoin()};
+
 // ---------- Members ----------
 function fillBeltFilter(){const sel=$('belt-filter'),cur=sel.value;const names=[...new Set(settings.belts.map(b=>b.name).concat(members.map(m=>m.belt)))];sel.innerHTML='<option value="all">All belts</option>'+names.map(n=>`<option>${esc(n)}</option>`).join('');sel.value=[...sel.options].some(o=>o.value===cur)?cur:'all'}
 function renderMembers(){
@@ -540,7 +603,7 @@ $('save-settings').onclick=async()=>{
  const data={};
  if(can('academy'))data.academy={name:$('academy-name').value.trim(),coach:$('coach-name').value.trim(),alertDays:+$('alert-days').value||14};
  if(can('grading'))data.grading={system:$('grading-system').value,stripes:+$('stripes-count').value,belts:settings.belts};
- if(isSuper()){data.plan={plan:$('plan-tier').value,account:$('plan-status').value,seats:$('member-capacity').value.trim()};data.perms=settings.perms}
+ if(isSuper()){data.plan={plan:$('plan-tier').value,account:$('plan-status').value,seats:$('member-capacity').value.trim(),joinEnabled:join.enabled};data.perms=settings.perms}
  if(!Object.keys(data).length){toast('Nothing here is editable for coaches at this academy.');return}
  busy=true;const btn=$('save-settings');btn.disabled=true;btn.textContent='Saving…';
  try{const r=await api('portalSaveSettings',{data:JSON.stringify(data)});
@@ -553,9 +616,9 @@ $('save-settings').onclick=async()=>{
 // ---------- Add member ----------
 function openModal(){if(seatsFree()<=0){toast(seatFullMsg());return}const free=seatsFree();$('form-name').value='';$('form-email').value='';$('form-belt').innerHTML=settings.belts.map(b=>`<option>${esc(b.name)}</option>`).join('');$('seat-hint').textContent=hasLimit()?`Uses 1 of ${free} free seat${free===1?'':'s'}.`:'';$('member-modal').classList.add('open');$('form-name').focus()}
 function closeModal(){$('member-modal').classList.remove('open')}
-$('top-add').onclick=openModal;$('add-member').onclick=openModal;$('cancel-modal').onclick=closeModal;
+$('top-add').onclick=openInvite;$('add-member').onclick=openInvite;$('cancel-modal').onclick=closeModal;
 $('member-modal').onclick=e=>{if(e.target.id==='member-modal')closeModal()};
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal();closeInvite()}});
 $('member-form').onsubmit=async e=>{
  e.preventDefault();if(busy)return;
  const btn=e.submitter||$('member-form').querySelector('[type=submit]');busy=true;btn.disabled=true;btn.textContent='Adding…';
