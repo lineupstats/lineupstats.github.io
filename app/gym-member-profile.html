@@ -18,6 +18,12 @@
   }
   body { padding: env(safe-area-inset-top, 20px) 16px calc(env(safe-area-inset-bottom, 20px) + 16px); }
 
+  #previewBar {
+    display: none; position: sticky; top: 0; z-index: 5; max-width: 520px; margin: 0 auto 14px;
+    align-items: center; gap: 10px; padding: 10px 12px; border-radius: 10px; font-size: 13px; line-height: 1.4;
+    background: rgba(244,122,18,.12); border: 1px solid rgba(244,122,18,.4); color: var(--text);
+  }
+  #previewBar .eye { font-size: 16px; }
   #redirecting { max-width: 400px; margin: 70px auto; text-align: center; color: var(--muted); font-size: 14px; }
   .link-btn {
     all: unset; cursor: pointer; color: var(--muted); font-size: 13px; text-decoration: underline;
@@ -79,6 +85,8 @@
 </style>
 </head>
 <body>
+
+<div id="previewBar" role="status"><span class="eye" aria-hidden="true">👁</span><span>Coach preview of <strong id="previewName">a member</strong>'s app. Check-in is switched off and nothing here is saved.</span></div>
 
 <div id="redirecting">Loading…</div>
 
@@ -146,7 +154,14 @@
   let locationCheckRunning = false;
   let currentData = null;     // the profile data on screen
   let gymLocation;            // { lat, lng, radius } from the profile; undefined = ask the server instead
-  let justCheckedInAt = null; // a check-in made on this screen, kept even if slightly older data arrives
+  let justCheckedInAt = null;
+
+  // Coach preview: gym-member-profile.html?preview=<memberId>  (super users add &gym=<Gym ID>)
+  // Shows exactly what that member sees, using the coach's own session. Read-only:
+  // no check-in, no location request, and nothing is saved on this device.
+  const PAGE_PARAMS = new URLSearchParams(window.location.search);
+  const PREVIEW = (PAGE_PARAMS.get('preview') || '').trim();
+  const PREVIEW_GYM = (PAGE_PARAMS.get('gym') || '').trim(); // a check-in made on this screen, kept even if slightly older data arrives
 
   // Sign out: forget this person on this device completely.
   function signOut() {
@@ -266,6 +281,11 @@
     currentData = data;
     gymLocation = data.gym || undefined;
     render(data);
+    if (PREVIEW) {
+      setCheckinState(null);
+      document.getElementById('checkinState').textContent = "Members check in here with their PIN when they're at the gym. Check-in is switched off in this preview.";
+      return;
+    }
     // A check-in made on this screen stays, even if the data that just arrived was read a moment before it.
     if (justCheckedInAt && !todaysVisit()) { visits.unshift(justCheckedInAt); renderStats(); }
     const today = todaysVisit();
@@ -277,7 +297,33 @@
     }
   }
 
+  async function loadPreview() {
+    showLoading();
+    let data;
+    try {
+      const params = { mode: 'profile', id: PREVIEW, sessionKey: sessionKey };
+      if (PREVIEW_GYM) params.asGym = PREVIEW_GYM;
+      data = await jsonpRequest(APPS_SCRIPT_URL, params);
+    } catch (err) {
+      showLoadError(err.message);
+      return;
+    }
+    if (data.sessionExpired) { backToUnlock(); return; }
+    if (data.error || !data.member) {
+      showLoadError(data.serverError ? data.error : 'That member was not found in your gym.');
+      return;
+    }
+    document.getElementById('previewName').textContent = data.member.name || 'this member';
+    showProfileData(data);
+  }
+
+  function leavePreview() {
+    if (window.history.length > 1) window.history.back();
+    else window.location.href = 'gym-attendance-dashboard.html';
+  }
+
   async function loadAndShowProfile() {
+    if (PREVIEW) return loadPreview();
     const stashed = takeStash();
     if (stashed) {
       showProfileData(stashed);
@@ -477,6 +523,7 @@
   // showProgress = true when the person is waiting on it (first load, "Check again");
   // the background re-checks every 2 minutes update quietly instead.
   async function checkIfNearGym(showProgress) {
+    if (PREVIEW) return;
     if (checkinState === 'done' || checkinState === 'notsetup' || locationCheckRunning) return;
     // Don't yank the PIN box away mid-typing because of a GPS wobble — the server
     // still checks the distance properly when they press Check In.
@@ -516,6 +563,7 @@
   }
 
   async function checkInWithPin() {
+    if (PREVIEW) return;
     const statusEl = document.getElementById('checkinStatus');
     const btn = document.getElementById('checkinBtn');
     const input = document.getElementById('checkinPinInput');
@@ -569,6 +617,18 @@
 
     try { sessionKey = sessionStorage.getItem(SESSION_KEY); } catch (e) { sessionKey = null; }
 
+    if (PREVIEW) {
+      // Only a signed-in coach can preview. Anyone else goes to sign in, and nothing
+      // about the person remembered on this device is changed.
+      if (!identity || identity.role !== 'Coach' || !sessionKey) { window.location.href = 'login.html'; return; }
+      member = { gymId: PREVIEW_GYM || identity.gymId, gymName: identity.gymName };
+      document.getElementById('previewBar').style.display = 'flex';
+      document.getElementById('signOutBtn').textContent = 'Back to coach portal';
+      document.title = 'Member preview';
+      loadAndShowProfile();
+      return;
+    }
+
     if (!identity || identity.role !== 'Member') {
       signOut();
       return;
@@ -584,7 +644,7 @@
   }
 
   document.getElementById('checkinBtn').addEventListener('click', checkInWithPin);
-  document.getElementById('signOutBtn').addEventListener('click', signOut);
+  document.getElementById('signOutBtn').addEventListener('click', () => { if (PREVIEW) leavePreview(); else signOut(); });
   document.getElementById('recheckBtn').addEventListener('click', () => {
     document.getElementById('checkinStatus').textContent = '';
     checkIfNearGym(true);
@@ -594,6 +654,7 @@
   });
 
   document.addEventListener('visibilitychange', () => {
+    if (PREVIEW) return;
     if (document.visibilityState !== 'visible' || !member || document.getElementById('content').style.display === 'none') return;
     // Coming back to the app on a new day? Reload so "checked in" resets.
     if (checkinState === 'done' && !todaysVisit()) { loadAndShowProfile(); return; }
