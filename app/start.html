@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Start LineUp free</title>
+<meta name="theme-color" content="#0A0B0C">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20rx%3D%2222%22%20fill%3D%22%230A0B0C%22/%3E%3Cpath%20fill%3D%22%23F47A12%22%20d%3D%22M23%2020%20L38%2016%20L38%2062%20L77%2047.5%20L81.5%2061.5%20L23%2083%20Z%22/%3E%3C/svg%3E"><link rel="apple-touch-icon" href="./member-icon-180.png">
+<style>
+  :root { --bg:#0A0B0C; --card:#151618; --accent:#F47A12; --text:#F5F5F5; --muted:#9A9DA1; --border:#2C2F33; --bad:#FF9E8F; }
+  * { box-sizing: border-box; }
+  html, body { margin:0; padding:0; background:var(--bg); color:var(--text); min-height:100%;
+    font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+  body { padding: env(safe-area-inset-top, 20px) 16px calc(env(safe-area-inset-bottom, 20px) + 16px); }
+  .screen { max-width:420px; margin:56px auto; display:none; }
+  .screen.active { display:block; }
+  .mark { width:52px; height:52px; border-radius:14px; background:#0A0B0C; border:1px solid var(--border); color:var(--accent); display:grid; place-items:center;
+    font-weight:900; font-size:24px; margin:0 auto 18px; }
+  .mark svg { width:38px; height:38px; display:block; }
+  h1 { font-size:21px; margin:0 0 8px; text-align:center; }
+  p.lead { color:var(--muted); font-size:14px; margin:0 0 24px; text-align:center; line-height:1.5; }
+  label { display:block; font-size:13px; color:var(--muted); margin:0 0 6px; }
+  .text-input { width:100%; padding:14px 16px; border-radius:12px; margin-bottom:14px; border:1px solid var(--border);
+    background:var(--card); color:var(--text); font-size:16px; font-family:inherit; }
+  .text-input:focus { outline:none; border-color:var(--accent); }
+  .code-input { font-size:26px; letter-spacing:10px; text-align:center; }
+  .btn { padding:14px 28px; border-radius:12px; border:none; width:100%; background:var(--accent); color:#0A0B0C;
+    font-weight:700; font-size:15px; cursor:pointer; font-family:inherit; }
+  .btn:disabled { opacity:.6; cursor:default; }
+  .link-btn { all:unset; cursor:pointer; color:var(--muted); font-size:13px; text-decoration:underline; display:block; margin:16px auto 0; text-align:center; }
+  .msg { min-height:20px; font-size:13px; color:var(--bad); margin-top:12px; text-align:center; }
+  .small { font-size:12px; color:var(--muted); text-align:center; margin-top:20px; line-height:1.5; }
+  .hp { position:absolute; left:-9999px; }
+  .row2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .check { display:flex; gap:10px; align-items:flex-start; font-size:13px; color:var(--muted); margin:4px 0 16px; line-height:1.45; }
+  .check input { width:18px; height:18px; margin-top:1px; accent-color:var(--accent); flex:none; }
+  .perks { list-style:none; padding:0; margin:0 0 22px; display:grid; gap:8px; font-size:14px; }
+  .perks li { padding-left:24px; position:relative; } .perks li:before { content:'✓'; position:absolute; left:0; color:var(--accent); font-weight:800; }
+  .spinner { width:30px; height:30px; margin:0 auto; border:3px solid var(--border); border-top-color:var(--accent); border-radius:50%; animation:spin .8s linear infinite; }
+  @keyframes spin { to { transform:rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<div class="screen" id="s-problem">
+  <div class="mark"><svg viewBox="0 0 100 100" aria-hidden="true"><path fill="#F47A12" d="M23 20 L38 16 L38 62 L77 47.5 L81.5 61.5 L23 83 Z"/></svg></div>
+  <h1 id="problem-title">Something went wrong</h1>
+  <p class="lead" id="problem-text"></p>
+</div>
+
+<div class="screen active" id="s-form">
+  <div class="mark"><svg viewBox="0 0 100 100" aria-hidden="true"><path fill="#F47A12" d="M23 20 L38 16 L38 62 L77 47.5 L81.5 61.5 L23 83 Z"/></svg></div>
+  <h1>Start LineUp free</h1>
+  <p class="lead">Set up your academy in two minutes. Free for up to 15 members, no card needed.</p>
+  <ul class="perks"><li>Members check in from their phone</li><li>See who came today and this week</li><li>Invite members with one link</li></ul>
+  <label for="academy">Academy name</label>
+  <input class="text-input" id="academy" maxlength="60" autocomplete="organization">
+  <label for="coach">Your name</label>
+  <input class="text-input" id="coach" maxlength="60" autocomplete="name">
+  <label for="email">Your email</label>
+  <input class="text-input" id="email" type="email" autocomplete="email" inputmode="email">
+  <label for="place">Academy postcode</label>
+  <input class="text-input" id="place" maxlength="120" autocomplete="postal-code" placeholder="For example MK9 3QA">
+  <div class="row2">
+    <div><label for="teaches">You teach</label>
+    <select class="text-input" id="teaches"><option>Brazilian Jiu-Jitsu</option><option>Judo</option><option>MMA</option><option>Karate</option><option>Kickboxing / Muay Thai</option><option>Taekwondo</option><option>Other</option></select></div>
+    <div><label for="members">Members</label>
+    <select class="text-input" id="members"><option>Under 15</option><option>15 to 50</option><option>50 to 100</option><option>Over 100</option></select></div>
+  </div>
+  <label class="check"><input type="checkbox" id="consent"> <span>I run or coach at this academy and I'm happy for LineUp to set it up and email me about it.</span></label>
+  <input class="hp" id="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+  <button class="btn" id="send-code">Send me a code</button>
+  <div class="msg" id="form-msg" role="status"></div>
+  <p class="small">We'll email you a code to check the address is yours.</p>
+</div>
+
+<div class="screen" id="s-code">
+  <div class="mark"><svg viewBox="0 0 100 100" aria-hidden="true"><path fill="#F47A12" d="M23 20 L38 16 L38 62 L77 47.5 L81.5 61.5 L23 83 Z"/></svg></div>
+  <h1>Check your email</h1>
+  <p class="lead">We sent a 6-digit code to <strong id="sent-to"></strong>. It can take a minute, so check your spam folder too.</p>
+  <input class="text-input code-input" id="code" inputmode="numeric" autocomplete="one-time-code" maxlength="6" aria-label="6-digit code">
+  <button class="btn" id="submit">Set up my academy</button>
+  <div class="msg" id="code-msg" role="status"></div>
+  <button class="link-btn" id="resend">Send a new code</button>
+  <button class="link-btn" id="back">Change my details</button>
+</div>
+
+<div class="screen" id="s-pending">
+  <div class="mark">✓</div>
+  <h1>Thanks, you're on the list</h1>
+  <p class="lead">We're setting up <strong class="academy-name"></strong>. You'll get an email with your sign-in link shortly, usually the same day.</p>
+  <p class="small">You can close this page now.</p>
+</div>
+
+<div class="screen" id="s-ready">
+  <div class="mark">✓</div>
+  <h1>Your academy is ready</h1>
+  <p class="lead">We've emailed your sign-in link to <strong id="ready-email"></strong>. Open it on your phone or laptop to get started.</p>
+  <a class="btn" href="login.html" style="display:block;text-align:center;text-decoration:none">Sign in now</a>
+</div>
+
+<div class="screen" id="s-member">
+  <div class="mark"><svg viewBox="0 0 100 100" aria-hidden="true"><path fill="#F47A12" d="M23 20 L38 16 L38 62 L77 47.5 L81.5 61.5 L23 83 Z"/></svg></div>
+  <h1>You're already on LineUp</h1>
+  <p class="lead">This email already has a LineUp login. Sign in instead, or use a different email to set up a new academy.</p>
+  <a class="btn" href="login.html" style="display:block;text-align:center;text-decoration:none">Sign in</a>
+</div>
+
+<script src="./config.js"></script>
+<script>
+(function () {
+  const APPS_SCRIPT_URL = (window.LINEUP_CONFIG || {}).APPS_SCRIPT_URL;
+  const $ = id => document.getElementById(id);
+  let busy = false;
+  function show(id) { document.querySelectorAll('.screen').forEach(s => s.classList.toggle('active', s.id === id)); window.scrollTo(0, 0); }
+  function jsonpRequest(params) {
+    return new Promise((resolve, reject) => {
+      const cb = 'jsonp_cb_' + Math.random().toString(36).slice(2);
+      const timer = setTimeout(() => { cleanup(); reject(new Error('timeout')); }, 25000);
+      function cleanup() { clearTimeout(timer); delete window[cb]; if (script.parentNode) script.parentNode.removeChild(script); }
+      window[cb] = data => { cleanup(); resolve(data); };
+      const qs = Object.keys(params).map(k => k + '=' + encodeURIComponent(params[k])).join('&');
+      const script = document.createElement('script');
+      script.src = APPS_SCRIPT_URL + (APPS_SCRIPT_URL.includes('?') ? '&' : '?') + qs + '&callback=' + cb;
+      script.onerror = () => { cleanup(); reject(new Error('network')); };
+      document.body.appendChild(script);
+    });
+  }
+  const OFFLINE = "Couldn't reach LineUp. Check your connection and try again.";
+  const d = () => ({ academy: $('academy').value.trim(), coach: $('coach').value.trim(), email: $('email').value.trim().toLowerCase(),
+    place: $('place').value.trim(), teaches: $('teaches').value, members: $('members').value });
+
+  async function sendCode(box) {
+    const v = d();
+    if (!v.academy || !v.coach || !v.place) { box.textContent = 'Please fill in your academy, your name and your postcode.'; return false; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.email)) { box.textContent = 'Please enter a valid email address.'; return false; }
+    if (!$('consent').checked) { box.textContent = 'Please tick the box to continue.'; return false; }
+    if (busy) return false; busy = true; box.textContent = '';
+    try {
+      const r = await jsonpRequest({ mode: 'portalSignupCode', email: v.email, website: $('website').value });
+      if (r.alreadyUser) { show('s-member'); return false; }
+      if (!r.success) { box.textContent = r.message || 'Something went wrong. Please try again.'; return false; }
+      $('sent-to').textContent = v.email; return true;
+    } catch (e) { box.textContent = OFFLINE; return false; } finally { busy = false; }
+  }
+  $('send-code').onclick = async () => { const b = $('send-code'); b.disabled = true; b.textContent = 'Sending…';
+    if (await sendCode($('form-msg'))) { show('s-code'); $('code').value = ''; $('code').focus(); }
+    b.disabled = false; b.textContent = 'Send me a code'; };
+  $('resend').onclick = async () => { if (await sendCode($('code-msg'))) { $('code-msg').textContent = 'New code sent.'; } };
+  $('back').onclick = () => show('s-form');
+  $('submit').onclick = async () => {
+    const code = $('code').value.replace(/\D/g, '');
+    if (code.length !== 6) { $('code-msg').textContent = 'Enter the 6-digit code from the email.'; return; }
+    if (busy) return; busy = true; const b = $('submit'); b.disabled = true; b.textContent = 'Setting up…'; $('code-msg').textContent = '';
+    try {
+      const v = d();
+      const r = await jsonpRequest(Object.assign({ mode: 'portalSignupSubmit', code: code, consent: 1 }, v));
+      if (r.alreadyUser) { show('s-member'); return; }
+      if (!r.success) { $('code-msg').textContent = r.message || 'Something went wrong. Please try again.'; return; }
+      document.querySelectorAll('.academy-name').forEach(x => x.textContent = v.academy);
+      if (r.approved) { $('ready-email').textContent = v.email; show('s-ready'); } else show('s-pending');
+    } catch (e) { $('code-msg').textContent = OFFLINE; }
+    finally { busy = false; b.disabled = false; b.textContent = 'Set up my academy'; }
+  };
+  $('code').addEventListener('keydown', e => { if (e.key === 'Enter') $('submit').click(); });
+  if (!APPS_SCRIPT_URL) { $('problem-text').textContent = 'LineUp is missing its connection settings.'; show('s-problem'); }
+})();
+</script>
+</body>
+</html>
