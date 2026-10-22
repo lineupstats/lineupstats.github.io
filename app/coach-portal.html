@@ -105,7 +105,7 @@ body.super .topbar{border-bottom-color:rgba(244,122,18,.45)}
 @media(max-width:760px){.table th:nth-child(3),.table td:nth-child(3){display:table-cell}.table th:nth-child(4),.table td:nth-child(4){display:none}}
 </style></head><body>
 <div class="shell"><aside class="sidebar" id="sidebar"><div class="brand"><div class="brand-mark"><svg viewBox="0 0 100 100" aria-hidden="true"><path fill="#F47A12" d="M23 20 L38 16 L38 62 L77 47.5 L81.5 61.5 L23 83 Z"/></svg></div><h1 id="brand-name"></h1><p id="brand-role">Coach workspace</p></div><div class="nav-label">WORKSPACE</div><nav class="nav" aria-label="Main navigation"><button class="active" data-page="overview"><span class="ico">▦</span>Overview</button><button data-page="members"><span class="ico">♙</span>Members<span class="nav-badge" id="join-badge" hidden></span></button><button data-page="checkins"><span class="ico">✓</span>Check-ins</button><button data-page="setup"><span class="ico">⚙</span>Academy setup</button></nav>
-<div class="sidebar-bottom"><button class="plan-pill" id="plan-pill" hidden><span class="pp-name" id="plan-pill-name"></span><span class="pp-cta" id="plan-pill-cta"></span></button><div id="gym-picker-wrap" hidden><div class="role-label">ADMIN: GYM</div><select class="field" id="gym-picker" style="width:100%;margin-bottom:10px" aria-label="Choose gym"></select></div><button class="btn" id="coach-preview-btn" hidden style="width:100%;margin-bottom:10px">Preview as coach</button><div id="role-help"></div><button class="btn" id="signout-btn" style="width:100%;margin-top:12px">Sign out</button></div></aside><div class="overlay" id="overlay"></div>
+<div class="sidebar-bottom"><button class="plan-pill" id="plan-pill" hidden><span class="pp-name" id="plan-pill-name"></span><span class="pp-cta" id="plan-pill-cta"></span></button><div id="gym-picker-wrap" hidden><div class="role-label" id="gym-picker-label">ADMIN: GYM</div><select class="field" id="gym-picker" style="width:100%;margin-bottom:10px" aria-label="Choose gym"></select></div><button class="btn" id="coach-preview-btn" hidden style="width:100%;margin-bottom:10px">Preview as coach</button><div id="role-help"></div><button class="btn" id="signout-btn" style="width:100%;margin-top:12px">Sign out</button></div></aside><div class="overlay" id="overlay"></div>
 <main class="main"><header class="topbar"><div style="display:flex;align-items:center;gap:12px"><button class="hamb" id="hamb">☰</button><div><div class="crumb" id="crumb">OAK VALLEY BJJ / COACH PORTAL</div><h2 id="top-title">Overview</h2></div></div><div class="top-actions"><button class="btn" id="refresh-btn">Refresh</button><button class="btn hide-mobile" id="export-btn">Export members</button><button class="btn primary" id="top-add">＋ Invite members</button></div></header><div class="content"><div class="notice" id="account-banner" hidden style="margin-bottom:16px;border-color:rgba(255,158,143,.5)"></div><div class="notice" id="coach-preview-banner" hidden style="margin-bottom:16px"></div>
 
 <section class="page active" id="page-overview"><div class="page-intro"><div><h3>Academy overview</h3><p>Who's training, who's drifting and how full your plan is.</p></div><span class="badge"><span class="dot"></span> <span id="view-badge">Coach view</span></span></div>
@@ -231,6 +231,8 @@ function showState(kind,text){const s=$('state');if(kind==='ready'){s.hidden=tru
 // ---------- Helpers ----------
 let previewCoach=false;
 function realSuper(){return role==='super'}
+// Gyms this coach works at (from sign-in). More than one = show the Gym switcher.
+function coachGyms(){return (identity&&Array.isArray(identity.gyms))?identity.gyms:[]}
 // While previewing as a coach, the screens behave exactly as a coach's would (locks included).
 function isSuper(){return role==='super'&&!previewCoach}
 function can(p){return isSuper()||!!(settings&&settings.perms[p])}
@@ -277,7 +279,8 @@ function applyRole(){
  $('academy-name-hint').textContent=isSuper()?'Name shown in the portal and member app.':'Set by LineUp. Contact LineUp to change it.';
  $('setup-intro').textContent=isSuper()?'Everything is editable in the admin view, including the plan and coach permissions.':'Configure the portal to match your academy.';
  document.querySelectorAll('[data-super-only]').forEach(x=>x.hidden=!isSuper());
- $('gym-picker-wrap').hidden=!(realSuper()&&gyms.length>1);
+ $('gym-picker-wrap').hidden=!(realSuper()?gyms.length>1:coachGyms().length>1);
+ $('gym-picker-label').textContent=realSuper()?'ADMIN: GYM':'GYM';
  $('coach-preview-btn').hidden=!realSuper();
  $('coach-preview-btn').textContent=previewCoach?'Back to admin view':'Preview as coach';
  $('coach-preview-banner').hidden=!previewCoach;
@@ -285,6 +288,7 @@ function applyRole(){
  $('account-banner').textContent=`${gymName()} is ${acct==='paused'?'Paused':'Inactive'}. Its coaches and members can't use LineUp until you set Account status back to Active in Plan and seats.`;
  $('coach-preview-banner').textContent=`Previewing ${gymName()} as a coach. Locked sections and buttons are exactly what their coaches see. You're still signed in as admin.`;
  if(realSuper())$('gym-picker').innerHTML=gyms.map(g=>`<option value="${esc(g.id)}" ${g.id===gymId?'selected':''}>${esc(g.name)}</option>`).join('');
+ else if(coachGyms().length>1)$('gym-picker').innerHTML=coachGyms().map(g=>`<option value="${esc(g.gymId)}" ${String(g.gymId)===String(identity.gymId)?'selected':''}>${esc(g.gymName||g.gymId)}</option>`).join('');
  if(!isSuper()&&document.querySelector('.setting-tab.active')?.dataset.setting==='permissions')showSetting('academy');
  ['top-add','add-member'].forEach(id=>$(id).hidden=!can('addMembers'));
  $('export-btn').hidden=!(can('export')&&hasPlan('standard'));
@@ -804,7 +808,29 @@ $('refresh-btn').onclick=()=>{loadAll(true).then(()=>toast('Up to date'));if($('
 $('coach-preview-btn').onclick=()=>{previewCoach=!previewCoach;applyRole();toast(previewCoach?'Previewing as a coach':'Back to admin view')};
 $('retry-btn').onclick=()=>{blockedStatus=null;loadAll(false)};
 $('state-signout').onclick=()=>signOut();
-$('gym-picker').onchange=e=>{pickedGym=e.target.value;try{sessionStorage.setItem(GYM_PICK_KEY,pickedGym)}catch(err){}selectedId=null;cal={year:null,month:null,days:{}};calDay=null;openBelt=null;openKpi=null;closeGuest();$('checkin-search').value='';loadAll(false).then(()=>{if($('page-checkins').classList.contains('active'))ciRefresh()})};
+$('gym-picker').onchange=e=>{if(!realSuper()){switchCoachGym(e.target.value);return}pickedGym=e.target.value;try{sessionStorage.setItem(GYM_PICK_KEY,pickedGym)}catch(err){}selectedId=null;cal={year:null,month:null,days:{}};calDay=null;openBelt=null;openKpi=null;closeGuest();$('checkin-search').value='';loadAll(false).then(()=>{if($('page-checkins').classList.contains('active'))ciRefresh()})};
+
+// A coach at more than one gym: ask the server for a session at the other gym
+// (it checks they really coach there), then reload the portal on that gym.
+async function switchCoachGym(target){
+ const sel=$('gym-picker');
+ if(String(target)===String(identity.gymId))return;
+ sel.disabled=true;
+ try{
+  const res=await jsonpRequest(APPS_SCRIPT_URL,{mode:'switchGym',targetGymId:target,sessionKey:sessionKey});
+  if(res&&res.sessionExpired){backToUnlock();return}
+  if(!res||!res.success)throw new Error((res&&(res.message||res.error))||'Could not switch gym.');
+  const p=res.profile;
+  const next=Object.assign({},identity,{gymId:p.gymId,gymName:p.gymName,name:p.name});
+  if(p.gyms)next.gyms=p.gyms;else delete next.gyms;
+  localStorage.setItem(IDENTITY_KEY,JSON.stringify(next));
+  sessionStorage.setItem(SESSION_KEY,res.sessionKey);
+  window.location.reload();
+ }catch(err){
+  toast(err.message||'Could not switch gym.');
+  sel.value=identity.gymId;sel.disabled=false;
+ }
+}
 
 (function init(){
  // This page trusts login.html completely, exactly like the old dashboard:
