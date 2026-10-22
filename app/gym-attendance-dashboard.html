@@ -272,6 +272,10 @@
       <button class="refresh-btn" id="refreshBtn">Refresh</button>
       <button class="refresh-btn" id="signOutBtn">Sign out</button>
     </div>
+    <div id="gymSwitchWrap" style="display:none; margin-top:10px; text-align:center;">
+      <label for="gymSwitch" class="sub" style="margin-right:6px;">Gym</label>
+      <select id="gymSwitch" class="refresh-btn" aria-label="Switch gym"></select>
+    </div>
   </header>
 
   <div class="tabs" id="tabs">
@@ -1161,7 +1165,45 @@
     document.getElementById('redirecting').style.display = 'none';
     document.getElementById('dash').style.display = 'block';
     showAppName(identity.gymName || gymName);
+    setupGymSwitch(identity);
     loadData();
+  }
+
+  // Coaches who work at more than one gym get a gym picker in the header.
+  // Switching asks the server for a new session for the other gym (it checks
+  // they really coach there), then reloads the page on that gym.
+  function setupGymSwitch(identity) {
+    const gyms = identity.gyms || [];
+    if (gyms.length < 2) return;
+    const sel = document.getElementById('gymSwitch');
+    sel.innerHTML = '';
+    gyms.forEach(g => {
+      const opt = document.createElement('option');
+      opt.value = g.gymId;
+      opt.textContent = g.gymName || g.gymId;
+      if (String(g.gymId) === String(identity.gymId)) opt.selected = true;
+      sel.appendChild(opt);
+    });
+    document.getElementById('gymSwitchWrap').style.display = 'block';
+    sel.addEventListener('change', async () => {
+      const target = sel.value;
+      if (String(target) === String(identity.gymId)) return;
+      sel.disabled = true;
+      try {
+        const res = await jsonpRequest(APPS_SCRIPT_URL, { mode: 'switchGym', targetGymId: target, sessionKey: sessionKey });
+        if (res && res.sessionExpired) { backToUnlock(); return; }
+        if (!res || !res.success) throw new Error((res && res.message) || 'Could not switch gym.');
+        const p = res.profile;
+        const updated = Object.assign({}, identity, { gymId: p.gymId, gymName: p.gymName, name: p.name, gyms: p.gyms || identity.gyms });
+        localStorage.setItem(IDENTITY_KEY, JSON.stringify(updated));
+        sessionStorage.setItem(SESSION_KEY, res.sessionKey);
+        window.location.reload();
+      } catch (err) {
+        alert(err.message || 'Could not switch gym.');
+        sel.value = identity.gymId;
+        sel.disabled = false;
+      }
+    });
   }
 
   document.getElementById('refreshBtn').addEventListener('click', () => {

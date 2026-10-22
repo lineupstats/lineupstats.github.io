@@ -60,11 +60,6 @@
   .screen-note { color: #69db7c; font-size: 13px; margin-top: 14px; display: none; }
   .screen-error { color: #ff6b6b; font-size: 13px; margin-top: 14px; display: none; }
   #loadingScreen { color: var(--muted); font-size: 14px; }
-  /* Hidden from view but still readable by the phone's password manager. Must not be
-     display:none, or iPhone and Android won't link the saved PIN to an account. */
-  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
-             overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; opacity: 0; }
-  .face-tip { font-size: 12px !important; margin: 16px 0 0 !important; }
 </style>
 </head>
 <body>
@@ -99,30 +94,25 @@
   <p class="hint">Not arriving? Check your junk folder, or ask your coach which email they have for you.</p>
 </div>
 
-<!-- Choose/replace a PIN, shown right after a fresh sign-in.
-     It's a real login form (username + new password) so the phone offers to save
-     the PIN, and can then fill it in with Face ID or fingerprint next time. -->
-<form id="pinSetupScreen" class="screen" action="#" method="post" autocomplete="on" novalidate>
+<!-- Choose/replace a PIN, shown right after a fresh Google sign-in -->
+<div id="pinSetupScreen" class="screen">
   <h1>Set your PIN</h1>
   <p>This 4-digit PIN unlocks the app quickly next time, so you won't need to sign in again on this device.</p>
-  <input id="setupUsername" class="sr-only" type="text" name="username" autocomplete="username" tabindex="-1" aria-hidden="true">
-  <input id="newPinInput" class="pin-input" type="password" name="password" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="••••" autocomplete="new-password" autocapitalize="off" spellcheck="false" aria-label="New 4-digit PIN">
-  <button type="submit" class="btn" id="savePinBtn">Save PIN</button>
-  <button type="button" class="link-btn" id="skipPinBtn" style="display:none;">Keep my current PIN</button>
+  <input id="newPinInput" class="pin-input" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="••••" autocomplete="off" autocapitalize="off" spellcheck="false">
+  <button class="btn" id="savePinBtn">Save PIN</button>
+  <button class="link-btn" id="skipPinBtn" style="display:none;">Keep my current PIN</button>
   <div class="screen-error" id="pinSetupError"></div>
-  <p class="face-tip">If your phone offers to save your PIN, say yes. Next time Face ID or your fingerprint can fill it in for you.</p>
-</form>
+</div>
 
 <!-- Device already known, just needs the PIN to unlock -->
-<form id="unlockScreen" class="screen" action="#" method="post" autocomplete="on" novalidate>
+<div id="unlockScreen" class="screen">
   <h1 id="unlockGreeting">Welcome back</h1>
   <p>Enter your PIN to continue.</p>
-  <input id="unlockUsername" class="sr-only" type="text" name="username" autocomplete="username" tabindex="-1" aria-hidden="true">
-  <input id="unlockPinInput" class="pin-input" type="password" name="password" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="••••" autocomplete="current-password" autocapitalize="off" spellcheck="false" aria-label="Your 4-digit PIN">
-  <button type="submit" class="btn" id="unlockBtn">Unlock</button>
-  <button type="button" class="link-btn" id="forgotPinBtn">Forgot your PIN? Sign in again</button>
+  <input id="unlockPinInput" class="pin-input" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="••••" autocomplete="off" autocapitalize="off" spellcheck="false">
+  <button class="btn" id="unlockBtn">Unlock</button>
+  <button class="link-btn" id="forgotPinBtn">Forgot your PIN? Sign in again</button>
   <div class="screen-error" id="unlockError"></div>
-</form>
+</div>
 
 <script src="./config.js"></script>
 <script>
@@ -146,31 +136,6 @@
   let pendingLogin = null; // { sessionKey, profile } — held only during the sign-in → set-PIN handoff
   let codeEmail = null;    // the address the current emailed code was sent to
   let resendTimer = null;
-
-  // The name the phone saves the PIN under. Email where we know it, otherwise the
-  // member's name and gym, so the saved entry is still recognisable.
-  function loginUsername(person) {
-    if (!person) return 'LineUp';
-    if (person.email) return person.email;
-    let last = null;
-    try { last = localStorage.getItem(LAST_EMAIL_KEY); } catch (e) {}
-    if (last) return last;
-    return (person.name || 'LineUp member') + (person.gymName ? ' (' + person.gymName + ')' : '');
-  }
-
-  // On Android/Chrome, ask the browser directly to save the PIN as well. iPhone
-  // doesn't support this, and relies on the form being submitted instead.
-  // Never holds the user up for more than 1.5 seconds.
-  function offerToSavePin(username, pin) {
-    try {
-      if (!window.PasswordCredential || !navigator.credentials || !navigator.credentials.store) return Promise.resolve();
-      const cred = new PasswordCredential({ id: username, password: pin, name: username });
-      return Promise.race([
-        navigator.credentials.store(cred).catch(() => {}),
-        new Promise(r => setTimeout(r, 1500))
-      ]);
-    } catch (e) { return Promise.resolve(); }
-  }
 
   function showScreen(id) {
     document.querySelectorAll('.screen').forEach(s => s.classList.toggle('active', s.id === id));
@@ -427,7 +392,6 @@
     pendingLogin = { sessionKey: result.sessionKey, profile: result.profile, memberData: result.memberData || null };
     document.getElementById('skipPinBtn').style.display = result.profile.hasPin ? 'block' : 'none';
     document.getElementById('newPinInput').value = '';
-    document.getElementById('setupUsername').value = loginUsername(result.profile);
     hideMessage('pinSetupError');
     showScreen('pinSetupScreen');
   }
@@ -449,14 +413,7 @@
   function rememberDeviceAndGo(profile, sessionKey, memberData) {
     const identity = { role: profile.role, gymId: profile.gymId, gymName: profile.gymName, name: profile.name };
     if (profile.role === 'Member') identity.memberId = profile.memberId;
-    // Email is kept for everyone now (coaches need it to unlock; for members it names
-    // the saved PIN on the phone). A PIN unlock doesn't send the email back, so keep
-    // the one already stored on this device.
-    let previous = null;
-    try { previous = JSON.parse(localStorage.getItem(IDENTITY_KEY)); } catch (e) {}
-    const sameMember = previous && previous.role === profile.role && previous.gymId === profile.gymId &&
-      (profile.role === 'Coach' || previous.memberId === profile.memberId);
-    identity.email = profile.email || (sameMember ? previous.email : undefined);
+    if (profile.role === 'Coach') { identity.email = profile.email; if (profile.gyms) identity.gyms = profile.gyms; }
 
     try {
       localStorage.setItem(IDENTITY_KEY, JSON.stringify(identity));
@@ -473,7 +430,6 @@
   }
 
   async function savePin() {
-    if (document.getElementById('savePinBtn').disabled) return; // already saving
     hideMessage('pinSetupError');
     const pin = document.getElementById('newPinInput').value.trim();
     if (!/^[0-9]{4}$/.test(pin)) {
@@ -491,7 +447,6 @@
       }
       // Members: this sign-in already proved who they are, so go straight in with it
       // (the same as "Keep my current PIN" does) instead of a second unlock request.
-      await offerToSavePin(loginUsername(pendingLogin.profile), pin);
       if (pendingLogin.profile.role === 'Member') {
         leaving = true;
         const profile = Object.assign({}, pendingLogin.profile, { hasPin: true });
@@ -526,14 +481,13 @@
   async function unlockWithGivenPin(identity, pin) {
     const params = { mode: 'verifyPin', role: identity.role, pin: pin };
     if (identity.role === 'Member') { params.gymId = identity.gymId; params.memberId = identity.memberId; }
-    if (identity.role === 'Coach') { params.email = identity.email; }
+    if (identity.role === 'Coach') { params.email = identity.email; params.gymId = identity.gymId; }
     return jsonpRequest(APPS_SCRIPT_URL, params);
   }
 
   function showUnlockScreen(identity) {
     document.getElementById('unlockGreeting').textContent = 'Welcome back' + (identity.name ? ', ' + identity.name.split(' ')[0] : '');
     document.getElementById('unlockPinInput').value = '';
-    document.getElementById('unlockUsername').value = loginUsername(identity);
     document.getElementById('unlockError').style.display = 'none';
     showScreen('unlockScreen');
   }
@@ -563,8 +517,6 @@
         return;
       }
       leaving = true;
-      // Lets people who set their PIN before this update save it now, too.
-      await offerToSavePin(loginUsername(identity), pin);
       rememberDeviceAndGo(result.profile, result.sessionKey, result.memberData);
     } catch (err) {
       showError('unlockError', 'Could not reach the server: ' + err.message);
@@ -649,11 +601,9 @@
   }
 
   document.getElementById('googleSignInBtn').addEventListener('click', startGoogleSignIn);
-  // The two PIN screens are forms: the page never actually reloads, but submitting
-  // the form is what tells the phone a login happened, so it offers to save the PIN.
-  document.getElementById('pinSetupScreen').addEventListener('submit', ev => { ev.preventDefault(); savePin(); });
-  document.getElementById('unlockScreen').addEventListener('submit', ev => { ev.preventDefault(); unlockWithPin(); });
+  document.getElementById('savePinBtn').addEventListener('click', savePin);
   document.getElementById('skipPinBtn').addEventListener('click', skipPin);
+  document.getElementById('unlockBtn').addEventListener('click', unlockWithPin);
   document.getElementById('forgotPinBtn').addEventListener('click', forgotPin);
   document.getElementById('sendCodeBtn').addEventListener('click', sendCodeFromSigninScreen);
   document.getElementById('verifyCodeBtn').addEventListener('click', verifyCode);
@@ -666,7 +616,8 @@
   }
   onEnter('emailInput', sendCodeFromSigninScreen);
   onEnter('codeInput', verifyCode);
-  // (Enter on the PIN boxes submits their form, handled above.)
+  onEnter('newPinInput', savePin);
+  onEnter('unlockPinInput', unlockWithPin);
 
   // Codes and unlock PINs submit themselves as soon as the last digit goes in
   // (including when iPhone auto-fills the code straight from the email).
