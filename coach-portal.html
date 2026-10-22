@@ -1,0 +1,849 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>LineUp</title><link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20rx%3D%2222%22%20fill%3D%22%230A0B0C%22/%3E%3Cpath%20fill%3D%22%23F47A12%22%20d%3D%22M23%2020%20L38%2016%20L38%2062%20L77%2047.5%20L81.5%2061.5%20L23%2083%20Z%22/%3E%3C/svg%3E"><link rel="apple-touch-icon" href="./member-icon-180.png">
+<style>
+:root{--bg:#0A0B0C;--panel:#151618;--panel2:#1B1D20;--border:#2C2F33;--text:#F5F5F5;--muted:#9A9DA1;--soft:#C9CBCE;--orange:#F47A12;--orange2:#FFB070;--green:#63B995;--blue:#6EA8FE;--red:#FF9E8F;--radius:15px}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px/1.5 'Work Sans',system-ui,-apple-system,'Segoe UI',sans-serif}button,input,select{font:inherit}button{cursor:pointer}.shell{min-height:100vh}.sidebar{width:238px;position:fixed;inset:0 auto 0 0;background:#101112;border-right:1px solid var(--border);padding:25px 14px 18px;display:flex;flex-direction:column;z-index:20}.brand{padding:0 10px 30px}.brand-mark{width:40px;height:40px;border-radius:11px;background:#0A0B0C;border:1px solid var(--border);display:grid;place-items:center;margin-bottom:12px}.brand-mark svg{width:30px;height:30px;display:block}.brand h1{font:700 21px/1.15 'Oswald','Arial Narrow',sans-serif;text-transform:uppercase;letter-spacing:.7px;margin:0}.brand p{color:var(--muted);font-size:12px;margin:8px 0 0}.nav-label{color:#66696e;font-size:10px;font-weight:700;letter-spacing:1.5px;padding:0 12px;margin:0 0 8px}.nav{display:grid;gap:5px}.nav button{display:flex;align-items:center;gap:12px;text-align:left;width:100%;border:1px solid transparent;background:transparent;color:var(--muted);border-radius:10px;padding:11px 12px;font-weight:600}.nav button:hover{background:var(--panel2);color:var(--text)}.nav button.active{background:rgba(244,122,18,.13);color:var(--orange);border-color:rgba(244,122,18,.2)}.ico{width:19px;text-align:center;font-size:17px}.sidebar-bottom{margin-top:auto;border-top:1px solid var(--border);padding:16px 10px 0;color:var(--muted);font-size:12px}.coach-pill{display:inline-flex;align-items:center;gap:7px;background:var(--panel);border:1px solid var(--border);border-radius:30px;padding:6px 10px;margin-bottom:10px}.dot{width:7px;height:7px;border-radius:50%;background:var(--orange);display:inline-block}.main{margin-left:238px;min-height:100vh}.topbar{height:78px;border-bottom:1px solid #202226;display:flex;align-items:center;justify-content:space-between;padding:0 32px;position:sticky;top:0;background:rgba(10,11,12,.94);backdrop-filter:blur(10px);z-index:10}.crumb{color:var(--muted);font-size:12px;margin-bottom:2px}.topbar h2{margin:0;font:600 23px 'Oswald',sans-serif;letter-spacing:.3px}.top-actions{display:flex;gap:9px;align-items:center}.btn{border:1px solid var(--border);background:var(--panel);color:var(--text);border-radius:10px;padding:10px 14px;font-weight:600}.btn:hover{border-color:#55585d}.btn.primary{background:var(--orange);border-color:var(--orange);color:#0A0B0C}.btn.primary:hover{background:var(--orange2)}.content{max-width:1500px;padding:27px 32px 48px;margin:auto}.page{display:none}.page.active{display:block}.page-intro{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;margin-bottom:23px}.page-intro h3{font:600 25px 'Oswald',sans-serif;margin:0 0 5px;text-transform:uppercase;letter-spacing:.4px}.page-intro p{margin:0;color:var(--muted)}.section-title{font-weight:700;margin:0 0 13px;font-size:14px}.grid{display:grid;gap:15px}.kpis{grid-template-columns:repeat(4,minmax(0,1fr));margin-bottom:20px}.card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:19px}.kpi-head{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:12px;font-weight:600}.kpi-icon{width:32px;height:32px;border-radius:9px;display:grid;place-items:center;background:rgba(244,122,18,.12);color:var(--orange);font-size:16px}.kpi-value{font:700 31px 'Oswald',sans-serif;margin:13px 0 3px}.kpi-note{font-size:12px;color:var(--muted)}.accent{color:var(--orange)}.dashboard-grid{grid-template-columns:minmax(0,1.45fr) minmax(280px,1fr);align-items:stretch}.card-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}.card-head h4{margin:0;font-size:15px}.muted{color:var(--muted)}.chart{height:180px;display:flex;align-items:flex-end;gap:14px;padding:12px 6px 0;border-bottom:1px solid var(--border);position:relative}.bar-group{height:100%;flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:8px}.bar{width:min(34px,72%);min-height:3px;background:var(--orange);border-radius:6px 6px 2px 2px;opacity:.88}.bar-label{font-size:11px;color:var(--muted);padding-bottom:8px}.chart-legend{display:flex;justify-content:space-between;color:var(--muted);font-size:12px;margin-top:13px}.mini-list{display:grid;gap:0}.mini-row{display:flex;align-items:center;gap:11px;padding:12px 0;border-bottom:1px solid #25272b}.mini-row:last-child{border-bottom:0}.avatar{width:37px;height:37px;border-radius:50%;display:grid;place-items:center;background:#292c30;color:#eee;font-weight:700;font-size:12px;flex:none}.row-main{flex:1;min-width:0}.row-main strong{display:block;font-size:13px}.row-main small{color:var(--muted);font-size:12px}.badge{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--border);border-radius:30px;padding:4px 8px;font-size:11px;color:var(--soft);white-space:nowrap}.status-dot{width:7px;height:7px;border-radius:50%;display:inline-block}.belt{width:22px;height:7px;border-radius:3px;display:inline-block;border:1px solid #55585d}.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:15px}.field{background:#0f1012;color:var(--text);border:1px solid var(--border);border-radius:10px;padding:11px 12px;min-height:42px;outline:none}.field:focus{border-color:var(--orange)}.search{flex:1;min-width:200px}.filters{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px}.filter{background:transparent;border:1px solid var(--border);color:var(--soft);border-radius:30px;padding:7px 12px;font-size:12px;font-weight:600}.filter.active{background:var(--orange);border-color:var(--orange);color:var(--bg)}.members-layout{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(280px,.8fr);gap:16px}.table{width:100%;border-collapse:collapse}.table th{text-align:left;color:var(--muted);font-size:11px;font-weight:600;padding:11px 10px;border-bottom:1px solid var(--border)}.table td{padding:13px 10px;border-bottom:1px solid #24262a;font-size:12px}.table tr{cursor:pointer}.table tbody tr:hover,.table tbody tr.selected{background:rgba(244,122,18,.08)}.member-name{display:flex;align-items:center;gap:9px;min-width:150px}.member-name strong{font-size:12px}.member-name small{display:block;color:var(--muted);font-size:11px}.detail-card{display:flex;flex-direction:column;gap:14px}.detail-head{display:flex;align-items:center;gap:12px;padding-bottom:15px;border-bottom:1px solid var(--border)}.detail-head .avatar{width:49px;height:49px;font-size:15px}.detail-head h4{margin:0 0 3px;font:600 20px 'Oswald',sans-serif;text-transform:uppercase}.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.detail-stat{background:#0c0d0f;border:1px solid #292b2f;border-radius:10px;padding:12px}.detail-stat small{display:block;color:var(--muted);font-size:11px}.detail-stat strong{font:600 20px 'Oswald',sans-serif}.detail-field label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px}.detail-field input,.detail-field select{width:100%}.empty{padding:28px;text-align:center;color:var(--muted)}.checkin-layout{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(280px,.9fr);gap:16px}.checkin-item{display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid #25272b}.checkin-item .row-main{flex:1}.checkin-item input{accent-color:var(--orange);width:17px;height:17px}.progress{height:7px;background:#2a2d31;border-radius:30px;overflow:hidden;margin-top:10px}.progress span{display:block;height:100%;background:var(--orange);border-radius:30px}.setting-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:17px}.setting-tab{padding:9px 12px;border-radius:9px;background:transparent;border:1px solid var(--border);color:var(--muted)}.setting-tab.active{color:var(--orange);border-color:rgba(244,122,18,.45);background:rgba(244,122,18,.09)}.settings-panel{display:none}.settings-panel.active{display:block}.setting-row{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:16px 0;border-bottom:1px solid var(--border)}.setting-row:last-child{border-bottom:0}.setting-row strong{display:block;font-size:13px}.setting-row small{display:block;color:var(--muted);margin-top:3px;font-size:12px}.switch{width:42px;height:24px;border-radius:30px;background:#3a3d42;position:relative;border:0;flex:none}.switch:after{content:'';position:absolute;width:18px;height:18px;left:3px;top:3px;border-radius:50%;background:#eee;transition:.15s}.switch.on{background:var(--orange)}.switch.on:after{left:21px;background:#111}.belt-edit{display:flex;align-items:center;gap:9px;margin:8px 0}.belt-edit input{max-width:220px;flex:1}.small-btn{padding:7px 10px;border-radius:8px;background:#202226;border:1px solid var(--border);color:var(--soft)}.notice{background:rgba(244,122,18,.08);border:1px solid rgba(244,122,18,.25);color:var(--soft);padding:12px 14px;border-radius:10px;font-size:12px;margin-bottom:16px}.toast{position:fixed;right:22px;bottom:22px;background:#22252a;border:1px solid #454950;border-radius:10px;padding:12px 16px;z-index:60;display:none;box-shadow:0 10px 30px #0008}.hamb{display:none;background:transparent;border:1px solid var(--border);color:var(--text);padding:7px 10px;border-radius:8px}.overlay{display:none}.modal{position:fixed;inset:0;background:#0009;z-index:80;display:none;align-items:center;justify-content:center;padding:20px}.modal.open{display:flex}.modal-box{width:min(520px,100%);background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:22px}.modal-box h3{font:600 22px 'Oswald',sans-serif;margin:0 0 16px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.form-grid .detail-field:first-child{grid-column:1/-1}.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}
+@media(max-width:1100px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.members-layout,.dashboard-grid,.checkin-layout{grid-template-columns:1fr}.topbar,.content{padding-left:22px;padding-right:22px}}
+@media(max-width:760px){.sidebar{transform:translateX(-100%);transition:transform .2s;width:260px}.sidebar.open{transform:translateX(0)}.overlay.show{display:block;position:fixed;inset:0;background:#0009;z-index:15}.main{margin-left:0}.topbar{height:68px;padding:0 15px;gap:10px}.topbar h2{font-size:20px}.crumb{display:none}.content{padding:20px 14px 35px}.hamb{display:block}.top-actions .hide-mobile{display:none}.page-intro{align-items:flex-start;flex-direction:column}.kpis{gap:10px}.card{padding:15px}.kpi-value{font-size:27px}.table th:nth-child(3),.table td:nth-child(3){display:none}.table th,.table td{padding:10px 6px}.members-layout{grid-template-columns:minmax(0,1fr)}.form-grid{grid-template-columns:1fr}.form-grid .detail-field:first-child{grid-column:auto}}
+
+[hidden]{display:none!important}
+.state{position:fixed;inset:0;z-index:60;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:24px}
+.state-box{text-align:center;max-width:340px;color:var(--soft)}
+.state-box p{margin:14px 0}
+.spinner{width:34px;height:34px;margin:0 auto;border:3px solid var(--border);border-top-color:var(--orange);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.small-btn.primary-btn{background:var(--orange);border-color:var(--orange);color:var(--bg);font-weight:700}
+.setting-tab.soon{opacity:.45;cursor:not-allowed}
+.soon-tag{font-size:10px;margin-left:4px;padding:1px 6px;border-radius:20px;border:1px solid var(--border);color:var(--muted)}
+.span2{grid-column:1/-1}
+.kpi-card{cursor:pointer;transition:border-color .15s}.kpi-card:hover,.kpi-card.open{border-color:rgba(244,122,18,.55)}
+.scroll-list{max-height:320px;overflow:auto}
+.cal-head,.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.cal-head span{font-size:11px;color:var(--muted);text-align:center;padding-bottom:4px}
+.cal-day{height:40px;border-radius:9px;border:1px solid var(--border);background:#121315;color:var(--soft);font-size:12px}
+.cal-day.blank{visibility:hidden}.cal-day.today{box-shadow:inset 0 0 0 2px var(--orange)}.cal-day.selected{outline:2px solid var(--text);outline-offset:1px}
+.seg{display:inline-flex;border:1px solid var(--border);border-radius:9px;overflow:hidden}.seg button{border:0;background:transparent;color:var(--muted);padding:6px 10px;font-size:12px}.seg button.active{background:var(--orange);color:var(--bg);font-weight:700}
+.bdot{display:inline-block;width:10px;height:10px;border-radius:50%;vertical-align:-1px;margin-right:4px}
+.belt-item{border-bottom:1px solid #25272b}.belt-item:last-child{border-bottom:0}
+.belt-line{width:100%;display:flex;justify-content:space-between;align-items:center;gap:10px;background:transparent;border:0;color:var(--text);padding:12px 0;font-size:13px;text-align:left}
+.bl-left{display:flex;align-items:center;gap:8px}.chev{display:inline-block;margin-left:6px;transition:transform .15s}.belt-item.open .chev{transform:rotate(90deg)}
+.roster{padding:0 0 10px 18px}.roster-row{display:flex;justify-content:space-between;gap:10px;font-size:12px;padding:6px 0;border-bottom:1px solid #202226}.roster-row:last-child{border-bottom:0}
+.history-block{border-top:1px solid var(--border);padding-top:14px}
+.belt-form{background:#0c0d0f;border:1px solid #292b2f;border-radius:10px;padding:12px;margin-top:10px;display:grid;gap:10px}
+.visit-list{max-height:260px;overflow:auto}
+.nav-badge{margin-left:auto;background:var(--orange);color:var(--bg);border-radius:20px;font-size:11px;font-weight:800;padding:1px 7px}
+.join-banner{display:block;width:100%;text-align:left;cursor:pointer;font:inherit;font-size:13px}
+.invite-actions{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.invite-actions .btn{text-decoration:none;flex:1;text-align:center}
+.link-plain{background:none;border:0;color:var(--muted);text-decoration:underline;font-size:12px;padding:0;margin-top:4px}
+.plan-locked{position:relative;overflow:hidden}
+.plan-locked > *:not(.plan-lock){filter:blur(5px);opacity:.45;pointer-events:none;user-select:none}
+.plan-lock{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;text-align:center;padding:12px;z-index:2}
+.plan-lock span{font-weight:700;font-size:13px;background:#1f2125;border:1px solid var(--border);border-radius:30px;padding:6px 12px}
+.plan-lock small{color:var(--muted);font-size:12px}
+.small-btn:disabled{opacity:.35;cursor:not-allowed}
+.bar-btn{background:transparent;border:0;padding:0;cursor:pointer;font:inherit;color:inherit}
+.bar-btn:hover .bar,.bar-btn.sel .bar{outline:2px solid var(--orange);outline-offset:2px}
+.field-ro{opacity:.6;cursor:not-allowed}
+.below-admin{margin-top:22px;padding-top:18px;border-top:1px solid var(--border)}
+.plan-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}
+.plan-big{font:600 24px 'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.4px}
+.plan-hook{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 18px;border-radius:12px;margin-bottom:16px;background:linear-gradient(120deg,rgba(244,122,18,.18),rgba(244,122,18,.04));border:1px solid rgba(244,122,18,.45)}
+.plan-hook p{margin:4px 0 0;font-size:13px;color:var(--soft)}.plan-hook .btn{text-decoration:none;white-space:nowrap}
+.plan-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.plan-card{position:relative;border:1px solid var(--border);border-radius:14px;padding:18px 16px;background:#121315}
+.plan-card.current{border-color:var(--orange);box-shadow:0 0 0 1px var(--orange) inset;background:rgba(244,122,18,.06)}
+.plan-card.next{border-style:dashed;border-color:rgba(244,122,18,.55)}
+.plan-flag{position:absolute;top:12px;right:12px;font-size:10px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;background:var(--orange);color:var(--bg);border-radius:20px;padding:3px 8px}
+.plan-flag.ghost{background:transparent;color:var(--orange);border:1px solid rgba(244,122,18,.6)}
+.plan-icon{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:rgba(244,122,18,.12);color:var(--orange);font-size:17px;margin-bottom:10px}
+.plan-card h4{margin:0;font:600 19px 'Oswald',sans-serif;text-transform:uppercase}
+.plan-tag{margin:2px 0 12px;font-size:12px;color:var(--muted)}
+.plan-card ul{list-style:none;margin:0;padding:0;display:grid;gap:7px;font-size:12.5px;color:var(--soft)}
+.plan-card li{padding-left:18px;position:relative}.plan-card li:before{content:'✓';position:absolute;left:0;color:var(--orange);font-weight:800}
+.plan-table{margin-top:16px;border-top:1px solid var(--border);padding-top:12px}
+.plan-table summary{cursor:pointer;color:var(--soft);font-size:13px;font-weight:600}
+.plan-table table{width:100%;border-collapse:collapse;margin-top:10px;font-size:12px;min-width:520px}
+.plan-table th,.plan-table td{padding:8px 6px;border-bottom:1px solid #222428;text-align:center}.plan-table td:first-child,.plan-table th:first-child{text-align:left;color:var(--soft)}
+.plan-table td{color:var(--orange);font-weight:800}.plan-table .cur{background:rgba(244,122,18,.07)}
+.plan-pill{width:100%;display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:12px;padding:9px 11px;border-radius:10px;border:1px solid var(--border);background:var(--panel);color:var(--text);font-weight:700;font-size:12px}
+.plan-pill .pp-name{color:var(--text)}
+.plan-pill .pp-cta{color:var(--muted);font-weight:600}.plan-pill.up{border-color:rgba(244,122,18,.5)}.plan-pill.up .pp-cta{color:var(--orange)}
+.tease-num{font:700 34px 'Oswald',sans-serif;color:var(--text);filter:none;line-height:1}.tease-num.sm{font-size:24px}
+.plan-lock span{max-width:280px}
+.more-card{grid-column:1/-1;background:linear-gradient(120deg,rgba(244,122,18,.1),rgba(244,122,18,.02));border-color:rgba(244,122,18,.35)}
+.more-row{display:flex;justify-content:space-between;align-items:center;gap:14px}
+.more-row strong{display:block;font-size:14px;margin-bottom:3px}.more-row span{font-size:12px;color:var(--soft)}
+@media(max-width:600px){.more-row{flex-direction:column;align-items:flex-start}}
+@media(max-width:1100px){.plan-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.plan-grid{grid-template-columns:1fr}.plan-hook{flex-direction:column;align-items:flex-start}}
+.gone{text-decoration:line-through;opacity:.55}
+.busy{opacity:.6;pointer-events:none}
+.checkin-item{justify-content:space-between}
+.role-label{color:#66696e;font-size:10px;font-weight:700;letter-spacing:1.5px;margin-bottom:8px}
+.role-switch{display:grid;grid-template-columns:1fr 1fr;background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:3px;margin-bottom:10px}
+.role-switch button{border:0;background:transparent;color:var(--muted);padding:7px 6px;border-radius:7px;font-size:12px;font-weight:600}
+.role-switch button.active{background:var(--orange);color:var(--bg)}
+body.super .topbar{border-bottom-color:rgba(244,122,18,.45)}
+.lock-note{display:flex;gap:8px;align-items:center;background:#1f2125;border:1px solid var(--border);border-radius:10px;padding:10px 12px;font-size:12px;color:var(--soft);margin-bottom:14px}
+.settings-panel.locked .panel-body{opacity:.5}
+.setting-tab.locked::after{content:" 🔒";font-size:10px}
+.setting-tab.super-tab{border-style:dashed}
+.switch:disabled,.field:disabled{opacity:.45;cursor:not-allowed}
+.up{color:var(--green)}.down{color:var(--red)}
+.bar-val{font-size:10px;color:var(--muted)}
+.bar-pair{flex:1;width:100%;display:flex;align-items:flex-end;justify-content:center;gap:3px}
+.bar-pair .bar{width:min(15px,40%)}
+.bar.prev{background:#3a3d42;opacity:1}
+.swatch{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.stack{display:flex;height:10px;border-radius:30px;overflow:hidden;background:#2a2d31;margin-top:12px}
+.stack span{display:block;height:100%}
+.stack-legend{display:flex;flex-wrap:wrap;gap:6px 12px;margin-top:9px;font-size:11px;color:var(--muted)}
+.mini-row.link{cursor:pointer;border-radius:8px}
+.mini-row.link:hover{background:rgba(244,122,18,.06)}
+.hint{font-size:11px;color:var(--muted);margin:0}
+.detail-stat strong.small{font-size:15px}
+.progress.over span{background:var(--red)}
+@media(max-width:760px){.table th:nth-child(3),.table td:nth-child(3){display:table-cell}.table th:nth-child(4),.table td:nth-child(4){display:none}}
+</style></head><body>
+<div class="shell"><aside class="sidebar" id="sidebar"><div class="brand"><div class="brand-mark"><svg viewBox="0 0 100 100" aria-hidden="true"><path fill="#F47A12" d="M23 20 L38 16 L38 62 L77 47.5 L81.5 61.5 L23 83 Z"/></svg></div><h1 id="brand-name"></h1><p id="brand-role">Coach workspace</p></div><div class="nav-label">WORKSPACE</div><nav class="nav" aria-label="Main navigation"><button class="active" data-page="overview"><span class="ico">▦</span>Overview</button><button data-page="members"><span class="ico">♙</span>Members<span class="nav-badge" id="join-badge" hidden></span></button><button data-page="checkins"><span class="ico">✓</span>Check-ins</button><button data-page="setup"><span class="ico">⚙</span>Academy setup</button></nav>
+<div class="sidebar-bottom"><button class="plan-pill" id="plan-pill" hidden><span class="pp-name" id="plan-pill-name"></span><span class="pp-cta" id="plan-pill-cta"></span></button><div id="gym-picker-wrap" hidden><div class="role-label" id="gym-picker-label">ADMIN: GYM</div><select class="field" id="gym-picker" style="width:100%;margin-bottom:10px" aria-label="Choose gym"></select></div><button class="btn" id="coach-preview-btn" hidden style="width:100%;margin-bottom:10px">Preview as coach</button><div id="role-help"></div><button class="btn" id="signout-btn" style="width:100%;margin-top:12px">Sign out</button></div></aside><div class="overlay" id="overlay"></div>
+<main class="main"><header class="topbar"><div style="display:flex;align-items:center;gap:12px"><button class="hamb" id="hamb">☰</button><div><div class="crumb" id="crumb">OAK VALLEY BJJ / COACH PORTAL</div><h2 id="top-title">Overview</h2></div></div><div class="top-actions"><button class="btn" id="refresh-btn">Refresh</button><button class="btn hide-mobile" id="export-btn">Export members</button><button class="btn primary" id="top-add">＋ Invite members</button></div></header><div class="content"><div class="notice" id="account-banner" hidden style="margin-bottom:16px;border-color:rgba(255,158,143,.5)"></div><div class="notice" id="coach-preview-banner" hidden style="margin-bottom:16px"></div>
+
+<section class="page active" id="page-overview"><div class="page-intro"><div><h3>Academy overview</h3><p>Who's training, who's drifting and how full your plan is.</p></div><span class="badge"><span class="dot"></span> <span id="view-badge">Coach view</span></span></div>
+<button class="notice join-banner" id="join-banner" hidden><strong>New join requests.</strong> <span id="join-banner-text"></span></button>
+<div class="grid kpis">
+<div class="card kpi-card" data-kpi="active" role="button" tabindex="0"><div class="kpi-head">Active members <span class="kpi-icon">♙</span></div><div class="kpi-value" id="kpi-active">0</div><div class="kpi-note" id="kpi-active-note"></div></div>
+<div class="card kpi-card" data-kpi="week" role="button" tabindex="0"><div class="kpi-head">Check-ins this week <span class="kpi-icon">↗</span></div><div class="kpi-value" id="kpi-week">0</div><div class="kpi-note" id="kpi-week-note"></div></div>
+<div class="card kpi-card" id="avg-card" data-label="Visits per member" data-plan="standard" data-kpi="avg" role="button" tabindex="0"><div class="kpi-head">Visits per active member <span class="kpi-icon">◷</span></div><div class="kpi-value" id="kpi-avg">0</div><div class="kpi-note">Average over the last 28 days</div></div>
+<div class="card"><div class="kpi-head">Member seats <span class="kpi-icon">▤</span></div><div class="kpi-value"><span id="kpi-seats-used">0</span><span style="font-size:18px;color:var(--muted)"> / <span id="kpi-seats">0</span></span></div><div class="progress" id="seats-progress"><span id="seats-bar" style="width:0%"></span></div><div class="kpi-note" style="margin-top:8px" id="kpi-seats-note"></div></div>
+</div>
+<div class="card" id="kpi-detail" hidden style="margin-bottom:15px"><div class="card-head"><h4 id="kpi-detail-title"></h4><button class="small-btn" id="kpi-detail-close">Close</button></div><div class="mini-list scroll-list" id="kpi-detail-body"></div></div>
+<div class="grid dashboard-grid">
+<div class="card"><div class="card-head"><div><h4>Attendance this week</h4><div class="muted" style="font-size:12px;margin-top:3px">Daily check-ins compared with last week</div></div><span class="badge">Busiest: <strong id="busiest-day" style="color:var(--text)">—</strong></span></div><div class="chart" id="attendance-chart"></div><div class="chart-legend"><span><span class="swatch" style="background:var(--orange)"></span>This week <span class="swatch" style="background:#3a3d42;margin-left:12px"></span>Last week</span><strong id="week-total" style="color:var(--text)">— visits</strong></div></div>
+<div class="card" id="nudge-card" data-label="Needs a nudge" data-plan="basic"><div class="card-head"><div><h4>Needs a nudge</h4><div class="muted" style="font-size:12px;margin-top:3px" id="nudge-sub">Active members with no visit recently</div></div><span class="badge" id="nudge-count">0</span></div><div class="mini-list" id="nudge-list"></div></div>
+<div class="card span2 dash-extra" id="cal-card" data-label="Attendance calendar" data-plan="basic"><div class="card-head"><div><h4>Attendance calendar</h4><div class="muted" style="font-size:12px;margin-top:3px" id="cal-sub">Tap a day to see who came and who didn't</div></div><div style="display:flex;gap:6px;align-items:center"><button class="small-btn" id="cal-prev" aria-label="Previous month">‹</button><strong id="cal-label" style="min-width:130px;text-align:center"></strong><button class="small-btn" id="cal-next" aria-label="Next month">›</button></div></div><div class="cal-head"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div><div class="cal-grid" id="cal-grid"></div><div id="cal-day" hidden><div class="card-head" style="margin:16px 0 6px"><h4 id="cal-day-title"></h4><div class="seg"><button data-calmode="attended">Came</button><button data-calmode="absent">Didn't come</button></div></div><div class="mini-list scroll-list" id="cal-day-body"></div></div></div>
+<div class="card dash-extra" id="belts-card" data-label="Belt breakdown" data-plan="standard"><div class="card-head"><div><h4 id="belt-word">Belt breakdown</h4><div class="muted" style="font-size:12px;margin-top:3px">Tap a belt to see its students</div></div></div><div id="belt-breakdown"></div></div>
+<div class="card dash-extra" id="bench-card" data-label="Time at each belt" data-plan="standard"><div class="card-head"><div><h4 id="bench-title">Time at each belt</h4><div class="muted" style="font-size:12px;margin-top:3px">Average sessions before a promotion</div></div></div><div class="mini-list" id="bench-list"></div></div>
+<div class="card" id="freq-card" data-label="Training frequency" data-plan="standard"><div class="card-head"><div><h4>Training frequency</h4><div class="muted" style="font-size:12px;margin-top:3px">Active members by visits in the last 28 days</div></div></div><div id="freq-list"></div></div>
+<div class="card" id="access-card" data-label="App sign-in" data-plan="basic"><div class="card-head"><div><h4>App sign-in</h4><div class="muted" style="font-size:12px;margin-top:3px">Active members, updated automatically</div></div></div><div id="access-breakdown"></div><div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center"><span class="muted" style="font-size:12px">Signed in so far</span><strong class="accent" id="access-rate">0%</strong></div></div>
+<div class="card dash-extra" id="weekday-card" data-label="Busiest days and who comes" data-plan="standard"><div class="card-head"><div><h4>Busiest days</h4><div class="muted" style="font-size:12px;margin-top:3px">All check-ins by day of the week. Tap a day to see who comes.</div></div></div><div class="chart" id="weekday-chart"></div><div id="weekday-detail" hidden><div class="card-head" style="margin:16px 0 6px"><h4 id="weekday-detail-title"></h4><button class="small-btn" id="weekday-close">Close</button></div><div class="mini-list scroll-list" id="weekday-detail-body"></div></div></div>
+<div class="card"><div class="card-head"><h4>Recent member activity</h4><button class="small-btn" data-goto="members">View members</button></div><div class="mini-list" id="recent-activity"></div></div>
+<div class="card" id="snapshot-card" data-label="Academy snapshot" data-plan="basic"><div class="card-head"><h4>Academy snapshot</h4></div><div class="mini-row"><span class="kpi-icon">＋</span><div class="row-main"><strong>New this month</strong><small id="new-note">Joined this month</small></div><strong id="new-count">0</strong></div><div class="mini-row"><span class="kpi-icon">♧</span><div class="row-main"><strong>Most common belt</strong><small>Across active members</small></div><strong id="common-belt">—</strong></div><div class="mini-row"><span class="kpi-icon">⏸</span><div class="row-main"><strong>Inactive members</strong><small>Kept on record, not using a seat</small></div><strong id="inactive-count">0</strong></div><div style="padding-top:12px"><strong style="font-size:13px">Belt mix</strong><div class="stack" id="belt-stack"></div><div class="stack-legend" id="belt-legend"></div></div></div>
+</div>
+<div class="card more-card" id="more-card" hidden></div>
+<p class="hint" id="updated-note" style="margin:16px 0 0"></p>
+</section>
+
+<section class="page" id="page-members"><div class="page-intro"><div><h3>Members</h3><p>Member directory, belt progression and app access.</p></div><button class="btn primary" id="add-member">＋ Invite members</button></div><div class="card" id="join-card" hidden style="margin-bottom:15px;border-color:rgba(244,122,18,.45)"><div class="card-head" style="margin-bottom:4px"><div><h4>Join requests</h4><div class="muted" style="font-size:12px;margin-top:3px">People who asked to join with your link. Approving adds them and emails them a sign-in link.</div></div></div><div class="mini-list" id="join-list"></div></div><div class="toolbar"><input class="field search" id="member-search" placeholder="Search name or email…"><select class="field" id="belt-filter"><option value="all">All belts</option></select><select class="field" id="status-filter"><option value="all">Active and inactive</option><option value="active">Active</option><option value="inactive">Inactive</option></select><select class="field" id="access-filter"><option value="all">Any app access</option><option value="signedin">Signed in</option><option value="invited">Not signed in yet</option><option value="noemail">No email</option></select></div><div class="members-layout"><div class="card" style="padding:10px;overflow:auto"><table class="table"><thead><tr><th>Member</th><th>Belt</th><th>Status</th><th>App</th><th>Last visit</th></tr></thead><tbody id="member-table"></tbody></table><div class="empty" id="member-empty" style="display:none">No members match. Try another search or filter.</div></div><aside class="card detail-card" id="member-detail"><div class="empty">Choose a member to view their profile.</div></aside></div></section>
+
+<section class="page" id="page-checkins"><div class="page-intro"><div><h3>Check-ins</h3><p>Add anyone who forgot to check in, add guests, or remove a mistake.</p></div><span class="badge" id="checkin-date"></span></div><div class="checkin-layout"><div class="card"><div class="card-head"><h4>Add a check-in</h4></div><input class="field" style="width:100%" id="checkin-search" placeholder="Search a member's name…" autocomplete="off"><div id="checkin-results" style="margin-top:10px"></div><button class="btn" id="guest-open" style="margin-top:12px;width:100%">＋ Add a guest</button><div id="guest-form" hidden style="margin-top:14px"><div class="detail-field"><label for="guest-name">Guest's name</label><input class="field" id="guest-name" style="width:100%"></div><div class="detail-field"><label for="guest-belt">Belt (optional)</label><select class="field" id="guest-belt" style="width:100%"></select></div><div style="display:flex;gap:8px;justify-content:flex-end"><button class="btn" id="guest-cancel">Cancel</button><button class="btn primary" id="guest-add">Add guest</button></div></div></div><div class="card"><div class="card-head"><h4>Checked in today</h4><button class="small-btn" id="ci-refresh">Refresh</button></div><div class="kpi-value" id="today-count">0</div><div class="muted" id="today-sub">members checked in today</div><div class="mini-list" id="today-list" style="margin-top:12px"></div></div></div></section>
+
+<section class="page" id="page-setup"><div class="page-intro"><div><h3>Academy setup</h3><p id="setup-intro">Configure the portal to match your academy.</p></div><button class="btn primary" id="save-settings">Save settings</button></div>
+<div class="setting-tabs"><button class="setting-tab active" data-setting="academy">Academy</button><button class="setting-tab" data-setting="plan" id="plan-tab">Plan and seats</button><button class="setting-tab" data-setting="grading">Belt grading</button><button class="setting-tab soon" data-setting="profiles" disabled title="Coming soon">Profile fields <span class="soon-tag">Coming soon</span></button><button class="setting-tab soon" data-setting="features" disabled title="Coming soon">Features <span class="soon-tag">Coming soon</span></button><button class="setting-tab soon" data-setting="memberships" disabled title="Coming soon">Memberships <span class="soon-tag">Coming soon</span></button><button class="setting-tab super-tab" data-setting="permissions" data-super-only hidden>Coach permissions</button></div>
+
+<div class="card settings-panel active" id="settings-academy" data-perm="academy"><div class="lock-note" hidden></div><div class="panel-body"><h4 style="margin:0 0 12px">Academy details</h4><div class="setting-row"><div><strong>Academy name</strong><small id="academy-name-hint">Name shown in the coach portal.</small></div><input class="field" id="academy-name" style="max-width:280px;width:48%"></div><div class="setting-row"><div><strong>Coach display name</strong><small>Shown in the coach workspace.</small></div><input class="field" id="coach-name" style="max-width:280px;width:48%"></div><div class="setting-row"><div><strong>Nudge after</strong><small>Days without a visit before an active member shows in "Needs a nudge".</small></div><input class="field" id="alert-days" type="number" min="1" style="width:110px"></div></div></div>
+
+<div class="card settings-panel" id="settings-plan" data-perm="plan"><div class="lock-note" hidden></div><div id="plan-compare"></div><div class="panel-body"><h4 style="margin:0 0 4px">Admin: plan and seats for this academy</h4><p class="muted" style="margin:0 0 12px;font-size:12px">Choose the plan, account status and seats, then click Save settings. The plan cards below show what each plan includes.</p><div class="setting-row"><div><strong>Plan</strong><small>Free: check-ins and members, up to 15 members unless you set seats. Basic: adds Needs a nudge, calendar and app sign-in. Standard: adds history, insights and export. Premium: payments and more, when ready.</small></div><select class="field" id="plan-tier"><option value="free">Free</option><option value="basic">Basic</option><option value="standard">Standard</option><option value="premium">Premium</option></select></div><div class="setting-row"><div><strong>Account status</strong><small>Paused or Inactive blocks this academy's coaches and members until you set it back to Active.</small></div><select class="field" id="plan-status"><option value="active">Active</option><option value="paused">Paused</option><option value="inactive">Inactive</option></select></div><div class="setting-row"><div><strong>Member seats</strong><small>How many active members this plan allows.</small></div><input class="field" id="member-capacity" type="number" min="1" style="width:110px"></div><div class="setting-row"><div><strong>Join link</strong><small>Let people ask to join with the coach's link. Their coach still approves each one.</small></div><button class="switch on" id="join-enabled" role="switch" aria-checked="true" aria-label="Join link"></button></div><div class="setting-row"><div><strong>Seats in use</strong><small>Counted automatically from active members. Inactive members don't use a seat.</small></div><strong id="seats-in-use" style="font:600 20px 'Oswald',sans-serif">0</strong></div></div></div>
+
+<div class="card settings-panel" id="settings-grading" data-perm="grading"><div class="lock-note" hidden></div><div class="panel-body"><h4 style="margin:0 0 4px">Belt progression</h4><p class="muted" style="margin:0 0 14px;font-size:12px">Set the belt order and colours members see in their app. Stripes are coming soon.</p><div class="setting-row" hidden><div><strong>Grading system</strong><small>Choose how progression is represented.</small></div><select class="field" id="grading-system"><option value="belts-stripes">Belts and stripes</option><option value="belts">Belts only</option><option value="stripes">Stripes only</option><option value="custom">Custom levels</option></select></div><div class="setting-row" hidden><div><strong>Maximum stripes per belt</strong><small>Used when stripes are enabled.</small></div><select class="field" id="stripes-count"><option>0</option><option>2</option><option>4</option><option>5</option></select></div><div style="margin-top:17px"><div class="card-head"><h4>Belt order</h4></div><div id="belt-list"></div><div style="display:flex;gap:8px;margin-top:13px"><input class="field" id="new-belt-name" placeholder="New belt / level name"><input class="field" id="new-belt-color" type="color" value="#55585D" style="width:55px;padding:4px"><button class="btn" id="add-belt">Add level</button></div></div></div></div>
+
+<div class="card settings-panel" id="settings-profiles" data-perm="profiles"><div class="lock-note" hidden></div><div class="panel-body"><h4 style="margin:0 0 4px">Member profile fields</h4><p class="muted" style="margin:0 0 12px;font-size:12px">Toggle the fields you want to see and add custom fields for your academy.</p><div id="profile-fields"></div><div style="display:flex;gap:8px;margin-top:14px"><input class="field" id="new-field-name" placeholder="Custom field name"><button class="btn" id="add-field">Add field</button></div></div></div>
+
+<div class="card settings-panel" id="settings-features" data-perm="features"><div class="lock-note" hidden></div><div class="panel-body"><h4 style="margin:0 0 4px">Portal features</h4><p class="muted" style="margin:0 0 12px;font-size:12px">Keep the portal uncluttered by turning off features you don't use.</p><div id="feature-list"></div></div></div>
+
+<div class="card settings-panel" id="settings-memberships" data-perm="memberships"><div class="lock-note" hidden></div><div class="panel-body"><h4 style="margin:0 0 4px">Memberships</h4><p class="muted" style="margin:0 0 12px;font-size:12px">Configure membership types and reminders.</p><div id="membership-list"></div><div style="display:flex;gap:8px;margin-top:14px"><input class="field" id="new-membership" placeholder="Membership type name"><button class="btn" id="add-membership">Add type</button></div><div class="setting-row"><div><strong>Expiry warning period</strong><small>Days before expiry to flag a membership.</small></div><input class="field" type="number" id="expiry-days" min="0" style="width:100px"></div></div></div>
+
+<div class="card settings-panel" id="settings-permissions" data-super-only hidden><h4 style="margin:0 0 4px">Coach permissions</h4><p class="muted" style="margin:0 0 12px;font-size:12px">Choose what coaches at this academy can change. Plan and seats always stay with LineUp.</p><div id="perm-list"></div></div>
+</section>
+</div></main></div>
+
+<div class="modal" id="invite-modal"><div class="modal-box"><h3>Invite members</h3>
+<div id="invite-on"><p class="muted" style="margin:0 0 14px;font-size:13px">Send this link to new members. They fill in their details on their phone, then you approve them under Members.</p>
+<div style="display:flex;gap:8px"><input class="field" id="invite-link" readonly style="flex:1;min-width:0" aria-label="Join link"><button class="btn primary" id="invite-copy">Copy</button></div>
+<div class="invite-actions"><a class="btn" id="invite-wa" target="_blank" rel="noopener">WhatsApp</a><a class="btn" id="invite-mail">Email</a><button class="btn" id="invite-share">Share…</button></div>
+<button class="link-plain" id="invite-new">Make a new link (the old one stops working)</button></div>
+<div id="invite-off" hidden><div class="lock-note">🔒 Joining by link is switched off for your academy. Contact LineUp to switch it on.</div></div>
+<div class="modal-actions" style="justify-content:space-between;align-items:center"><button class="link-plain" id="invite-manual" style="margin:0">Add someone without a link</button><button class="btn" id="invite-close">Close</button></div></div></div>
+<div class="modal" id="member-modal"><div class="modal-box"><h3>Add someone without a link</h3><form id="member-form"><div class="form-grid"><div class="detail-field"><label for="form-name">Full name</label><input class="field" id="form-name" required style="width:100%"></div><div class="detail-field"><label for="form-email">Email</label><input class="field" id="form-email" type="email" style="width:100%"></div><div class="detail-field"><label for="form-belt">Belt</label><select class="field" id="form-belt" style="width:100%"></select></div></div><p class="hint" style="margin-top:12px">They sign in to LineUp with this email, and their app status updates by itself once they do. Leave it blank to check them in manually.</p><p class="hint" id="seat-hint" style="margin-top:6px"></p><div class="modal-actions"><button class="btn" type="button" id="cancel-modal">Cancel</button><button class="btn primary" type="submit">Add member</button></div></form></div></div>
+<div class="toast" id="toast" role="status"></div>
+<div class="state" id="state"><div class="state-box"><div class="spinner" id="state-spin"></div><h3 id="state-title" hidden style="font:600 22px 'Oswald',sans-serif;margin:14px 0 0;color:var(--text)"></h3><p id="state-text">Loading your academy…</p><button class="btn primary" id="retry-btn" hidden>Try again</button><button class="btn" id="state-signout" hidden style="margin-left:8px">Sign out</button></div></div>
+
+<script src="./config.js"></script>
+<script>
+(function(){
+const APPS_SCRIPT_URL=(window.LINEUP_CONFIG||{}).APPS_SCRIPT_URL;
+// Shared with login.html and the member app: same keys, so sign-in works exactly as before.
+const IDENTITY_KEY='gymAppIdentity',SESSION_KEY='gymAppSessionKey',GYM_PICK_KEY='lineupPortalGym';
+const MEMBER_APP_URL='gym-member-profile.html';
+const SOON=['profiles','features','memberships']; // settings that are saved but not used anywhere yet
+const PERMS=[
+ ['academy','Edit academy details','Academy name, coach name and nudge timing.'],
+ ['grading','Edit belt grading','Grading system, belt order and colours.'],
+ ['profiles','Edit profile fields','Show, hide and add member fields.'],
+ ['features','Turn portal features on or off','Switch off to keep features tied to the plan.'],
+ ['memberships','Edit membership types','Membership types and expiry warning.'],
+ ['addMembers','Add members','Each new member uses a seat.'],
+ ['editMembers','Edit member details','Name, email, belt and notes.'],
+ ['deactivate','Activate and deactivate members','Frees up or uses a seat.'],
+ ['export','Export member list','Download members as a CSV file.']];
+const ACCESS={signedin:{label:'Signed in',color:'#63B995'},invited:{label:'Not signed in yet',color:'#6EA8FE'},noemail:{label:'No email',color:'#7D8085'}};
+const beltColors={White:'#E9E9EA',Blue:'#2F6FDB',Purple:'#7D4FC9',Brown:'#8A5631',Black:'#3A3A3D'};
+const DEFAULT_BELTS=[{name:'White',color:'#E9E9EA'},{name:'Blue',color:'#2F6FDB'},{name:'Purple',color:'#7D4FC9'},{name:'Brown',color:'#8A5631'},{name:'Black',color:'#3A3A3D'}];
+const WEEK={days:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],now:[0,0,0,0,0,0,0],prev:[0,0,0,0,0,0,0]};
+
+let identity=null,sessionKey=null,pickedGym=null,role='coach',gymId=null,gyms=[];
+let members=[],settings=null,selectedId=null,lastLoaded=null,busy=false,refreshTimer=null;
+let ci={items:[],counts:{active:0,guests:0},ranks:[]};
+
+const $=id=>document.getElementById(id);
+function clone(o){return JSON.parse(JSON.stringify(o))}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function initials(n){return String(n||'?').trim().split(/\s+/).map(x=>x[0]).join('').slice(0,2).toUpperCase()}
+function beltColor(b){return settings?.belts.find(x=>x.name.toLowerCase()===String(b).toLowerCase())?.color||beltColors[b]||'#55585D'}
+function beltHTML(b){return `<span class="belt" style="background:${beltColor(b)}"></span>`}
+function avatar(n){return `<span class="avatar">${esc(initials(n))}</span>`}
+function dotBadge(label,color){return `<span class="badge"><span class="status-dot" style="background:${color}"></span>${label}</span>`}
+function toast(msg){const t=$('toast');t.textContent=msg;t.style.display='block';clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>t.style.display='none',4000)}
+
+// ---------- Sign-in and requests (same as the current coach dashboard) ----------
+function signOut(){try{localStorage.removeItem(IDENTITY_KEY);sessionStorage.removeItem(SESSION_KEY);sessionStorage.removeItem(GYM_PICK_KEY)}catch(e){}window.location.href='login.html'}
+function backToUnlock(){try{sessionStorage.removeItem(SESSION_KEY)}catch(e){}window.location.href='login.html'}
+function friendlyServerError(msg){if(/gym not found/i.test(msg||''))return "Your gym isn't set up correctly. The Gym ID on your login doesn't match the Gyms tab.";return msg||'Something went wrong.'}
+function jsonpRequest(baseUrl,params){return new Promise((resolve,reject)=>{const cb='jsonp_cb_'+Math.random().toString(36).slice(2);const timer=setTimeout(()=>{cleanup();reject(new Error('Request timed out. Check your connection and try again'))},20000);
+ function cleanup(){clearTimeout(timer);delete window[cb];if(script.parentNode)script.parentNode.removeChild(script)}
+ window[cb]=data=>{cleanup();resolve(data)};
+ const qs=Object.keys(params).map(k=>k+'='+encodeURIComponent(params[k])).join('&');
+ const script=document.createElement('script');script.src=baseUrl+(baseUrl.includes('?')?'&':'?')+qs+'&callback='+cb;script.onerror=()=>{cleanup();reject(new Error('Could not reach LineUp'))};document.body.appendChild(script)})}
+const ENDED='Session ended';let blockedStatus=null;
+async function api(mode,params){
+ const p=Object.assign({mode:mode,sessionKey:sessionKey,gymId:gymId||identity.gymId},params||{});
+ if(pickedGym)p.asGym=pickedGym;                       // only honoured by the server for super users
+ const res=await jsonpRequest(APPS_SCRIPT_URL,p);
+ if(res&&res.sessionExpired){backToUnlock();throw new Error(ENDED)}
+ // Paused or Inactive academy: the server refuses everything, so show that instead of the portal.
+ if(res&&res.accountStatus&&!res.success){blockedStatus=res.accountStatus;showState('blocked',res.error);throw new Error(ENDED)}
+ return res;
+}
+function failed(err,what){if(err&&err.message===ENDED)return;toast(what+(err&&err.message?': '+err.message:''))}
+function showState(kind,text){const s=$('state');if(kind==='ready'){s.hidden=true;return}s.hidden=false;$('state-text').textContent=text||'Loading your academy…';
+ $('retry-btn').hidden=kind==='loading';$('retry-btn').textContent=kind==='blocked'?'Check again':'Try again';$('state-spin').hidden=kind!=='loading';$('state-signout').hidden=kind==='loading';
+ $('state-title').hidden=kind!=='blocked';$('state-title').textContent='Account '+(blockedStatus||'paused')}
+
+// ---------- Helpers ----------
+let previewCoach=false;
+function realSuper(){return role==='super'}
+// Gyms this coach works at (from sign-in). More than one = show the Gym switcher.
+function coachGyms(){return (identity&&Array.isArray(identity.gyms))?identity.gyms:[]}
+// While previewing as a coach, the screens behave exactly as a coach's would (locks included).
+function isSuper(){return role==='super'&&!previewCoach}
+function can(p){return isSuper()||!!(settings&&settings.perms[p])}
+function accessOf(m){return !m.email?'noemail':m.signedIn?'signedin':'invited'}
+function statusHTML(m){return m.active?dotBadge('Active','#F47A12'):dotBadge('Inactive','#4A4D52')}
+function accessHTML(m){const a=ACCESS[accessOf(m)];return dotBadge(a.label,a.color)}
+function lastText(d){if(d==null)return 'Never';if(d===0)return 'Today';if(d===1)return 'Yesterday';if(d<30)return d+' days ago';const mo=Math.round(d/30);return mo===1?'1 month ago':mo+' months ago'}
+function activeMembers(){return members.filter(m=>m.active)}
+function hasLimit(){return settings&&settings.capacity!=null}
+function seatsFree(){return hasLimit()?settings.capacity-activeMembers().length:Infinity}
+function seatFullMsg(){return isSuper()?`All ${settings.capacity} seats are in use. Raise member seats in Academy setup › Plan and seats.`:`All ${settings.capacity} member seats are in use. Deactivate a member or contact LineUp to add seats.`}
+function thisMonth(){return new Date().toLocaleDateString('en-US',{month:'short',year:'numeric'})}
+function gymName(){return settings?settings.academy:(identity.gymName||identity.gymId)}
+
+// ---------- Loading ----------
+async function loadAll(quiet){
+ if(!quiet)showState('loading');
+ try{
+  const both=await Promise.all([api('portalData'),api('data').catch(()=>null)]);const d=both[0];
+  if(!d.success){if(quiet){toast(friendlyServerError(d.error));return}showState('error',friendlyServerError(d.error));return}
+  role=d.role;gymId=d.gymId;gyms=d.gyms||[];members=d.members||[];settings=d.settings;
+  if(!settings.belts||!settings.belts.length)settings.belts=clone(DEFAULT_BELTS);
+  WEEK.now=d.week.now;WEEK.prev=d.week.prev;weekdayPeople=d.weekdayPeople||[[],[],[],[],[],[],[]];lastLoaded=new Date();useDash(both[1]);profiles={};if(d.join)join=d.join;
+  if(!members.some(m=>m.id===selectedId))selectedId=members[0]?.id;
+  showState('ready');
+  if(!quiet||!$('page-setup').classList.contains('active'))fillSettingInputs();
+  applyRole();
+ }catch(err){if(err.message===ENDED)return;if(quiet)failed(err,"Couldn't refresh");else showState('error',err.message)}
+}
+// After a change elsewhere (like a check-in), quietly refresh the figures.
+function refreshSoon(){clearTimeout(refreshTimer);refreshTimer=setTimeout(()=>loadAll(true),1200)}
+
+function page(name){document.querySelectorAll('.page').forEach(x=>x.classList.toggle('active',x.id==='page-'+name));document.querySelectorAll('.nav button').forEach(x=>x.classList.toggle('active',x.dataset.page===name));$('top-title').textContent=({overview:'Overview',members:'Members',checkins:'Check-ins',setup:'Academy setup'})[name];$('sidebar').classList.remove('open');$('overlay').classList.remove('show');if(name==='overview')renderDashboard();if(name==='members')renderMembers();if(name==='checkins')ciRefresh();if(name==='setup')renderSettings()}
+
+function applyRole(){
+ document.body.classList.toggle('super',isSuper());
+ $('brand-name').textContent=gymName();
+ document.title=gymName();
+ $('brand-role').textContent=isSuper()?'Admin view':(settings.coach&&settings.coach!=='Coach'?settings.coach:'Coach workspace');
+ $('view-badge').textContent=isSuper()?'Admin view':'Coach view';
+ $('role-help').textContent=isSuper()?'Admin: you can change the plan, seats and what coaches are allowed to edit.':'Plan and seats are managed by LineUp.';
+ $('crumb').textContent=(gymName()+(isSuper()?' / Admin':' / Coach portal')).toUpperCase();
+ $('academy-name').readOnly=!isSuper();$('academy-name').classList.toggle('field-ro',!isSuper());
+ $('academy-name-hint').textContent=isSuper()?'Name shown in the portal and member app.':'Set by LineUp. Contact LineUp to change it.';
+ $('setup-intro').textContent=isSuper()?'Everything is editable in the admin view, including the plan and coach permissions.':'Configure the portal to match your academy.';
+ document.querySelectorAll('[data-super-only]').forEach(x=>x.hidden=!isSuper());
+ $('gym-picker-wrap').hidden=!(realSuper()?gyms.length>1:coachGyms().length>1);
+ $('gym-picker-label').textContent=realSuper()?'ADMIN: GYM':'GYM';
+ $('coach-preview-btn').hidden=!realSuper();
+ $('coach-preview-btn').textContent=previewCoach?'Back to admin view':'Preview as coach';
+ $('coach-preview-banner').hidden=!previewCoach;
+ const acct=settings.account||'active';$('account-banner').hidden=!(realSuper()&&acct!=='active');
+ $('account-banner').textContent=`${gymName()} is ${acct==='paused'?'Paused':'Inactive'}. Its coaches and members can't use LineUp until you set Account status back to Active in Plan and seats.`;
+ $('coach-preview-banner').textContent=`Previewing ${gymName()} as a coach. Locked sections and buttons are exactly what their coaches see. You're still signed in as admin.`;
+ if(realSuper())$('gym-picker').innerHTML=gyms.map(g=>`<option value="${esc(g.id)}" ${g.id===gymId?'selected':''}>${esc(g.name)}</option>`).join('');
+ else if(coachGyms().length>1)$('gym-picker').innerHTML=coachGyms().map(g=>`<option value="${esc(g.gymId)}" ${String(g.gymId)===String(identity.gymId)?'selected':''}>${esc(g.gymName||g.gymId)}</option>`).join('');
+ if(!isSuper()&&document.querySelector('.setting-tab.active')?.dataset.setting==='permissions')showSetting('academy');
+ ['top-add','add-member'].forEach(id=>$(id).hidden=!can('addMembers'));
+ $('export-btn').hidden=!(can('export')&&hasPlan('standard'));
+ $('updated-note').textContent=lastLoaded?'Updated '+lastLoaded.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})+'. Tap Refresh for the latest figures.':'';
+ renderSettings();renderDashboard();renderMembers();renderJoin();renderPlanPill();
+}
+
+// ---------- Plans: Basic, Standard, Premium ----------
+// Cards marked data-plan="standard" (or "premium") show a lock for gyms on a lower plan.
+// Super users always see everything; Preview as coach shows the gym's real plan.
+const PLAN_RANK={free:0,basic:1,standard:2,premium:3},PLAN_NAME={free:'Free',basic:'Basic',standard:'Standard',premium:'Premium'};
+function hasPlan(p){return isSuper()||(PLAN_RANK[(settings&&settings.plan)||'standard']??1)>=PLAN_RANK[p]}
+// Each locked card shows one real figure from the gym and hides the detail behind it.
+function teaserFor(id,word){
+ if(!settings)return null;
+ const act=activeMembers(),w=(settings.rankLabel||'Belt').toLowerCase(),plural=(n,a,b)=>n===1?a:b;
+ switch(id){
+  case 'nudge-card':{const n=act.filter(m=>m.lastDays==null||m.lastDays>=settings.alertDays).length;
+   return n?{num:n,text:`${plural(n,'member hasn\'t','members haven\'t')} trained in ${settings.alertDays}+ days`,cta:`See who on ${word}`}:{num:'✓',text:`Everyone active has trained in the last ${settings.alertDays} days`,cta:`Keep an eye on it with ${word}`}}
+  case 'cal-card':{if(!dash)return null;const n=Object.values(cal.days||{}).reduce((t,d)=>t+d.length,0);
+   return {num:n,text:`${plural(n,'check-in','check-ins')} so far this month`,cta:`See which days on ${word}`}}
+  case 'access-card':{const n=act.filter(m=>m.email&&!m.signedIn).length;
+   return n?{num:n,text:`${plural(n,'member hasn\'t','members haven\'t')} signed in to the app yet`,cta:`See who on ${word}`}:{num:'✓',text:'Everyone with an email has signed in',cta:`Track it with ${word}`}}
+  case 'snapshot-card':{const mon=thisMonth(),n=members.filter(m=>m.since===mon).length;
+   return {num:n,text:`new ${plural(n,'member','members')} this month`,cta:`See your snapshot on ${word}`}}
+  case 'avg-card':{const v=act.length?(act.reduce((t,m)=>t+(+m.visits||0),0)/act.length).toFixed(1):'0';
+   return {num:v,text:'average visits, last 28 days',cta:`See who trains most`,small:true}}
+  case 'freq-card':{const n=act.filter(m=>m.visits>=4).length;
+   return n?{num:n,text:`${plural(n,'member trains','members train')} at least weekly`,cta:`See who on ${word}`}:{num:'?',text:'How often do your members really train?',cta:`Find out on ${word}`}}
+  case 'belts-card':{if(!dash)return null;const b=(dash.beltBreakdown||[]).length,n=act.length;
+   return {num:n,text:`members across ${b} ${plural(b,w,w+'s')}`,cta:`See who's at each on ${word}`}}
+  case 'bench-card':{if(!dash)return null;const n=(dash.beltBenchmarks||[]).reduce((t,r)=>t+r.promotions,0);
+   return n?{num:n,text:`${plural(n,'promotion','promotions')} recorded`,cta:`See average sessions per ${w} on ${word}`}:{num:'0',text:'promotions recorded so far',cta:`Track time at each ${w} on ${word}`}}
+  case 'weekday-card':{if(!dash)return null;const v=dash.weekdayTotals||[],mx=Math.max(...v,0);
+   return mx?{num:['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'][v.indexOf(mx)],text:'is your busiest day',cta:`See who comes on ${word}`}:null}
+ }
+ return null;
+}
+function renderPlanLocks(){
+ const curRank=PLAN_RANK[(settings&&settings.plan)||'standard']??2,grouped={};
+ document.querySelectorAll('[data-plan]').forEach(card=>{
+  const need=card.dataset.plan,locked=!hasPlan(need);
+  // Only tease the next plan up in full. Cards from plans further up go into one "More in" card
+  // (the small top figures stay, so the row of four keeps its shape).
+  const far=locked&&!card.classList.contains('kpi-card')&&PLAN_RANK[need]>curRank+1;
+  if(far){(grouped[need]=grouped[need]||[]).push(card.dataset.label||'')}
+  card.hidden=far||(card.classList.contains('dash-extra')&&!dash);
+  let lock=card.querySelector(':scope > .plan-lock');
+  if(locked&&!lock){lock=document.createElement('div');lock.className='plan-lock';card.appendChild(lock)}
+  if(lock){
+   lock.hidden=!locked;
+   if(locked){const t=teaserFor(card.id,PLAN_NAME[need]);
+    lock.innerHTML=t?`<strong class="tease-num${t.small?' sm':''}">${esc(t.num)}</strong><span>🔒 ${esc(t.text)}</span><button class="link-plain see-plans" style="pointer-events:auto">${esc(t.cta)}${t.small?' on '+PLAN_NAME[need]:''}</button>`
+     :`<span>🔒 Included in ${PLAN_NAME[need]}</span><button class="link-plain see-plans" style="pointer-events:auto">See plans</button>`;
+    lock.querySelector('.see-plans').onclick=openPlans}
+  }
+  card.classList.toggle('plan-locked',locked);card.toggleAttribute('aria-disabled',locked);
+ });
+ const more=$('more-card'),keys=Object.keys(grouped);
+ more.hidden=!keys.length;
+ more.innerHTML=keys.map(k=>`<div class="more-row"><div><strong>More in ${PLAN_NAME[k]}</strong><span>${grouped[k].map(esc).join(' · ')}</span></div><button class="btn see-plans-btn">See plans</button></div>`).join('');
+ more.querySelectorAll('.see-plans-btn').forEach(b=>b.onclick=openPlans);
+
+ const pastOk=hasPlan('standard');
+ $('cal-prev').disabled=!pastOk;$('cal-prev').title=pastOk?'Previous month':'Past months are included in Standard';
+ $('cal-sub').textContent=pastOk?"Tap a day to see who came and who didn't":"Tap a day to see who came and who didn't. Past months are included in Standard.";
+ $('export-btn').hidden=!(can('export')&&hasPlan('standard'));
+}
+// ---------- Your plan ----------
+const LINEUP_EMAIL='cismafree@gmail.com';
+const PLAN_ORDER=['free','basic','standard','premium'];
+const PLAN_CARD={
+ free:{icon:'◎',tag:'Get started',points:['Phone check-in with PIN','Members and join link',"This week's attendance",'Up to 15 members']},
+ basic:{icon:'◉',tag:'Keep members coming',points:['Needs a nudge list','Attendance calendar','App sign-in tracking','Academy snapshot']},
+ standard:{icon:'◆',tag:'Know your academy',points:['Full attendance history','Training insights','Busiest days and who comes','Export members']},
+ premium:{icon:'★',tag:'Run the whole gym',points:['Payments (soon)','Member messages (soon)','Custom fields (soon)','Priority help']}
+};
+// Full list for "Compare all features": [feature, first plan that includes it]
+const PLAN_TABLE=[['Phone check-in with PIN','free'],['Check-ins page, guests and corrections','free'],['Members list, join link and approvals','free'],['Belt changes and member history','free'],["This week's attendance chart",'free'],['Needs a nudge list','basic'],['Attendance calendar (this month)','basic'],['App sign-in tracking and snapshot','basic'],['Calendar for every past month','standard'],['Visits per member, training frequency','standard'],['Belt breakdown, time at each belt','standard'],['Busiest days and who comes','standard'],['Export member list','standard'],['Payments, messages, custom fields (soon)','premium'],['Priority set-up help','premium']];
+function openPlans(){page('setup');showSetting('plan')}
+function upgradeHook(next){
+ if(!settings)return '';
+ const act=activeMembers(),nudge=act.filter(m=>m.lastDays==null||m.lastDays>=settings.alertDays).length;
+ if(next==='basic')return nudge?`${nudge} ${nudge===1?'member hasn\'t':'members haven\'t'} trained in ${settings.alertDays}+ days. Basic shows you who, so you can bring them back.`:'Basic shows who is drifting away before they leave, plus your attendance calendar.';
+ if(next==='standard')return 'Standard shows your busiest days, who trains when, and how long people take at each belt.';
+ if(next==='premium')return 'Premium adds payments and member messages as they arrive.';
+ return '';
+}
+function renderPlanPage(){
+ const cur=(settings&&settings.plan)||'standard',ci=PLAN_ORDER.indexOf(cur),next=PLAN_ORDER[ci+1];
+ const used=activeMembers().length,seats=hasLimit()?`${used} of ${settings.capacity} members`:`${used} members, no limit`;
+ const mail=s=>`mailto:${LINEUP_EMAIL}?subject=${encodeURIComponent(s)}&body=${encodeURIComponent('Hi LineUp,\n\nAcademy: '+gymName()+'\n\n')}`;
+ const coach=!isSuper();
+ const hook=next&&coach?`<div class="plan-hook"><div><strong>Next step: ${PLAN_NAME[next]}</strong><p>${esc(upgradeHook(next))}</p></div><a class="btn primary" href="${mail('Upgrade '+gymName()+' to '+PLAN_NAME[next])}">Upgrade to ${PLAN_NAME[next]}</a></div>`:'';
+ const cards=PLAN_ORDER.map(k=>{const c=PLAN_CARD[k],isCur=k===cur,isNext=k===next;
+  return `<div class="plan-card${isCur?' current':''}${isNext?' next':''}">${isCur?'<span class="plan-flag">Your plan</span>':isNext?'<span class="plan-flag ghost">Next</span>':''}
+  <div class="plan-icon">${c.icon}</div><h4>${PLAN_NAME[k]}</h4><p class="plan-tag">${c.tag}</p>
+  <ul>${c.points.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`}).join('');
+ const rows=PLAN_TABLE.map(([f,from])=>`<tr><td>${esc(f)}</td>${PLAN_ORDER.map(k=>`<td class="${k===cur?'cur':''}">${PLAN_RANK[k]>=PLAN_RANK[from]?'✓':''}</td>`).join('')}</tr>`).join('');
+ $('plan-compare').innerHTML=`<div class="plan-head"><div><span class="plan-big">${PLAN_NAME[cur]}</span><span class="muted" style="font-size:12px;margin-left:8px">${esc(seats)}</span></div>${coach?`<a class="link-plain" href="${mail('Question about '+gymName()+"'s LineUp plan")}">Contact LineUp</a>`:''}</div>
+ ${hook}<div class="plan-grid">${cards}</div>
+ <details class="plan-table"><summary>Compare all features</summary><div style="overflow-x:auto"><table><thead><tr><th></th>${PLAN_ORDER.map(k=>`<th class="${k===cur?'cur':''}">${PLAN_NAME[k]}</th>`).join('')}</tr></thead><tbody>${rows}</tbody></table></div></details>
+ ${coach?'':'<p class="hint" style="margin:14px 0 0">Coaches see this page with an upgrade message based on their own figures. Change the plan below.</p>'}`;
+}
+function renderPlanPill(){
+ if(!settings){$('plan-pill').hidden=true;return}
+ const cur=settings.plan||'standard',next=PLAN_ORDER[PLAN_ORDER.indexOf(cur)+1];
+ $('plan-pill').hidden=false;$('plan-pill-name').textContent=PLAN_NAME[cur]+' plan';
+ const up=['free','basic'].includes(cur)&&!isSuper();
+ $('plan-pill-cta').textContent=up?'Upgrade':'View';$('plan-pill').classList.toggle('up',up);
+}
+$('plan-pill').onclick=openPlans;
+// ---------- Overview ----------
+function renderDashboard(){
+ if(!settings)return;
+ const act=activeMembers(),inactive=members.length-act.length;
+ $('kpi-active').textContent=act.length;
+ $('kpi-active-note').textContent=`of ${members.length} members, ${inactive} inactive`;
+ const now=WEEK.now.reduce((a,b)=>a+b,0),prev=WEEK.prev.reduce((a,b)=>a+b,0);
+ $('kpi-week').textContent=now;
+ if(prev){const pct=Math.round((now-prev)/prev*100);$('kpi-week-note').innerHTML=`<span class="${pct>=0?'up':'down'}">${pct>=0?'▲':'▼'} ${Math.abs(pct)}%</span> vs last week (${prev})`}
+ else $('kpi-week-note').textContent='No check-ins last week';
+ $('kpi-avg').textContent=act.length?(act.reduce((s,m)=>s+(+m.visits||0),0)/act.length).toFixed(1):'0';
+ const used=act.length;
+ $('kpi-seats-used').textContent=used;
+ if(hasLimit()){const cap=settings.capacity,free=cap-used;$('kpi-seats').textContent=cap;$('seats-bar').style.width=Math.min(100,used/Math.max(1,cap)*100)+'%';$('seats-progress').classList.toggle('over',used>cap);
+  $('kpi-seats-note').textContent=(free>0?`${free} seat${free===1?'':'s'} free. `:'Plan full. ')+(isSuper()?'Edit in Plan and seats.':'Managed by LineUp.')}
+ else{$('kpi-seats').textContent='no limit';$('seats-bar').style.width='0%';$('seats-progress').classList.remove('over');$('kpi-seats-note').textContent=isSuper()?'No seat limit set. Add one in Plan and seats.':'No seat limit on your plan.'}
+
+ const max=Math.max(...WEEK.now,...WEEK.prev,1);
+ $('attendance-chart').innerHTML=WEEK.days.map((d,i)=>`<div class="bar-group"><span class="bar-val">${WEEK.now[i]}</span><div class="bar-pair"><div class="bar prev" style="height:${WEEK.prev[i]/max*100}%" title="Last ${d}: ${WEEK.prev[i]}"></div><div class="bar" style="height:${WEEK.now[i]/max*100}%" title="This ${d}: ${WEEK.now[i]}"></div></div><span class="bar-label">${d}</span></div>`).join('');
+ $('week-total').textContent=now+(now===1?' visit':' visits');
+ $('busiest-day').textContent=now?WEEK.days[WEEK.now.indexOf(Math.max(...WEEK.now))]:'—';
+
+ const mon=thisMonth();
+ const nudge=act.filter(m=>m.lastDays==null||m.lastDays>=settings.alertDays).sort((a,b)=>(b.lastDays??9999)-(a.lastDays??9999));
+ $('nudge-sub').textContent=`Active members with no visit in ${settings.alertDays}+ days`;
+ $('nudge-count').textContent=nudge.length;
+ $('nudge-list').innerHTML=nudge.slice(0,5).map(m=>`<div class="mini-row link" data-open="${esc(m.id)}" tabindex="0">${avatar(m.name)}<div class="row-main"><strong>${esc(m.name)}</strong><small>${m.lastDays==null?(m.since===mon?'Joined this month, no visit yet':'No visits recorded'):'Last visit '+lastText(m.lastDays)}</small></div>${beltHTML(m.belt)}</div>`).join('')||`<div class="empty">Every active member has trained in the last ${settings.alertDays} days.</div>`;
+
+ const buckets=[['Not trained',m=>!m.visits,'#4A4D52'],['Occasional, 1–3 visits',m=>m.visits>=1&&m.visits<=3,'#6EA8FE'],['Regular, 4–7 visits',m=>m.visits>=4&&m.visits<=7,'#FFB070'],['Committed, 8+ visits',m=>m.visits>=8,'#F47A12']];
+ const bar=(l,n,c)=>`<div style="margin:13px 0"><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px"><span>${l}</span><strong>${n}</strong></div><div class="progress" style="margin-top:0"><span style="width:${act.length?n/act.length*100:0}%;background:${c}"></span></div></div>`;
+ $('freq-list').innerHTML=buckets.map(([l,f,c])=>bar(l,act.filter(f).length,c)).join('');
+ const accCounts=Object.keys(ACCESS).map(k=>[k,act.filter(m=>accessOf(m)===k).length]);
+ $('access-breakdown').innerHTML=accCounts.map(([k,n])=>bar(ACCESS[k].label,n,ACCESS[k].color)).join('');
+ $('access-rate').textContent=Math.round((accCounts[0][1]/Math.max(1,act.length))*100)+'%';
+
+ const recent=members.filter(m=>m.lastDays!=null).sort((a,b)=>a.lastDays-b.lastDays).slice(0,4);
+ $('recent-activity').innerHTML=recent.map(m=>`<div class="mini-row link" data-open="${esc(m.id)}" tabindex="0">${avatar(m.name)}<div class="row-main"><strong>${esc(m.name)}</strong><small>Last visit ${lastText(m.lastDays).toLowerCase()}</small></div>${beltHTML(m.belt)}</div>`).join('')||'<div class="empty">No visits recorded yet.</div>';
+
+ const newbies=members.filter(m=>m.since===mon),notYet=newbies.filter(m=>m.lastDays==null).length;
+ $('new-count').textContent=newbies.length;
+ $('new-note').textContent=newbies.length?(notYet?`${notYet} yet to make a first visit`:'All have trained at least once'):'No new members yet';
+ const bc={};act.forEach(m=>bc[m.belt]=(bc[m.belt]||0)+1);
+ $('common-belt').textContent=Object.entries(bc).sort((a,b)=>b[1]-a[1])[0]?.[0]||'—';
+ $('inactive-count').textContent=inactive;
+ const order=settings.belts.map(b=>b.name).filter(n=>bc[n]);Object.keys(bc).forEach(n=>{if(!order.includes(n))order.push(n)});
+ $('belt-stack').innerHTML=order.map(n=>`<span style="width:${bc[n]/Math.max(1,act.length)*100}%;background:${beltColor(n)}" title="${esc(n)}: ${bc[n]}"></span>`).join('');
+ $('belt-legend').innerHTML=order.map(n=>`<span><span class="swatch" style="background:${beltColor(n)}"></span>${esc(n)} ${bc[n]}</span>`).join('');
+ document.querySelectorAll('#page-overview [data-open]').forEach(r=>{const go=()=>{selectedId=r.dataset.open;page('members')};r.onclick=go;r.onkeydown=e=>{if(e.key==='Enter')go()}});
+ renderExtras();renderPlanLocks();
+}
+
+// ---------- Step 3: features carried over from the old dashboard ----------
+// They use the same requests the old dashboard used: data, calendar, profile, setBelt, undoBelt.
+let weekdayPeople=[[],[],[],[],[],[],[]],openDay=null;
+let dash=null,profiles={},cal={year:null,month:null,days:{}},calDay=null,calMode='attended',openBelt=null,openKpi=null;
+const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+function isLight(hex){const h=String(hex||'').replace('#','');if(h.length!==6)return false;const r=parseInt(h.slice(0,2),16),g=parseInt(h.slice(2,4),16),b=parseInt(h.slice(4,6),16);return r*.299+g*.587+b*.114>200}
+function beltDot(b){const c=beltColor(b);return `<span class="bdot" style="background:${c};${isLight(c)?'border:1px solid #6b6e73;':''}"></span>`}
+function rankWord(){return (settings&&settings.rankLabel)||'Belt'}
+function pad2(n){return String(n).padStart(2,'0')}
+function todayISO(){const d=new Date();return d.getFullYear()+'-'+pad2(d.getMonth()+1)+'-'+pad2(d.getDate())}
+function dayText(s){if(!s)return '';const p=s.split('-').map(Number);return new Date(p[0],p[1]-1,p[2]).toLocaleDateString(undefined,{day:'numeric',month:'short',year:'numeric'})}
+function openMember(id){selectedId=id;page('members')}
+function useDash(d){
+ dash=d&&!d.error?d:null;
+ if(dash&&dash.calendarMonth){const cm=dash.calendarMonth;if(cal.year===null||(cal.year===cm.year&&cal.month===cm.month)){cal={year:cm.year,month:cm.month,days:cm.days||{}}}}
+}
+function renderExtras(){renderKpiDetail();renderCalendar();renderBeltBreakdown();renderBench();renderWeekdays();
+ document.querySelectorAll('.dash-extra').forEach(x=>x.hidden=!dash)}
+
+function renderKpiDetail(){
+ document.querySelectorAll('.kpi-card').forEach(c=>c.classList.toggle('open',c.dataset.kpi===openKpi));
+ const box=$('kpi-detail');if(!openKpi){box.hidden=true;return}box.hidden=false;
+ let title='',rows=[];
+ if(openKpi==='active'){title='Active members';rows=activeMembers().slice().sort((a,b)=>a.name.localeCompare(b.name)).map(m=>[m.id,m.name,m.belt,'Last visit '+lastText(m.lastDays).toLowerCase()])}
+ if(openKpi==='week'){title='Who trained this week';const by={};members.forEach(m=>by[m.name.toLowerCase()]=m);
+  rows=((dash&&dash.allMembers)||[]).filter(x=>x.visitsThisWeek>0).sort((a,b)=>b.visitsThisWeek-a.visitsThisWeek).map(x=>{const m=by[String(x.name).toLowerCase()];return [m?m.id:'',x.name,x.belt,x.visitsThisWeek+(x.visitsThisWeek===1?' visit':' visits')]})}
+ if(openKpi==='avg'){title='Visits in the last 28 days';rows=activeMembers().slice().sort((a,b)=>b.visits-a.visits).map(m=>[m.id,m.name,m.belt,m.visits+(m.visits===1?' visit':' visits')])}
+ $('kpi-detail-title').textContent=title;
+ $('kpi-detail-body').innerHTML=rows.map(([id,n,b,t])=>`<div class="mini-row ${id?'link':''}" ${id?`data-open="${esc(id)}" tabindex="0"`:''}>${avatar(n)}<div class="row-main"><strong>${esc(n)}</strong><small>${esc(b)}</small></div><span class="muted" style="font-size:12px">${esc(t)}</span></div>`).join('')||'<div class="empty">Nothing to show yet.</div>';
+ $('kpi-detail-body').querySelectorAll('[data-open]').forEach(r=>{r.onclick=()=>openMember(r.dataset.open);r.onkeydown=e=>{if(e.key==='Enter')openMember(r.dataset.open)}});
+}
+document.querySelectorAll('.kpi-card').forEach(c=>{const t=()=>{if(c.classList.contains('plan-locked'))return;openKpi=openKpi===c.dataset.kpi?null:c.dataset.kpi;renderKpiDetail()};c.onclick=t;c.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();t()}}});
+$('kpi-detail-close').onclick=()=>{openKpi=null;renderKpiDetail()};
+
+function renderCalendar(){
+ if(cal.year===null)return;
+ $('cal-label').textContent=MONTHS[cal.month]+' '+cal.year;
+ const first=new Date(cal.year,cal.month,1),lead=(first.getDay()+6)%7,dim=new Date(cal.year,cal.month+1,0).getDate();
+ const counts=Object.values(cal.days).map(n=>n.length),max=counts.length?Math.max(...counts):0;
+ const now=new Date(),cur=now.getFullYear()===cal.year&&now.getMonth()===cal.month;
+ let h='';for(let i=0;i<lead;i++)h+='<span class="cal-day blank"></span>';
+ for(let d=1;d<=dim;d++){const key=cal.year+'-'+pad2(cal.month+1)+'-'+pad2(d),n=(cal.days[key]||[]).length;let st='';
+  if(n&&max){const o=(.25+n/max*.75).toFixed(2);st=`background:rgba(244,122,18,${o});border-color:transparent;${o>=.9?'color:#0A0B0C;font-weight:700;':''}`}
+  h+=`<button class="cal-day${cur&&d===now.getDate()?' today':''}${calDay===key?' selected':''}" data-day="${key}" style="${st}" aria-label="${d} ${MONTHS[cal.month]}: ${n} check-ins">${d}</button>`}
+ $('cal-grid').innerHTML=h;
+ $('cal-grid').querySelectorAll('[data-day]').forEach(b=>b.onclick=()=>{calDay=calDay===b.dataset.day?null:b.dataset.day;renderCalendar()});
+ const box=$('cal-day');if(!calDay){box.hidden=true;return}box.hidden=false;
+ const p=calDay.split('-').map(Number);$('cal-day-title').textContent=new Date(p[0],p[1]-1,p[2]).toLocaleDateString(undefined,{weekday:'long',day:'numeric',month:'long'});
+ document.querySelectorAll('[data-calmode]').forEach(b=>b.classList.toggle('active',b.dataset.calmode===calMode));
+ const came=cal.days[calDay]||[],cameL=came.map(n=>String(n).toLowerCase());
+ const list=calMode==='attended'?came:activeMembers().map(m=>m.name).filter(n=>!cameL.includes(n.toLowerCase()));
+ $('cal-day-body').innerHTML=list.map(n=>`<div class="mini-row" style="padding:8px 0">${avatar(n)}<div class="row-main"><strong>${esc(n)}</strong></div></div>`).join('')||`<div class="empty" style="padding:14px">${calMode==='attended'?'Nobody checked in this day.':'Every active member checked in this day.'}</div>`;
+}
+document.querySelectorAll('[data-calmode]').forEach(b=>b.onclick=()=>{calMode=b.dataset.calmode;renderCalendar()});
+async function changeMonth(delta){if(delta<0&&!hasPlan('standard')){toast('Past months are included in Standard. Contact LineUp to upgrade.');return}let m=cal.month+delta,y=cal.year;if(m<0){m=11;y--}if(m>11){m=0;y++}
+ try{const r=await api('calendar',{year:y,month:m});if(r.error){toast(friendlyServerError(r.error));return}cal={year:r.year,month:r.month,days:r.days||{}};calDay=null;renderCalendar()}catch(err){failed(err,"Couldn't load that month")}}
+$('weekday-close').onclick=()=>{openDay=null;renderWeekdays()};
+$('cal-prev').onclick=()=>changeMonth(-1);$('cal-next').onclick=()=>changeMonth(1);
+
+function renderBeltBreakdown(){
+ const list=(dash&&dash.beltBreakdown)||[];$('belt-word').textContent=rankWord()+' breakdown';
+ $('belt-breakdown').innerHTML=list.map((b,i)=>{const open=openBelt===b.belt;
+  return `<div class="belt-item${open?' open':''}"><button class="belt-line" data-bi="${i}" aria-expanded="${open}"><span class="bl-left">${beltDot(b.belt)}<strong>${esc(b.belt)}</strong><span class="muted">${b.memberCount} ${b.memberCount===1?'member':'members'}</span></span><span class="muted">${b.avgVisits} avg visits <span class="chev">›</span></span></button>
+  ${open?`<div class="roster">${(b.members||[]).map(r=>`<div class="roster-row"><span>${esc(r.name)}</span><span class="muted">${esc(r.label)}</span></div>`).join('')||'<div class="roster-row muted">Nobody here yet</div>'}</div>`:''}</div>`}).join('')||'<div class="empty">No members yet.</div>';
+ $('belt-breakdown').querySelectorAll('[data-bi]').forEach(b=>b.onclick=()=>{const x=list[+b.dataset.bi];openBelt=openBelt===x.belt?null:x.belt;renderBeltBreakdown()});
+}
+function renderBench(){
+ const rows=(dash&&dash.beltBenchmarks)||[],w=rankWord().toLowerCase();$('bench-title').textContent='Time at each '+w;
+ $('bench-list').innerHTML=rows.map(r=>`<div class="mini-row"><div class="row-main"><strong>${beltDot(r.belt)} ${esc(r.belt)}</strong><small>${r.promotions} promotion${r.promotions===1?'':'s'}, from ${r.minSessions} to ${r.maxSessions} sessions</small></div><strong class="accent">${r.avgSessions} sessions</strong></div>`).join('')
+  ||`<div class="empty" style="padding:16px">This fills in as gradings are recorded. Open a member, tap Change ${esc(w)}, and record when they got their current ${esc(w)} and each promotion after it.</div>`;
+}
+const DAY_PLURAL=['Mondays','Tuesdays','Wednesdays','Thursdays','Fridays','Saturdays','Sundays'];
+function renderWeekdays(){
+ const v=(dash&&dash.weekdayTotals)||[0,0,0,0,0,0,0],max=Math.max(...v,1),peak=v.indexOf(Math.max(...v));
+ $('weekday-chart').innerHTML=WEEK.days.map((d,i)=>`<button class="bar-group bar-btn${openDay===i?' sel':''}" data-wd="${i}" aria-label="${DAY_PLURAL[i]}: ${v[i]||0} check-ins. Show who came"><span class="bar-val">${v[i]||0}</span><div class="bar${i===peak&&v[i]?'':' prev'}" style="height:${(v[i]||0)/max*100}%"></div><span class="bar-label">${d}</span></button>`).join('');
+ $('weekday-chart').querySelectorAll('[data-wd]').forEach(b=>b.onclick=()=>{const i=+b.dataset.wd;openDay=openDay===i?null:i;renderWeekdays()});
+ const box=$('weekday-detail');if(openDay===null){box.hidden=true;return}box.hidden=false;
+ const list=weekdayPeople[openDay]||[];
+ $('weekday-detail-title').textContent=`Who trains on ${DAY_PLURAL[openDay]}`;
+ $('weekday-detail-body').innerHTML=list.map(p=>`<div class="mini-row link" data-open="${esc(p.id)}" tabindex="0" style="padding:8px 0">${avatar(p.name)}<div class="row-main"><strong>${esc(p.name)}</strong></div><span class="muted" style="font-size:12px">${p.count} ${p.count===1?DAY_PLURAL[openDay].slice(0,-1):DAY_PLURAL[openDay]}</span></div>`).join('')||`<div class="empty" style="padding:14px">No member check-ins on ${DAY_PLURAL[openDay]} yet.</div>`;
+ $('weekday-detail-body').querySelectorAll('[data-open]').forEach(r=>{r.onclick=()=>openMember(r.dataset.open);r.onkeydown=e=>{if(e.key==='Enter')openMember(r.dataset.open)}});
+}
+
+// ---------- Member history: belt journey, belt changes and check-ins ----------
+async function loadProfile(id,force){
+ if(profiles[id]&&!force){renderHistory(id);return}
+ if($('member-history'))$('member-history').innerHTML='<p class="hint">Loading belt journey and check-ins…</p>';
+ try{const r=await api('profile',{id:id});
+  if(r.error||!r.member){if(selectedId===id&&$('member-history'))$('member-history').innerHTML='<p class="hint">Couldn\'t load this member\'s history.</p>';return}
+  profiles[id]=r;const m=members.find(x=>x.id===id);if(m&&r.member.belt&&m.belt!==r.member.belt){m.belt=r.member.belt;renderMembers();return}
+  renderHistory(id);
+ }catch(err){if(err.message!==ENDED&&selectedId===id&&$('member-history'))$('member-history').innerHTML='<p class="hint">Couldn\'t load this member\'s history. Tap Refresh to try again.</p>'}
+}
+function renderHistory(id){
+ const box=$('member-history'),r=profiles[id];if(!box||!r||selectedId!==id)return;
+ const w=(r.labels&&r.labels.rank)||rankWord(),wl=w.toLowerCase(),ed=can('editMembers');
+ const segs=(r.beltJourney||[]).slice().reverse();
+ const jr=segs.map(s=>{let range;if(s.current)range=s.from?'Since '+dayText(s.from):'Since records began';else if(!s.from)range='Before '+dayText(s.to);else range=dayText(s.from)+' to '+dayText(s.to);
+  return `<div class="mini-row" style="padding:9px 0"><div class="row-main"><strong>${beltDot(s.belt)} ${esc(s.belt)}${s.current?' <span class="badge" style="margin-left:4px">Now</span>':''}</strong><small>${esc(range+(s.note?' ('+s.note+')':''))}</small></div><span class="muted" style="font-size:12px">${s.sessions} session${s.sessions===1?'':'s'}</span></div>`}).join('');
+ const opts=[...new Set((r.rankOptions||[]).concat(settings.belts.map(b=>b.name)).concat([r.member.belt]).filter(Boolean))];
+ const visits=(r.visits||[]).map(v=>new Date(v)).filter(d=>!isNaN(d)).sort((a,b)=>b-a);
+ box.innerHTML=`<div class="history-block"><div class="card-head" style="margin-bottom:6px"><h4>${esc(w)} journey</h4><div style="display:flex;gap:6px">${ed&&r.beltChanges>0?'<button class="small-btn" id="undo-belt">Undo last</button>':''}${ed?`<button class="small-btn primary-btn" id="change-belt">Change ${esc(wl)}</button>`:''}</div></div>
+  ${jr||'<p class="hint">No '+esc(wl)+' changes recorded yet.</p>'}
+  <div id="belt-form" hidden class="belt-form"><div class="detail-field"><label for="bf-belt">New ${esc(wl)}</label><select class="field" id="bf-belt">${opts.map(o=>`<option ${o===r.member.belt?'selected':''}>${esc(o)}</option>`).join('')}</select></div>
+  <div class="detail-field"><label for="bf-date">Date awarded</label><input class="field" type="date" id="bf-date" value="${todayISO()}" max="${todayISO()}"></div>
+  <div class="detail-field"><label for="bf-note">Note (optional)</label><input class="field" id="bf-note" maxlength="80" placeholder="For example: grading day"></div>
+  <p class="hint">Choosing their current ${esc(wl)} with the date they received it starts the session count from that day.</p>
+  <div style="display:flex;gap:8px;justify-content:flex-end"><button class="btn" id="bf-cancel">Cancel</button><button class="btn primary" id="bf-save">Save</button></div></div></div>
+  <div class="history-block"><div class="card-head" style="margin-bottom:6px"><h4>Check-ins</h4><span class="muted" style="font-size:12px">${visits.length} in total</span></div>
+  <div class="visit-list">${visits.slice(0,40).map(d=>`<div class="roster-row"><span>${d.toLocaleDateString(undefined,{weekday:'short',day:'numeric',month:'short',year:'numeric'})}</span><span class="muted">${d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</span></div>`).join('')||'<p class="hint">No check-ins recorded yet.</p>'}</div>
+  ${visits.length>40?`<p class="hint">Showing the 40 most recent of ${visits.length}.</p>`:''}</div>`;
+ if(!ed)return;
+ const form=$('belt-form');
+ $('change-belt').onclick=()=>{form.hidden=!form.hidden};
+ $('bf-cancel').onclick=()=>{form.hidden=true};
+ $('bf-save').onclick=async()=>{
+  const belt=$('bf-belt').value,date=$('bf-date').value,note=$('bf-note').value.trim();
+  if(belt.toLowerCase()===String(r.member.belt).toLowerCase()&&date===todayISO()){toast('Choose a new '+wl+', or change the date to when they received this one.');return}
+  if(busy)return;busy=true;$('bf-save').disabled=true;$('bf-save').textContent='Saving…';
+  try{const res=await api('setBelt',{id:id,belt:belt,date:date,note:note});
+   if(!res.success){toast(res.error||"Couldn't save that.");return}
+   const m=members.find(x=>x.id===id);if(m)m.belt=belt;toast(w+' updated');refreshSoon();renderMembers();await loadProfile(id,true);
+  }catch(err){failed(err,"Couldn't confirm that saved")}finally{busy=false;if($('bf-save')){$('bf-save').disabled=false;$('bf-save').textContent='Save'}}
+ };
+ const u=$('undo-belt');if(u)u.onclick=async()=>{
+  if(!confirm(`Undo the last ${wl} change for ${r.member.name}?`)||busy)return;busy=true;
+  try{const res=await api('undoBelt',{id:id});if(!res.success){toast(res.error||"Couldn't undo that.");return}toast('Last '+wl+' change undone');refreshSoon();await loadProfile(id,true)}
+  catch(err){failed(err,"Couldn't confirm that saved")}finally{busy=false}
+ };
+}
+
+// ---------- Join link and join requests ----------
+let join={enabled:true,code:'',pending:[]};
+function joinUrl(){return new URL('join.html?g='+encodeURIComponent(gymId)+'&k='+encodeURIComponent(join.code),window.location.href).href}
+function inviteText(){return `Join ${gymName()} on LineUp so you can check in from your phone: ${joinUrl()}`}
+function renderJoin(){
+ const n=join.pending.length,show=can('addMembers');
+ $('join-badge').hidden=!(show&&n);$('join-badge').textContent=n;
+ $('join-banner').hidden=!(show&&n);
+ $('join-banner-text').textContent=`${n} ${n===1?'person has':'people have'} asked to join. Approve them in Members.`;
+ $('join-card').hidden=!(show&&n);
+ $('join-list').innerHTML=join.pending.map(r=>`<div class="mini-row">${avatar(r.name)}<div class="row-main"><strong>${esc(r.name)}</strong><small>${esc(r.email)}${r.belt?' · '+esc(r.belt):''} · asked ${esc(r.received)}</small></div><div style="display:flex;gap:6px"><button class="small-btn" data-decline="${esc(r.id)}">Decline</button><button class="small-btn primary-btn" data-approve="${esc(r.id)}">Approve</button></div></div>`).join('');
+ const sw=$('join-enabled');if(sw){sw.classList.toggle('on',join.enabled);sw.setAttribute('aria-checked',join.enabled)}
+}
+$('join-list').addEventListener('click',async ev=>{
+ const b=ev.target.closest('button[data-approve],button[data-decline]');if(!b||busy)return;
+ const approve=!!b.dataset.approve,id=approve?b.dataset.approve:b.dataset.decline,req=join.pending.find(r=>r.id===id);
+ if(!req)return;
+ if(!approve&&!confirm(`Decline ${req.name}'s request? They won't be told, and can ask again with the link.`))return;
+ if(approve&&seatsFree()<=0){toast(seatFullMsg());return}
+ busy=true;b.disabled=true;b.textContent=approve?'Approving…':'Declining…';
+ try{const r=await api('portalDecideJoin',{id:id,decision:approve?'approve':'decline'});
+  if(!r.success){toast(r.error||"Couldn't save that.");if(r.gone){join.pending=join.pending.filter(x=>x.id!==id);renderJoin()}return}
+  join.pending=join.pending.filter(x=>x.id!==id);
+  if(approve){members.push(r.member);toast(r.emailed?`${req.name} approved and emailed a sign-in link`:`${req.name} approved. The email didn't send, so share the sign-in link with them.`);renderMembers();renderDashboard();renderSettings()}
+  else toast(`${req.name}'s request declined`);
+  renderJoin();
+ }catch(err){failed(err,"Couldn't confirm that saved. Tap Refresh to check")}
+ finally{busy=false;if(b.isConnected){b.disabled=false;b.textContent=approve?'Approve':'Decline'}}
+});
+$('join-banner').onclick=()=>page('members');
+function openInvite(){
+ const on=join.enabled;
+ $('invite-on').hidden=!on;$('invite-off').hidden=on;
+ if(on){$('invite-link').value=joinUrl();$('invite-wa').href='https://wa.me/?text='+encodeURIComponent(inviteText());$('invite-mail').href='mailto:?subject='+encodeURIComponent('Join '+gymName()+' on LineUp')+'&body='+encodeURIComponent(inviteText())}
+ $('invite-manual').hidden=!can('addMembers');
+ $('invite-modal').classList.add('open');
+}
+function closeInvite(){$('invite-modal').classList.remove('open')}
+$('invite-close').onclick=closeInvite;
+$('invite-modal').onclick=e=>{if(e.target.id==='invite-modal')closeInvite()};
+$('invite-copy').onclick=async()=>{try{await navigator.clipboard.writeText(joinUrl());toast('Link copied')}catch(e){$('invite-link').select();document.execCommand('copy');toast('Link copied')}};
+$('invite-share').hidden=!navigator.share;
+$('invite-share').onclick=()=>{navigator.share({title:'Join '+gymName()+' on LineUp',text:inviteText()}).catch(()=>{})};
+$('invite-manual').onclick=()=>{closeInvite();openModal()};
+$('invite-new').onclick=async()=>{
+ if(busy||!confirm('Make a new link? The current link stops working straight away, so anyone you sent it to will need the new one.'))return;
+ busy=true;try{const r=await api('portalNewJoinLink');if(!r.success){toast(r.error||"Couldn't make a new link.");return}join.code=r.code;openInvite();toast('New link ready. The old one no longer works.')}
+ catch(err){failed(err,"Couldn't make a new link")}finally{busy=false}
+};
+$('join-enabled').onclick=()=>{join.enabled=!join.enabled;renderJoin()};
+
+// ---------- Members ----------
+function fillBeltFilter(){const sel=$('belt-filter'),cur=sel.value;const names=[...new Set(settings.belts.map(b=>b.name).concat(members.map(m=>m.belt)))];sel.innerHTML='<option value="all">All belts</option>'+names.map(n=>`<option>${esc(n)}</option>`).join('');sel.value=[...sel.options].some(o=>o.value===cur)?cur:'all'}
+function renderMembers(){
+ if(!settings)return;
+ fillBeltFilter();
+ const q=$('member-search').value.toLowerCase().trim(),belt=$('belt-filter').value,st=$('status-filter').value,ac=$('access-filter').value;
+ const rows=members.filter(m=>(!q||(m.name+' '+m.email).toLowerCase().includes(q))&&(belt==='all'||m.belt===belt)&&(st==='all'||(st==='active')===m.active)&&(ac==='all'||accessOf(m)===ac));
+ $('member-table').innerHTML=rows.map(m=>`<tr data-member="${esc(m.id)}" class="${m.id===selectedId?'selected':''}"><td><div class="member-name">${avatar(m.name)}<span><strong>${esc(m.name)}</strong><small>${esc(m.email||'No email')}</small></span></div></td><td>${beltHTML(m.belt)} <span style="margin-left:4px">${esc(m.belt)}</span></td><td>${statusHTML(m)}</td><td>${accessHTML(m)}</td><td>${lastText(m.lastDays)}</td></tr>`).join('');
+ $('member-empty').style.display=rows.length?'none':'block';
+ $('member-empty').textContent=members.length?'No members match. Try another search or filter.':'No members yet. Add your first member to get started.';
+ document.querySelectorAll('[data-member]').forEach(tr=>tr.onclick=()=>{selectedId=tr.dataset.member;renderMembers()});
+ renderDetail();
+}
+function renderDetail(){
+ const m=members.find(x=>x.id===selectedId),el=$('member-detail');
+ if(!m){el.innerHTML='<div class="empty">Choose a member to view their profile.</div>';return}
+ const ed=can('editMembers'),dis=ed?'':'disabled',acc=accessOf(m);
+ const accHelp={signedin:'App access updates automatically from their sign-ins.',invited:'They haven\'t signed in yet. This changes by itself the first time they sign in with this email.',noemail:'Add an email so they can sign in. You can still check them in from Check-ins.'}[acc];
+ const beltNames=[...new Set(settings.belts.map(b=>b.name).concat(m.belt))];
+ el.innerHTML=`<div class="detail-head">${avatar(m.name)}<div style="min-width:0"><h4>${esc(m.name)}</h4><div style="display:flex;gap:6px;flex-wrap:wrap">${statusHTML(m)}${accessHTML(m)}</div></div></div>
+ <div class="setting-row" style="padding:0 0 14px"><div><strong>Active member</strong><small>${m.active?'Can sign in and check in. Uses a member seat.':'Can\'t sign in or check in. Doesn\'t use a seat.'}</small></div><button class="switch ${m.active?'on':''}" id="toggle-active" role="switch" aria-checked="${m.active}" aria-label="Active member" ${can('deactivate')?'':'disabled title="Locked for coaches"'}></button></div>
+ <div class="detail-grid"><div class="detail-stat"><small>Visits, last 28 days</small><strong>${+m.visits||0}</strong></div><div class="detail-stat"><small>Last visit</small><strong class="small">${lastText(m.lastDays)}</strong></div><div class="detail-stat"><small>Member since</small><strong class="small">${esc(m.since)}</strong></div><div class="detail-stat"><small>App access</small><strong class="small">${ACCESS[acc].label}</strong></div></div>
+ <p class="hint">${accHelp}</p>
+ <div><button class="btn" id="preview-member" style="width:100%">View their app</button><p class="hint" style="margin-top:6px">Opens the member app exactly as ${esc(m.name.split(' ')[0])} sees it. Check-in is off and nothing is saved.</p></div>
+ <div class="detail-field"><label for="edit-name">Full name</label><input class="field" id="edit-name" value="${esc(m.name)}" ${dis}></div>
+ <div class="detail-field"><label for="edit-email">Email</label><input class="field" id="edit-email" type="email" value="${esc(m.email)}" placeholder="No email: can't sign in" ${dis}></div>
+ <div class="detail-field"><label for="edit-notes">Notes</label><input class="field" id="edit-notes" value="${esc(m.notes||'')}" placeholder="Optional coach notes" ${dis}></div>
+ ${ed?'<button class="btn primary" id="save-member-detail">Save changes</button>':'<p class="hint">Member details are locked for coaches.</p>'}
+ <p class="hint">Inactive members keep their record and attendance history.</p>
+ <div id="member-history"></div>`;
+ loadProfile(m.id);
+ $('preview-member').onclick=()=>{window.location.href=MEMBER_APP_URL+'?preview='+encodeURIComponent(m.id)+(realSuper()?'&gym='+encodeURIComponent(gymId):'')};
+ $('toggle-active').onclick=async()=>{
+  if(busy)return;
+  if(!m.active&&seatsFree()<=0){toast(seatFullMsg());return}
+  busy=true;$('toggle-active').disabled=true;
+  try{const r=await api('portalSetActive',{id:m.id,active:!m.active});
+   if(!r.success){toast(r.error||"Couldn't save that.");return}
+   m.active=r.active;toast(m.active?`${m.name} is active again`:`${m.name} is now inactive`);renderMembers();renderDashboard();renderSettings();
+  }catch(err){failed(err,"Couldn't save that")}finally{busy=false;if($('toggle-active'))$('toggle-active').disabled=!can('deactivate')}
+ };
+ if(ed)$('save-member-detail').onclick=async()=>{
+  if(busy)return;
+  const name=$('edit-name').value.trim(),email=$('edit-email').value.trim(),notes=$('edit-notes').value;
+  if(!name){toast('Enter their name.');return}
+  if(email!==m.email&&m.email&&!confirm(email?`Change ${m.name}'s email? They'll need to sign in again with the new email and set a new PIN.`:`Remove ${m.name}'s email? They won't be able to sign in to the app.`))return;
+  busy=true;const btn=$('save-member-detail');btn.disabled=true;btn.textContent='Saving…';
+  try{
+   const r=await api('portalSaveMember',{id:m.id,name:name,email:email,notes:notes});
+   if(!r.success){toast(r.error||"Couldn't save that.");return}
+   Object.assign(m,{name:r.member.name,email:r.member.email,notes:r.member.notes,signedIn:r.member.signedIn});
+   const msg=r.pinCleared?'Saved. They\'ll sign in with the new email and set a new PIN.':'Member updated';
+   toast(msg);renderMembers();renderDashboard();
+  }catch(err){failed(err,"Couldn't confirm that saved")}finally{busy=false;if($('save-member-detail')){$('save-member-detail').disabled=false;$('save-member-detail').textContent='Save changes'}}
+ };
+}
+['member-search','belt-filter','status-filter','access-filter'].forEach(id=>$(id).addEventListener('input',renderMembers));
+
+// ---------- Check-ins (uses the same requests as the current dashboard) ----------
+async function ciRefresh(){
+ $('checkin-date').textContent=new Date().toLocaleDateString(undefined,{weekday:'long',day:'numeric',month:'long'});
+ try{const d=await api('todayCheckins');if(d.error){toast(friendlyServerError(d.error));return}ciRender(d)}catch(err){failed(err,"Couldn't load today's check-ins")}
+}
+function ciTime(iso){return new Date(iso).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}
+function ciRender(d){
+ ci=d;const c=d.counts||{active:0,guests:0};
+ $('today-count').textContent=c.active;
+ const mem=c.active-c.guests;$('today-sub').textContent=c.guests?`checked in today: ${mem} ${mem===1?'member':'members'} and ${c.guests} ${c.guests===1?'guest':'guests'}`:(c.active===1?'person':'people')+' checked in today';
+ const sel=$('guest-belt'),keep=sel.value;sel.innerHTML='<option value="">Not sure</option>'+(d.ranks||[]).map(r=>`<option>${esc(r)}</option>`).join('');sel.value=keep;
+ $('today-list').innerHTML=(d.items||[]).map(it=>{
+  const tag=it.source==='guest'?'Guest':it.source==='coach'?'Added by coach':'Self check-in';
+  const meta=it.removed?'Removed, no longer counted':`${esc(ciTime(it.time))} · ${tag}${it.source==='guest'&&it.rank?' · '+esc(it.rank):''}`;
+  return `<div class="mini-row">${avatar(it.name)}<div class="row-main"><strong class="${it.removed?'gone':''}">${esc(it.name)}</strong><small>${meta}</small></div><button class="small-btn" data-row="${it.row}" data-stamp="${esc(it.stamp)}" data-undo="${it.removed?1:0}">${it.removed?'Undo':'Remove'}</button></div>`}).join('')||'<div class="empty">No check-ins yet today.</div>';
+ ciResults();
+}
+function ciResults(){
+ const q=$('checkin-search').value.trim().toLowerCase(),box=$('checkin-results');
+ if(!q){box.innerHTML='';return}
+ const done={};(ci.items||[]).forEach(it=>{if(!it.removed&&it.memberId)done[it.memberId]=true});
+ const hits=members.filter(m=>m.name.toLowerCase().includes(q)).slice(0,8);
+ box.innerHTML=hits.map(m=>`<div class="checkin-item"><div class="row-main"><strong>${esc(m.name)}</strong><small>${esc(m.belt)}</small></div>${done[m.id]?'<span class="badge">✓ Checked in</span>':!m.active?'<span class="badge">Inactive</span>':`<button class="small-btn primary-btn" data-add="${esc(m.id)}">Check in</button>`}</div>`).join('')||`<div class="empty">No member called "${esc(q)}". Add them as a guest instead?</div>`;
+}
+async function ciAction(mode,params,okText){
+ if(busy)return false;busy=true;$('page-checkins').classList.add('busy');
+ try{const r=await api(mode,params);
+  if(!r.success){toast(r.error||"Couldn't save that.");if(r.reason==='already')ciRefresh();return false}
+  ciRender(r);toast(okText);refreshSoon();return true;
+ }catch(err){failed(err,"Couldn't confirm that saved. Tap Refresh to check");return false}
+ finally{busy=false;$('page-checkins').classList.remove('busy')}
+}
+$('checkin-search').addEventListener('input',ciResults);
+$('checkin-results').addEventListener('click',async ev=>{const b=ev.target.closest('button[data-add]');if(!b)return;const m=members.find(x=>x.id===b.dataset.add);if(await ciAction('coachAddMember',{memberId:b.dataset.add},(m?m.name:'Member')+' checked in')){$('checkin-search').value='';ciResults()}});
+$('today-list').addEventListener('click',ev=>{const b=ev.target.closest('button[data-row]');if(!b)return;const undo=b.dataset.undo==='1';ciAction('removeCheckin',{row:b.dataset.row,stamp:b.dataset.stamp,undo:undo?1:0},undo?'Check-in restored':'Check-in removed')});
+$('ci-refresh').onclick=ciRefresh;
+function openGuest(){$('guest-form').hidden=false;$('guest-open').hidden=true;$('guest-name').value=$('checkin-search').value.trim();$('guest-name').focus()}
+function closeGuest(){$('guest-form').hidden=true;$('guest-open').hidden=false;$('guest-name').value='';$('guest-belt').value=''}
+$('guest-open').onclick=openGuest;$('guest-cancel').onclick=closeGuest;
+$('guest-add').onclick=async()=>{const n=$('guest-name').value.trim();if(!n){toast("Enter the guest's name.");return}if(await ciAction('addGuest',{name:n,rank:$('guest-belt').value},n+' added as a guest')){closeGuest();$('checkin-search').value='';ciResults()}};
+
+// ---------- Academy setup ----------
+function fillSettingInputs(){if(!settings)return;$('academy-name').value=settings.academy;$('coach-name').value=settings.coach;$('alert-days').value=settings.alertDays;$('member-capacity').value=settings.capacity??'';$('plan-tier').value=settings.plan;$('plan-status').value=settings.account;$('grading-system').value=settings.grading;$('stripes-count').value=String(settings.stripes);$('expiry-days').value=settings.expiry}
+function renderSettings(){
+ if(!settings)return;
+ $('seats-in-use').textContent=hasLimit()?`${activeMembers().length} of ${settings.capacity}`:`${activeMembers().length}, no limit`;
+ $('belt-list').innerHTML=settings.belts.map((b,i)=>`<div class="belt-edit"><span class="belt" style="width:32px;height:10px;background:${b.color}"></span><input class="field" value="${esc(b.name)}" data-belt-name="${i}" aria-label="Belt name"><input type="color" value="${b.color}" data-belt-color="${i}" style="width:43px;height:40px;background:transparent;border:0" aria-label="Belt colour"><button class="small-btn" data-up="${i}" ${i===0?'disabled':''} aria-label="Move up">↑</button><button class="small-btn" data-down="${i}" ${i===settings.belts.length-1?'disabled':''} aria-label="Move down">↓</button><button class="small-btn" data-remove-belt="${i}" aria-label="Remove">×</button></div>`).join('');
+ document.querySelectorAll('[data-belt-name]').forEach(x=>x.onchange=()=>{settings.belts[+x.dataset.beltName].name=x.value.trim()||settings.belts[+x.dataset.beltName].name});
+ document.querySelectorAll('[data-belt-color]').forEach(x=>x.onchange=()=>{settings.belts[+x.dataset.beltColor].color=x.value;renderSettings()});
+ document.querySelectorAll('[data-up]').forEach(x=>x.onclick=()=>moveBelt(+x.dataset.up,-1));
+ document.querySelectorAll('[data-down]').forEach(x=>x.onclick=()=>moveBelt(+x.dataset.down,1));
+ document.querySelectorAll('[data-remove-belt]').forEach(x=>x.onclick=()=>{const i=+x.dataset.removeBelt,b=settings.belts[i];if(settings.belts.length<2)return;const n=members.filter(m=>m.belt===b.name).length;if(n&&!confirm(`${n} member${n===1?' has':'s have'} ${b.name}. Remove it from the list anyway? Their belt won't change.`))return;settings.belts.splice(i,1);renderSettings()});
+ const sw=(list,attr,sub)=>list.map((f,i)=>`<div class="setting-row"><div><strong>${esc(f.name)}</strong><small>${sub(f)}</small></div><button class="switch ${f.on?'on':''}" data-${attr}="${i}" role="switch" aria-checked="${f.on}" aria-label="${esc(f.name)}"></button></div>`).join('');
+ $('profile-fields').innerHTML=sw(settings.fields,'field-switch',()=>'Show this field in member records.');
+ $('feature-list').innerHTML=sw(settings.features,'feature-switch',f=>f.on?'Enabled in your academy setup.':'Hidden from the main workflow.');
+ $('membership-list').innerHTML=sw(settings.memberships,'membership-switch',f=>f.on?'Available':'Disabled');
+ document.querySelectorAll('[data-field-switch]').forEach(x=>x.onclick=()=>{const f=settings.fields[+x.dataset.fieldSwitch];f.on=!f.on;renderSettings()});
+ document.querySelectorAll('[data-feature-switch]').forEach(x=>x.onclick=()=>{const f=settings.features[+x.dataset.featureSwitch];f.on=!f.on;renderSettings()});
+ document.querySelectorAll('[data-membership-switch]').forEach(x=>x.onclick=()=>{const f=settings.memberships[+x.dataset.membershipSwitch];f.on=!f.on;renderSettings()});
+ $('perm-list').innerHTML=PERMS.filter(p=>!SOON.includes(p[0])).map(([k,l,d])=>`<div class="setting-row"><div><strong>${l}</strong><small>${d}</small></div><button class="switch ${settings.perms[k]?'on':''}" data-perm-switch="${k}" role="switch" aria-checked="${!!settings.perms[k]}" aria-label="${l}"></button></div>`).join('');
+ document.querySelectorAll('[data-perm-switch]').forEach(x=>x.onclick=()=>{const k=x.dataset.permSwitch;settings.perms[k]=!settings.perms[k];renderSettings()});
+ document.querySelectorAll('.settings-panel[data-perm]').forEach(p=>{
+  const key=p.dataset.perm,coachPlan=key==='plan'&&!isSuper(),locked=!isSuper()&&key!=='plan'&&!settings.perms[key],note=p.querySelector('.lock-note');
+  if(key==='plan'){const pb=p.querySelector('.panel-body'),pc=$('plan-compare');if(isSuper()){if(pb.nextElementSibling!==pc)p.insertBefore(pb,pc)}else if(pc.nextElementSibling!==pb)p.insertBefore(pc,pb);pc.classList.toggle('below-admin',isSuper());pb.hidden=coachPlan;$('plan-tab').textContent=isSuper()?'Plan and seats':'Your plan';renderPlanPage()}
+  p.classList.toggle('locked',locked);p.querySelector('.panel-body').toggleAttribute('inert',locked);note.hidden=!locked;
+  note.textContent=key==='plan'?'🔒 Managed by LineUp. Contact LineUp to change your plan or add seats.':'🔒 Locked for coaches at this academy. Contact LineUp if you need this changed.';
+ });
+ document.querySelectorAll('.setting-tab').forEach(t=>{const p=$('settings-'+t.dataset.setting);t.classList.toggle('locked',!!p&&p.classList.contains('locked'))});
+}
+function moveBelt(i,d){const j=i+d;if(j<0||j>=settings.belts.length)return;[settings.belts[i],settings.belts[j]]=[settings.belts[j],settings.belts[i]];renderSettings()}
+function showSetting(name){document.querySelectorAll('.setting-tab').forEach(x=>x.classList.toggle('active',x.dataset.setting===name));document.querySelectorAll('.settings-panel').forEach(x=>x.classList.toggle('active',x.id==='settings-'+name))}
+document.querySelectorAll('.setting-tab').forEach(b=>b.onclick=()=>showSetting(b.dataset.setting));
+$('add-belt').onclick=()=>{const n=$('new-belt-name').value.trim();if(!n)return;settings.belts.push({name:n,color:$('new-belt-color').value.toUpperCase()});$('new-belt-name').value='';renderSettings()};
+$('add-field').onclick=()=>{const n=$('new-field-name').value.trim();if(!n)return;settings.fields.push({name:n,on:true});$('new-field-name').value='';renderSettings()};
+$('add-membership').onclick=()=>{const n=$('new-membership').value.trim();if(!n)return;settings.memberships.push({name:n,on:true});$('new-membership').value='';renderSettings()};
+$('save-settings').onclick=async()=>{
+ if(busy)return;
+ const data={};
+ if(can('academy'))data.academy={name:$('academy-name').value.trim(),coach:$('coach-name').value.trim(),alertDays:+$('alert-days').value||14};
+ if(can('grading'))data.grading={system:$('grading-system').value,stripes:+$('stripes-count').value,belts:settings.belts};
+ if(isSuper()){data.plan={plan:$('plan-tier').value,account:$('plan-status').value,seats:$('member-capacity').value.trim(),joinEnabled:join.enabled};data.perms=settings.perms}
+ if(!Object.keys(data).length){toast('Nothing here is editable for coaches at this academy.');return}
+ busy=true;const btn=$('save-settings');btn.disabled=true;btn.textContent='Saving…';
+ try{const r=await api('portalSaveSettings',{data:JSON.stringify(data)});
+  if(!r.success){toast(r.error||"Couldn't save settings.");return}
+  await loadAll(true);fillSettingInputs();
+  toast(r.skipped&&r.skipped.length?'Saved. Some sections are locked and weren\'t changed.':'Settings saved');
+ }catch(err){failed(err,"Couldn't confirm the settings saved")}finally{busy=false;btn.disabled=false;btn.textContent='Save settings'}
+};
+
+// ---------- Add member ----------
+function openModal(){if(seatsFree()<=0){toast(seatFullMsg());return}const free=seatsFree();$('form-name').value='';$('form-email').value='';$('form-belt').innerHTML=settings.belts.map(b=>`<option>${esc(b.name)}</option>`).join('');$('seat-hint').textContent=hasLimit()?`Uses 1 of ${free} free seat${free===1?'':'s'}.`:'';$('member-modal').classList.add('open');$('form-name').focus()}
+function closeModal(){$('member-modal').classList.remove('open')}
+$('top-add').onclick=openInvite;$('add-member').onclick=openInvite;$('cancel-modal').onclick=closeModal;
+$('member-modal').onclick=e=>{if(e.target.id==='member-modal')closeModal()};
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal();closeInvite()}});
+$('member-form').onsubmit=async e=>{
+ e.preventDefault();if(busy)return;
+ const btn=e.submitter||$('member-form').querySelector('[type=submit]');busy=true;btn.disabled=true;btn.textContent='Adding…';
+ try{const r=await api('portalAddMember',{name:$('form-name').value.trim(),email:$('form-email').value.trim(),belt:$('form-belt').value});
+  if(!r.success){toast(r.error||"Couldn't add that member.");return}
+  members.push(r.member);selectedId=r.member.id;closeModal();page('members');renderDashboard();renderSettings();toast(r.member.name+' added');
+ }catch(err){failed(err,"Couldn't confirm the member was added. Tap Refresh to check")}finally{busy=false;btn.disabled=false;btn.textContent='Add member'}
+};
+$('export-btn').onclick=()=>{const csv=[['Name','Email','Belt','Status','App access','Last visit','Visits (28 days)','Member since'],...members.map(m=>[m.name,m.email,m.belt,m.active?'Active':'Inactive',ACCESS[accessOf(m)].label,lastText(m.lastDays),m.visits,m.since])].map(r=>r.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download=(gymName()||'lineup').replace(/\W+/g,'-').toLowerCase()+'-members.csv';a.click();URL.revokeObjectURL(a.href);toast('Member list downloaded')};
+
+// ---------- Navigation and start ----------
+document.querySelectorAll('.nav button').forEach(b=>b.addEventListener('click',()=>page(b.dataset.page)));
+document.querySelectorAll('[data-goto]').forEach(b=>b.addEventListener('click',()=>page(b.dataset.goto)));
+$('hamb').onclick=()=>{$('sidebar').classList.add('open');$('overlay').classList.add('show')};
+$('overlay').onclick=()=>{$('sidebar').classList.remove('open');$('overlay').classList.remove('show')};
+$('signout-btn').onclick=()=>{if(confirm('Sign out of LineUp on this device?'))signOut()};
+$('refresh-btn').onclick=()=>{loadAll(true).then(()=>toast('Up to date'));if($('page-checkins').classList.contains('active'))ciRefresh()};
+$('coach-preview-btn').onclick=()=>{previewCoach=!previewCoach;applyRole();toast(previewCoach?'Previewing as a coach':'Back to admin view')};
+$('retry-btn').onclick=()=>{blockedStatus=null;loadAll(false)};
+$('state-signout').onclick=()=>signOut();
+$('gym-picker').onchange=e=>{if(!realSuper()){switchCoachGym(e.target.value);return}pickedGym=e.target.value;try{sessionStorage.setItem(GYM_PICK_KEY,pickedGym)}catch(err){}selectedId=null;cal={year:null,month:null,days:{}};calDay=null;openBelt=null;openKpi=null;closeGuest();$('checkin-search').value='';loadAll(false).then(()=>{if($('page-checkins').classList.contains('active'))ciRefresh()})};
+
+// A coach at more than one gym: ask the server for a session at the other gym
+// (it checks they really coach there), then reload the portal on that gym.
+async function switchCoachGym(target){
+ const sel=$('gym-picker');
+ if(String(target)===String(identity.gymId))return;
+ sel.disabled=true;
+ try{
+  const res=await jsonpRequest(APPS_SCRIPT_URL,{mode:'switchGym',targetGymId:target,sessionKey:sessionKey});
+  if(res&&res.sessionExpired){backToUnlock();return}
+  if(!res||!res.success)throw new Error((res&&(res.message||res.error))||'Could not switch gym.');
+  const p=res.profile;
+  const next=Object.assign({},identity,{gymId:p.gymId,gymName:p.gymName,name:p.name});
+  if(p.gyms)next.gyms=p.gyms;else delete next.gyms;
+  localStorage.setItem(IDENTITY_KEY,JSON.stringify(next));
+  sessionStorage.setItem(SESSION_KEY,res.sessionKey);
+  window.location.reload();
+ }catch(err){
+  toast(err.message||'Could not switch gym.');
+  sel.value=identity.gymId;sel.disabled=false;
+ }
+}
+
+(function init(){
+ // This page trusts login.html completely, exactly like the old dashboard:
+ // no remembered coach on this device = sign in; no session for this tab = enter PIN.
+ try{identity=JSON.parse(localStorage.getItem(IDENTITY_KEY))}catch(e){identity=null}
+ try{sessionKey=sessionStorage.getItem(SESSION_KEY);pickedGym=sessionStorage.getItem(GYM_PICK_KEY)}catch(e){sessionKey=null}
+ if(!identity||identity.role!=='Coach'){signOut();return}
+ if(!sessionKey){backToUnlock();return}
+ if(!APPS_SCRIPT_URL){showState('error','LineUp is missing its connection settings (config.js).');return}
+ $('brand-name').textContent=identity.gymName||'';
+ loadAll(false);
+})();
+})();
+</script>
+
+</body></html>
