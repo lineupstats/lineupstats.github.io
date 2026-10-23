@@ -107,6 +107,7 @@ body.super .topbar{border-bottom-color:rgba(244,122,18,.45)}
 @media(max-width:760px){.top-actions{gap:6px}.top-actions .btn{padding:6px 10px;font-size:13px;line-height:1.2;border-radius:9px;flex:0 0 auto}.top-add-more{display:none}.rf-text{display:none}.rf-icon{display:inline;font-size:15px}.chart{height:120px;gap:5px;padding:8px 0 0}.bar-label{font-size:10px;padding-bottom:6px}.bar-val{font-size:9px}.bar-pair{gap:2px}.chart-legend{flex-wrap:wrap;gap:6px;font-size:11px;margin-top:10px}}
 .plan-price{font-size:20px;font-weight:800;color:var(--orange);margin:2px 0 4px}.plan-th-price{font-size:11px;font-weight:600;color:var(--muted)}.plan-price-inline{font-size:13px;font-weight:700;color:var(--orange);margin-left:8px}
 .me-head{display:flex;align-items:center;gap:14px;padding:4px 0 14px;border-bottom:1px solid var(--border)}.me-avatar{width:48px;height:48px;border-radius:24px;background:rgba(244,122,18,.15);color:var(--orange);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:17px;flex:0 0 auto}.me-name{font-weight:800;font-size:17px}.me-val{text-align:right;font-weight:600;min-width:0;overflow-wrap:anywhere}.me-gyms{display:flex;flex-direction:column;gap:6px;align-items:flex-end}.me-gym{display:flex;gap:10px;align-items:center}.me-tag{font-size:11px;color:var(--orange);border:1px solid rgba(244,122,18,.45);border-radius:20px;padding:2px 8px}@media(max-width:600px){#settings-me .setting-row{flex-direction:column;align-items:flex-start;gap:8px}.me-val{text-align:left}.me-gyms{align-items:flex-start}}
+.ng-count{display:inline-block;min-width:18px;padding:0 6px;margin-left:6px;border-radius:10px;background:var(--orange);color:#0A0B0C;font-size:11px;font-weight:800;line-height:18px;text-align:center}.ng-auto{display:flex;gap:8px;align-items:center;font-size:13px;padding:4px 0 14px;border-bottom:1px solid var(--border);margin-bottom:12px}.ng-card{border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:12px}.ng-name{font-weight:800;font-size:16px}.ng-grid{display:grid;grid-template-columns:90px 1fr;gap:6px 12px;margin:12px 0;font-size:13px}.ng-grid span{color:var(--muted)}.ng-grid b{font-weight:600;overflow-wrap:anywhere}.ng-actions{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}
 </style></head><body>
 <div class="shell"><aside class="sidebar" id="sidebar"><div class="brand"><div class="brand-mark"><svg viewBox="0 0 100 100" aria-hidden="true"><path fill="#F47A12" d="M23 20 L38 16 L38 62 L77 47.5 L81.5 61.5 L23 83 Z"/></svg></div><h1 id="brand-name"></h1><p id="brand-role">Coach workspace</p></div><div class="nav-label">WORKSPACE</div><nav class="nav" aria-label="Main navigation"><button class="active" data-page="overview"><span class="ico">▦</span>Overview</button><button data-page="members"><span class="ico">♙</span>Members<span class="nav-badge" id="join-badge" hidden></span></button><button data-page="checkins"><span class="ico">✓</span>Check-ins</button><button data-page="setup"><span class="ico">⚙</span>Academy setup</button></nav>
 <div class="sidebar-bottom"><button class="plan-pill" id="plan-pill" hidden><span class="pp-name" id="plan-pill-name"></span><span class="pp-cta" id="plan-pill-cta"></span></button><div id="gym-picker-wrap" hidden><div class="role-label" id="gym-picker-label">ADMIN: GYM</div><select class="field" id="gym-picker" style="width:100%;margin-bottom:10px" aria-label="Choose gym"></select></div><button class="btn" id="coach-preview-btn" hidden style="width:100%;margin-bottom:10px">Preview as coach</button><div id="role-help"></div><button class="btn" id="signout-btn" style="width:100%;margin-top:12px">Sign out</button></div></aside><div class="overlay" id="overlay"></div>
@@ -142,7 +143,7 @@ body.super .topbar{border-bottom-color:rgba(244,122,18,.45)}
 <section class="page" id="page-checkins"><div class="page-intro"><div><h3>Check-ins</h3><p>Add anyone who forgot to check in, add guests, or remove a mistake.</p></div><span class="badge" id="checkin-date"></span></div><div class="checkin-layout"><div class="card"><div class="card-head"><h4>Add a check-in</h4></div><input class="field" style="width:100%" id="checkin-search" placeholder="Search a member's name…" autocomplete="off"><div id="checkin-results" style="margin-top:10px"></div><button class="btn" id="guest-open" style="margin-top:12px;width:100%">＋ Add a guest</button><div id="guest-form" hidden style="margin-top:14px"><div class="detail-field"><label for="guest-name">Guest's name</label><input class="field" id="guest-name" style="width:100%"></div><div class="detail-field"><label for="guest-belt">Belt (optional)</label><select class="field" id="guest-belt" style="width:100%"></select></div><div style="display:flex;gap:8px;justify-content:flex-end"><button class="btn" id="guest-cancel">Cancel</button><button class="btn primary" id="guest-add">Add guest</button></div></div></div><div class="card"><div class="card-head"><h4>Checked in today</h4><button class="small-btn" id="ci-refresh">Refresh</button></div><div class="kpi-value" id="today-count">0</div><div class="muted" id="today-sub">members checked in today</div><div class="mini-list" id="today-list" style="margin-top:12px"></div></div></div></section>
 
 <section class="page" id="page-setup"><div class="page-intro"><div><h3>Academy setup</h3><p id="setup-intro">Configure the portal to match your academy.</p></div><button class="btn primary" id="save-settings">Save settings</button></div>
-<div class="setting-tabs"><button class="setting-tab active" data-setting="academy">Academy</button><button class="setting-tab" data-setting="me">My profile</button><button class="setting-tab" data-setting="plan" id="plan-tab">Plan and seats</button><button class="setting-tab" data-setting="grading">Belt grading</button><button class="setting-tab soon" data-setting="profiles" disabled title="Coming soon">Profile fields <span class="soon-tag">Coming soon</span></button><button class="setting-tab soon" data-setting="features" disabled title="Coming soon">Features <span class="soon-tag">Coming soon</span></button><button class="setting-tab soon" data-setting="memberships" disabled title="Coming soon">Memberships <span class="soon-tag">Coming soon</span></button><button class="setting-tab super-tab" data-setting="permissions" data-super-only hidden>Coach permissions</button></div>
+<div class="setting-tabs"><button class="setting-tab active" data-setting="academy">Academy</button><button class="setting-tab" data-setting="me">My profile</button><button class="setting-tab" data-setting="plan" id="plan-tab">Plan and seats</button><button class="setting-tab" data-setting="grading">Belt grading</button><button class="setting-tab soon" data-setting="profiles" disabled title="Coming soon">Profile fields <span class="soon-tag">Coming soon</span></button><button class="setting-tab soon" data-setting="features" disabled title="Coming soon">Features <span class="soon-tag">Coming soon</span></button><button class="setting-tab soon" data-setting="memberships" disabled title="Coming soon">Memberships <span class="soon-tag">Coming soon</span></button><button class="setting-tab super-tab" data-setting="permissions" data-super-only hidden>Coach permissions</button><button class="setting-tab super-tab" data-setting="newgyms" data-super-only hidden>New gyms <span class="ng-count" id="ng-count" hidden></span></button></div>
 
 <div class="card settings-panel" id="settings-me"><div class="panel-body"><h4 style="margin:0 0 12px">My profile</h4><div id="me-body"></div></div></div>
 
@@ -158,6 +159,7 @@ body.super .topbar{border-bottom-color:rgba(244,122,18,.45)}
 
 <div class="card settings-panel" id="settings-memberships" data-perm="memberships"><div class="lock-note" hidden></div><div class="panel-body"><h4 style="margin:0 0 4px">Memberships</h4><p class="muted" style="margin:0 0 12px;font-size:12px">Configure membership types and reminders.</p><div id="membership-list"></div><div style="display:flex;gap:8px;margin-top:14px"><input class="field" id="new-membership" placeholder="Membership type name"><button class="btn" id="add-membership">Add type</button></div><div class="setting-row"><div><strong>Expiry warning period</strong><small>Days before expiry to flag a membership.</small></div><input class="field" type="number" id="expiry-days" min="0" style="width:100px"></div></div></div>
 
+<div class="card settings-panel" id="settings-newgyms" data-super-only hidden><h4 style="margin:0 0 4px">New gyms</h4><p class="muted" style="margin:0 0 12px;font-size:12px">Academies that signed up on the sign-up page. Approving creates the gym, its spreadsheet and the coach's login, and emails the coach.</p><div id="ng-body"></div></div>
 <div class="card settings-panel" id="settings-permissions" data-super-only hidden><h4 style="margin:0 0 4px">Coach permissions</h4><p class="muted" style="margin:0 0 12px;font-size:12px">Choose what coaches at this academy can change. Plan and seats always stay with LineUp.</p><div id="perm-list"></div></div>
 </section>
 </div></main></div>
@@ -196,7 +198,7 @@ const beltColors={White:'#E9E9EA',Blue:'#2F6FDB',Purple:'#7D4FC9',Brown:'#8A5631
 const DEFAULT_BELTS=[{name:'White',color:'#E9E9EA'},{name:'Blue',color:'#2F6FDB'},{name:'Purple',color:'#7D4FC9'},{name:'Brown',color:'#8A5631'},{name:'Black',color:'#3A3A3D'}];
 const WEEK={days:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],now:[0,0,0,0,0,0,0],prev:[0,0,0,0,0,0,0]};
 
-let identity=null,sessionKey=null,pickedGym=null,role='coach',gymId=null,gyms=[];
+let identity=null,sessionKey=null,pickedGym=null,role='coach',gymId=null,gyms=[],signups=[],autoApprove=false;
 let members=[],settings=null,selectedId=null,lastLoaded=null,busy=false,refreshTimer=null;
 let ci={items:[],counts:{active:0,guests:0},ranks:[]};
 
@@ -259,7 +261,7 @@ async function loadAll(quiet){
  try{
   const both=await Promise.all([api('portalData'),api('data').catch(()=>null)]);const d=both[0];
   if(!d.success){if(quiet){toast(friendlyServerError(d.error));return}showState('error',friendlyServerError(d.error));return}
-  role=d.role;gymId=d.gymId;gyms=d.gyms||[];members=d.members||[];settings=d.settings;
+  role=d.role;gymId=d.gymId;gyms=d.gyms||[];signups=d.signups||[];autoApprove=!!d.autoApprove;members=d.members||[];settings=d.settings;
   if(!settings.belts||!settings.belts.length)settings.belts=clone(DEFAULT_BELTS);
   WEEK.now=d.week.now;WEEK.prev=d.week.prev;weekdayPeople=d.weekdayPeople||[[],[],[],[],[],[],[]];lastLoaded=new Date();useDash(both[1]);profiles={};if(d.join)join=d.join;
   if(!members.some(m=>m.id===selectedId))selectedId=members[0]?.id;
@@ -272,6 +274,35 @@ async function loadAll(quiet){
 function refreshSoon(){clearTimeout(refreshTimer);refreshTimer=setTimeout(()=>loadAll(true),1200)}
 
 function page(name){document.querySelectorAll('.page').forEach(x=>x.classList.toggle('active',x.id==='page-'+name));document.querySelectorAll('.nav button').forEach(x=>x.classList.toggle('active',x.dataset.page===name));$('top-title').textContent=({overview:'Overview',members:'Members',checkins:'Check-ins',setup:'Academy setup'})[name];$('sidebar').classList.remove('open');$('overlay').classList.remove('show');if(name==='overview')renderDashboard();if(name==='members')renderMembers();if(name==='checkins')ciRefresh();if(name==='setup')renderSettings()}
+
+// Admin only: gym sign-ups waiting for approval (Academy setup > New gyms).
+function renderNewGyms(){
+ const box=$('ng-body'),cnt=$('ng-count');if(!box)return;
+ if(cnt){cnt.textContent=signups.length;cnt.hidden=!signups.length||!isSuper()}
+ if(!isSuper()){box.innerHTML='';return}
+ const toggle=`<label class="ng-auto"><input type="checkbox" id="ng-auto" ${autoApprove?'checked':''}> Approve new gyms automatically</label>`;
+ const list=signups.length?signups.map(r=>`<div class="ng-card">
+  <div class="ng-top"><div><div class="ng-name">${esc(r.academy)}</div><div class="muted" style="font-size:12px">Received ${esc(r.received)}</div></div></div>
+  <div class="ng-grid"><span>Coach</span><b>${esc(r.coach)}</b><span>Email</span><b>${esc(r.email)}</b>
+  <span>Where</span><b>${esc(r.place)}${r.found&&r.found!=='Not found'?`<br><small class="muted">${esc(r.found)}</small>`:'<br><small style="color:var(--orange)">Postcode not found: set the location after approving</small>'}</b>
+  <span>Teaches</span><b>${esc(r.teaches||'—')}</b><span>Members</span><b>${esc(r.members||'—')}</b></div>
+  <div class="ng-actions"><button class="btn" data-ng="${esc(r.id)}" data-dec="decline">Decline</button><button class="btn primary" data-ng="${esc(r.id)}" data-dec="approve">Approve and create gym</button></div></div>`).join('')
+  :'<p class="muted" style="margin:6px 0 0">No gym sign-ups waiting.</p>';
+ box.innerHTML=toggle+list;
+ $('ng-auto').onchange=async e=>{const on=e.target.checked;
+  try{const r=await api('portalSetAutoApprove',{on:on?1:0});if(!r.success)throw new Error(r.error||'Could not change it');autoApprove=on;toast(on?'New gyms will be approved automatically':'New gyms will wait for you')}
+  catch(err){e.target.checked=!on;failed(err,"Couldn't change auto-approve")}};
+ box.querySelectorAll('[data-ng]').forEach(b=>b.onclick=async()=>{
+  const approve=b.dataset.dec==='approve',r0=signups.find(x=>x.id===b.dataset.ng);
+  if(!approve&&!confirm('Decline the sign-up from '+(r0?r0.academy:'this gym')+'? Nothing is created.'))return;
+  box.querySelectorAll('[data-ng]').forEach(x=>x.disabled=true);b.textContent=approve?'Creating…':'Declining…';
+  try{const r=await api('portalDecideGym',{id:b.dataset.ng,decision:approve?'approve':'decline'});
+   if(!r.success){toast(r.error||"Couldn't do that");}
+   else toast(approve?(r0?r0.academy:'The gym')+' is set up. Pick it from the Admin gym menu.':'Sign-up declined');
+   await loadAll(true);
+  }catch(err){failed(err,"Couldn't confirm that")}
+  finally{renderNewGyms()}});
+}
 
 // The signed-in coach's own details (from sign-in), shown in Academy setup > My profile.
 function renderMyProfile(){
@@ -294,7 +325,7 @@ function renderMyProfile(){
 }
 
 function applyRole(){
- renderMyProfile();
+ renderMyProfile();renderNewGyms();
  document.body.classList.toggle('super',isSuper());
  $('brand-name').textContent=gymName();
  document.title=gymName();
