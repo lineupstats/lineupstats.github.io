@@ -82,6 +82,76 @@
   .checkin-state.ready { background: rgba(244,122,18,0.15); border: 1px solid var(--accent); color: var(--text); margin-bottom: 12px; }
   .checkin-state.done { background: rgba(74,222,128,0.12); border: 1px solid #4ade80; color: var(--text); }
   .checkin-state .tick { color: #4ade80; font-weight: 700; margin-right: 6px; }
+
+  /* ---------- Member profile: refreshed look ---------- */
+  .hero { position: relative; overflow: hidden; border-radius: 20px; padding: 20px 18px 16px; margin-bottom: 14px;
+    background: radial-gradient(120% 140% at 100% 0%, rgba(244,122,18,.35) 0%, rgba(244,122,18,.08) 45%, transparent 70%), var(--card); border: 1px solid #24262a; }
+  .hero-row { display: flex; align-items: center; gap: 14px; }
+  .hero .avatar { width: 62px; height: 62px; font-size: 26px; box-shadow: 0 0 0 3px var(--bg), 0 0 0 6px var(--ring, var(--accent)); }
+  .hero-text { min-width: 0; }
+  .gym-name { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin-bottom: 2px; }
+  .hero h1 { font-size: 23px; margin: 0 0 6px; line-height: 1.15; }
+  .belt-chip { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; padding: 4px 10px 4px 6px; border-radius: 20px; background: #0f1012; border: 1px solid #2c2f33; }
+  .belt-chip .stripe { width: 22px; height: 8px; border-radius: 3px; }
+  .hero-line { margin-top: 14px; font-size: 14px; color: var(--muted); line-height: 1.4; }
+  .hero-line b { color: var(--text); }
+  .checkin-panel { border: 1px solid #24262a; }
+  .panel { border-radius: 18px; }
+  .panel-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+  .panel-head h2 { margin-bottom: 12px; }
+  .fav { font-size: 12px; color: var(--muted); }
+  .fav b { color: var(--text); }
+
+  .week-panel { display: flex; align-items: center; gap: 16px; }
+  .week-ring { flex: 0 0 96px; width: 96px; height: 96px; position: relative; }
+  .week-ring svg { width: 96px; height: 96px; transform: rotate(-90deg); }
+  .week-ring .ring-num { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 800; font-size: 26px; }
+  .week-ring .ring-num small { font-size: 11px; color: var(--muted); font-weight: 600; }
+  .week-text h2 { margin-bottom: 6px; }
+  .week-big { font-size: 17px; font-weight: 700; line-height: 1.3; }
+  .week-sub { font-size: 13px; color: var(--muted); margin-top: 4px; line-height: 1.4; }
+  .goal-btn { all: unset; cursor: pointer; margin-top: 8px; font-size: 12px; color: var(--accent); font-weight: 600; }
+  .goal-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .goal-chips button { all: unset; cursor: pointer; min-width: 34px; text-align: center; padding: 7px 0; border-radius: 9px; background: var(--card2); border: 1px solid var(--border); font-weight: 700; font-size: 14px; }
+  .goal-chips button.on { background: var(--accent); border-color: var(--accent); color: #0A0B0C; }
+
+  .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+  .stat { background: var(--card); border-radius: 16px; padding: 14px; position: relative; }
+  .stat-ico { position: absolute; top: 12px; right: 12px; font-size: 18px; opacity: .9; }
+  .stat-label { font-size: 12px; color: var(--muted); font-weight: 600; }
+  .stat-value { font-size: 30px; font-weight: 800; margin-top: 6px; line-height: 1; }
+  .stat-value-sm { font-size: 20px; line-height: 1.2; }
+  .stat-sub { font-size: 12px; color: var(--muted); margin-top: 6px; line-height: 1.35; }
+  .stat-sub .up { color: #4ade80; font-weight: 700; } .stat-sub .down { color: #ff8a65; font-weight: 700; }
+  .bar { height: 6px; border-radius: 4px; background: var(--card2); margin-top: 10px; overflow: hidden; }
+  .bar span { display: block; height: 100%; width: 0; background: var(--accent); border-radius: 4px; transition: width .6s ease; }
+
+  .journey-now { display: flex; align-items: center; gap: 12px; padding: 4px 0 14px; }
+  .journey-now .big-belt { width: 54px; height: 20px; border-radius: 5px; position: relative; flex: 0 0 auto; }
+  .journey-now .big-belt::after { content: ""; position: absolute; right: 8px; top: 0; bottom: 0; width: 12px; background: #111; }
+  .journey-now .jn-title { font-size: 16px; font-weight: 800; }
+  .journey-now .jn-sub { font-size: 13px; color: var(--muted); margin-top: 2px; }
+  .journey-bar { display: flex; height: 10px; border-radius: 6px; overflow: hidden; gap: 2px; margin-bottom: 6px; }
+  .journey-bar span { display: block; min-width: 6px; }
+
+  .heat-wrap { display: flex; gap: 6px; }
+  .heat-days { display: grid; grid-template-rows: repeat(7, 1fr); gap: 4px; font-size: 10px; color: var(--muted); width: 12px; }
+  .heat-days span { display: flex; align-items: center; }
+  .heatmap { flex: 1; display: grid; grid-template-rows: repeat(7, 1fr); grid-auto-flow: column; grid-auto-columns: 1fr; gap: 4px; }
+  .heatmap .cell { aspect-ratio: 1; border-radius: 4px; }
+  .cell.future { background: transparent; }
+  .cell.today-cell { box-shadow: inset 0 0 0 2px var(--text); }
+  .heat-legend { display: flex; align-items: center; gap: 6px; margin-top: 12px; font-size: 11px; color: var(--muted); flex-wrap: wrap; }
+  .heat-legend .cell { width: 12px; height: 12px; display: inline-block; border-radius: 3px; margin-left: 6px; }
+  .heat-legend .cell:first-child { margin-left: 0; }
+  .heat-legend .today-cell { background: var(--card2); }
+
+  .visit-row { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .visit-row:last-child { border-bottom: none; }
+  .visit-date { width: 44px; flex: 0 0 44px; text-align: center; background: var(--card2); border-radius: 10px; padding: 5px 0; }
+  .visit-date b { display: block; font-size: 17px; line-height: 1.1; } .visit-date small { font-size: 10px; color: var(--muted); text-transform: uppercase; }
+  .visit-main { flex: 1; font-size: 14px; } .visit-main small { display: block; color: var(--muted); font-size: 12px; margin-top: 2px; }
+  .visit-time { font-size: 13px; color: var(--muted); }
 </style>
 </head>
 <body>
@@ -94,15 +164,19 @@
   <div id="loading">Loading…</div>
   <div id="err" style="display:none;"></div>
   <div id="content" style="display:none;">
-    <div class="card-top">
-      <div class="avatar" id="initial">?</div>
-      <div>
-        <h1 id="name">—</h1>
-        <div class="belt" id="belt">—</div>
+    <div class="hero">
+      <div class="hero-row">
+        <div class="avatar" id="initial">?</div>
+        <div class="hero-text">
+          <div class="gym-name" id="gymName"></div>
+          <h1 id="name">—</h1>
+          <div class="belt" id="belt">—</div>
+        </div>
       </div>
+      <div class="hero-line" id="heroLine"></div>
     </div>
 
-    <div class="panel">
+    <div class="panel checkin-panel">
       <h2>Check in</h2>
       <!-- The message box below changes with the situation: checking location,
            away from the gym, at the gym (PIN box appears), or already checked in. -->
@@ -115,22 +189,43 @@
       <button type="button" class="link-btn" id="recheckBtn" style="display:none;">Check again</button>
     </div>
 
-    <div class="kpis">
-      <div class="kpi"><div class="label">Total visits</div><div class="value" id="kpiTotal">0</div></div>
-      <div class="kpi"><div class="label">This month</div><div class="value" id="kpiMonth">0</div></div>
-      <div class="kpi"><div class="label">Last visit</div><div class="value" id="kpiLast" style="font-size:14px;">—</div></div>
+    <div class="panel week-panel">
+      <div class="week-ring" id="weekRing"></div>
+      <div class="week-text">
+        <h2>This week</h2>
+        <div class="week-big" id="weekBig">—</div>
+        <div class="week-sub" id="weekSub"></div>
+        <button type="button" class="goal-btn" id="goalBtn">Goal: 3 a week · change</button>
+        <div class="goal-chips" id="goalChips" hidden></div>
+      </div>
     </div>
+
+    <div class="stats">
+      <div class="stat"><div class="stat-ico">🔥</div><div class="stat-label">Week streak</div><div class="stat-value" id="kpiStreak">0</div><div class="stat-sub" id="kpiStreakSub"></div></div>
+      <div class="stat"><div class="stat-ico">📅</div><div class="stat-label">This month</div><div class="stat-value" id="kpiMonth">0</div><div class="stat-sub" id="kpiMonthSub"></div></div>
+      <div class="stat"><div class="stat-ico">🥋</div><div class="stat-label">Total sessions</div><div class="stat-value" id="kpiTotal">0</div><div class="bar"><span id="kpiMilestoneBar"></span></div><div class="stat-sub" id="kpiMilestone"></div></div>
+      <div class="stat"><div class="stat-ico">⏱</div><div class="stat-label">Last trained</div><div class="stat-value stat-value-sm" id="kpiLast">—</div><div class="stat-sub" id="kpiLastSub"></div></div>
+    </div>
+
     <div class="panel" id="journeyPanel" style="display:none;">
       <h2 id="journeyTitle">Belt journey</h2>
+      <div class="journey-now" id="journeyNow"></div>
+      <div class="journey-bar" id="journeyBar"></div>
       <div id="journeyList"></div>
     </div>
+
     <div class="panel">
-      <h2>Last 28 days</h2>
-      <div class="heatmap" id="heatmap"></div>
+      <div class="panel-head"><h2>Last 12 weeks</h2><span class="fav" id="favDay"></span></div>
+      <div class="heat-wrap">
+        <div class="heat-days"><span>M</span><span></span><span>W</span><span></span><span>F</span><span></span><span>S</span></div>
+        <div class="heatmap" id="heatmap"></div>
+      </div>
+      <div class="heat-legend"><span class="cell"></span> Rest day <span class="cell visited"></span> Trained <span class="cell today-cell"></span> Today</div>
     </div>
+
     <div class="panel">
-      <h2>Recent visits</h2>
-      <table><tbody id="recentTable"></tbody></table>
+      <h2>Recent sessions</h2>
+      <div id="recentTable"></div>
     </div>
     <button class="link-btn" id="signOutBtn">Not you? Sign out</button>
   </div>
@@ -141,7 +236,7 @@
 (function() {
   const APPS_SCRIPT_URL = window.LINEUP_CONFIG.APPS_SCRIPT_URL;
 
-  // Shared with login.html and gym-attendance-dashboard.html — same origin, same keys.
+  // Shared with login.html and coach-portal.html — same origin, same keys.
   const IDENTITY_KEY = 'gymAppIdentity';
   const SESSION_KEY = 'gymAppSessionKey';
   const PROFILE_STASH_KEY = 'gymAppProfileStash'; // sessionStorage — fresh profile handed over by login.html right after unlock
@@ -150,6 +245,7 @@
   let member = null; // { name, gymId, gymName, memberId } — from the remembered device identity
   let sessionKey = null; // proof of this unlock, sent with every request for private data
   let visits = [];            // this member's visits, newest first
+  let classes = [];           // the gym's class timetable (empty = no classes)
   let checkinState = null;    // 'locating' | 'away' | 'nolocation' | 'notsetup' | 'error' | 'ready' | 'done'
   let locationCheckRunning = false;
   let currentData = null;     // the profile data on screen
@@ -319,7 +415,7 @@
 
   function leavePreview() {
     if (window.history.length > 1) window.history.back();
-    else window.location.href = 'gym-attendance-dashboard.html';
+    else window.location.href = 'coach-portal.html';
   }
 
   async function loadAndShowProfile() {
@@ -353,19 +449,27 @@
   }
 
   function render(data) {
-    visits = (data.visits || []).map(v => new Date(v)).filter(d => !isNaN(d)).sort((a,b) => b-a);
+    // Each visit is a date; with a class timetable it also carries .cls (e.g. "Evening class").
+    classes = data.classes || [];
+    visits = (data.sessions && data.sessions.length
+      ? data.sessions.map(v => { const d = new Date(v.t); d.cls = v.cls || ''; return d; })
+      : (data.visits || []).map(v => new Date(v))).filter(d => !isNaN(d)).sort((a,b) => b-a);
     document.getElementById('loading').style.display = 'none';
     document.getElementById('content').style.display = 'block';
 
     document.getElementById('name').textContent = data.member.name || 'Member';
     const rankWord = (data.labels && data.labels.rank) || 'Belt';
     rankColours = data.rankColours || {};
+    const hero = document.querySelector('.hero');
     if (data.member.belt) {
       const look = beltLook(data.member.belt);
-      document.getElementById('belt').innerHTML = escHtml(rankWord) + ': ' + beltDot(look) + '<span style="color:' + look.text + ';font-weight:600;">' + escHtml(data.member.belt) + '</span>';
+      document.getElementById('belt').innerHTML = '<span class="belt-chip"><span class="stripe" style="background:' + look.dot + ';' + (look.ring ? 'box-shadow:0 0 0 1px rgba(255,255,255,.45);' : '') + '"></span>' + escHtml(data.member.belt) + ' ' + escHtml(rankWord.toLowerCase()) + '</span>';
+      hero.style.setProperty('--ring', look.dot);
     } else {
       document.getElementById('belt').textContent = '';
+      hero.style.removeProperty('--ring');
     }
+    document.getElementById('gymName').textContent = (member && member.gymName) || '';
     document.getElementById('initial').textContent = (data.member.name || '?').charAt(0).toUpperCase();
     renderStats();
     renderJourney(data);
@@ -410,10 +514,33 @@
   }
   function renderJourney(data) {
     const panel = document.getElementById('journeyPanel');
-    const segs = (data.beltJourney || []).slice().reverse();
+    const oldest = (data.beltJourney || []).slice();
+    const segs = oldest.slice().reverse();
     if (!segs.length) { panel.style.display = 'none'; return; }
     const word = (data.labels && data.labels.rank) || 'Belt';
     document.getElementById('journeyTitle').textContent = word + ' journey';
+
+    // The current belt, big: how long they've held it and how many sessions at it.
+    const cur = segs.find(sg => sg.current) || segs[0];
+    const look = beltLook(cur.belt);
+    let since = '';
+    if (cur.from) {
+      const p = cur.from.split('-').map(Number);
+      const days = Math.max(0, Math.floor((new Date().setHours(0,0,0,0) - new Date(p[0], p[1] - 1, p[2])) / 864e5));
+      since = days < 14 ? days + (days === 1 ? ' day' : ' days') : days < 120 ? Math.floor(days / 7) + ' weeks' : Math.floor(days / 30.4) + ' months';
+    }
+    document.getElementById('journeyNow').innerHTML =
+      '<span class="big-belt" style="background:' + look.dot + ';' + (look.ring ? 'box-shadow:0 0 0 1px rgba(255,255,255,.45);' : '') + '"></span>' +
+      '<div><div class="jn-title">' + escHtml(cur.belt) + ' ' + escHtml(word.toLowerCase()) + '</div>' +
+      '<div class="jn-sub">' + (since ? escHtml(since) + ' · ' : '') + cur.sessions + ' session' + (cur.sessions === 1 ? '' : 's') + ' at this ' + escHtml(word.toLowerCase()) + '</div></div>';
+
+    // A strip showing the share of sessions spent at each belt, oldest on the left.
+    const total = oldest.reduce((n, sg) => n + (sg.sessions || 0), 0);
+    document.getElementById('journeyBar').innerHTML = total ? oldest.map(sg => {
+      const lk = beltLook(sg.belt);
+      return '<span title="' + escHtml(sg.belt) + '" style="flex:' + Math.max(sg.sessions, 1) + ';background:' + lk.dot + ';' + (lk.ring ? 'opacity:.9;' : '') + '"></span>';
+    }).join('') : '';
+
     document.getElementById('journeyList').innerHTML = segs.map(seg => {
       let range;
       if (seg.current) range = seg.from ? 'Since ' + dayText(seg.from) : 'Since records began';
@@ -427,39 +554,143 @@
     panel.style.display = 'block';
   }
 
-  function renderStats() {
-    document.getElementById('kpiTotal').textContent = visits.length;
-    const now = new Date();
-    const monthCount = visits.filter(d => d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear()).length;
-    document.getElementById('kpiMonth').textContent = monthCount;
-    document.getElementById('kpiLast').textContent = visits.length ? fmtDate(visits[0]) : '—';
+  // ---------- Stats that matter to a member ----------
+  const GOAL_KEY = 'gymAppWeeklyGoal';   // this device only
+  function weeklyGoal() {
+    let g = 3;
+    try { g = parseInt(localStorage.getItem(GOAL_KEY), 10) || 3; } catch (e) {}
+    return Math.min(7, Math.max(1, g));
+  }
+  function mondayOf(d) { const m = new Date(d); m.setHours(0,0,0,0); m.setDate(m.getDate() - ((m.getDay() + 6) % 7)); return m; }
+  function relDay(d) {
+    const today = new Date(); today.setHours(0,0,0,0);
+    const that = new Date(d); that.setHours(0,0,0,0);
+    const n = Math.round((today - that) / 864e5);
+    return n <= 0 ? 'Today' : n === 1 ? 'Yesterday' : n + ' days ago';
+  }
+  const MILESTONES = [10, 25, 50, 75, 100, 150, 200, 250, 300, 400, 500, 750, 1000, 1500, 2000];
 
+  function renderStats() {
+    const now = new Date();
+    const total = visits.length;
+    const days = {}; visits.forEach(v => { const d = new Date(v); d.setHours(0,0,0,0); days[d.getTime()] = v; });
+    const dayCount = Object.keys(days).length;
+
+    // This week vs goal
+    const goal = weeklyGoal();
+    const thisMon = mondayOf(now);
+    const week = visits.filter(v => v >= thisMon).length;
+    const pct = Math.min(1, week / goal), r = 40, c = 2 * Math.PI * r;
+    document.getElementById('weekRing').innerHTML =
+      '<svg viewBox="0 0 96 96"><circle cx="48" cy="48" r="' + r + '" fill="none" stroke="#25272b" stroke-width="9"/>' +
+      '<circle cx="48" cy="48" r="' + r + '" fill="none" stroke="' + (week >= goal ? '#4ade80' : 'var(--accent)') + '" stroke-width="9" stroke-linecap="round" stroke-dasharray="' + (c * pct).toFixed(1) + ' ' + c.toFixed(1) + '"/></svg>' +
+      '<div class="ring-num">' + week + '<small>of ' + goal + '</small></div>';
+    const left = goal - week;
+    document.getElementById('weekBig').textContent = week >= goal ? (week > goal ? 'Above your goal 🔥' : 'Weekly goal hit 🎯') : week === 0 ? 'Fresh week, first session?' : left + ' more to hit your goal';
+    const daysLeft = 7 - ((now.getDay() + 6) % 7) - 1;
+    document.getElementById('weekSub').textContent = week >= goal ? 'Great consistency. Keep it rolling.' : daysLeft > 0 ? daysLeft + (daysLeft === 1 ? ' day' : ' days') + ' left this week.' : 'Last day of the week.';
+    document.getElementById('goalBtn').textContent = 'Goal: ' + goal + ' a week · change';
+
+    // Week streak: weeks in a row with at least one session. This week counts once you've trained;
+    // until then the streak carries on from last week.
+    const weeks = {}; visits.forEach(v => { weeks[mondayOf(v).getTime()] = true; });
+    const wk = 7 * 864e5;
+    let start = thisMon.getTime(); if (!weeks[start]) start -= wk;
+    let streak = 0; for (let t = start; weeks[t]; t -= wk) streak++;
+    let best = 0, run = 0, prev = null;
+    Object.keys(weeks).map(Number).sort((a, b) => a - b).forEach(t => { run = prev !== null && Math.round((t - prev) / wk) === 1 ? run + 1 : 1; best = Math.max(best, run); prev = t; });
+    document.getElementById('kpiStreak').textContent = streak;
+    document.getElementById('kpiStreakSub').textContent = streak === 0 ? 'Train this week to start one' : (streak === 1 ? 'week' : 'weeks') + ' in a row' + (best > streak ? ' · best ' + best : streak > 1 ? ' · your best!' : '');
+
+    // This month vs last month
+    const month = visits.filter(d => d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear()).length;
+    const lm = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+    const lastMonth = visits.filter(d => d.getMonth() === lm.getMonth() && d.getFullYear() === lm.getFullYear()).length;
+    document.getElementById('kpiMonth').textContent = month;
+    const diff = month - lastMonth;
+    document.getElementById('kpiMonthSub').innerHTML = lastMonth === 0 && month === 0 ? 'No sessions yet' :
+      'Last month ' + lastMonth + (diff > 0 ? ' · <span class="up">▲ ' + diff + '</span>' : diff < 0 && now.getDate() > 20 ? ' · <span class="down">▼ ' + (-diff) + '</span>' : '');
+
+    // Total sessions and the next milestone
+    document.getElementById('kpiTotal').textContent = total;
+    const next = MILESTONES.find(m => m > total) || (Math.ceil((total + 1) / 500) * 500);
+    const prevM = MILESTONES.filter(m => m <= total).pop() || 0;
+    document.getElementById('kpiMilestoneBar').style.width = Math.round((total - prevM) / (next - prevM) * 100) + '%';
+    document.getElementById('kpiMilestone').textContent = (next - total) + ' to go to ' + next;
+
+    // Last trained
+    document.getElementById('kpiLast').textContent = total ? relDay(visits[0]) : '—';
+    document.getElementById('kpiLastSub').textContent = total ? fmtDate(visits[0]) + ' · ' + fmtTime(visits[0]) : 'Your first session is waiting';
+
+    // Hero line
+    const sinceFirst = total ? visits[visits.length - 1] : null;
+    document.getElementById('heroLine').innerHTML = total
+      ? '<b>' + dayCount + '</b> day' + (dayCount === 1 ? '' : 's') + ' on the mats since ' + escHtml(sinceFirst.toLocaleDateString(undefined, { month: 'short', year: 'numeric' })) + (streak > 1 ? ' · 🔥 <b>' + streak + '-week</b> streak' : '')
+      : 'Welcome! Check in at your next session to start your record.';
+
+    // Last 12 weeks, Monday at the top
     const heat = document.getElementById('heatmap');
     heat.innerHTML = '';
-    for (let i = 27; i >= 0; i--) {
-      const day = new Date(); day.setHours(0,0,0,0); day.setDate(day.getDate() - i);
-      const next = new Date(day); next.setDate(next.getDate() + 1);
-      const visited = visits.some(v => v >= day && v < next);
+    const today0 = new Date(); today0.setHours(0,0,0,0);
+    const first = new Date(thisMon); first.setDate(first.getDate() - 11 * 7);
+    for (let i = 0; i < 12 * 7; i++) {
+      const day = new Date(first); day.setDate(first.getDate() + i);
       const cell = document.createElement('div');
-      cell.className = 'cell' + (visited ? ' visited' : '');
+      const future = day > today0;
+      cell.className = 'cell' + (future ? ' future' : days[day.getTime()] ? ' visited' : '') + (day.getTime() === today0.getTime() ? ' today-cell' : '');
       cell.title = day.toLocaleDateString();
       heat.appendChild(cell);
     }
 
+    // Favourite training day
+    const byDay = [0,0,0,0,0,0,0]; Object.keys(days).forEach(t => { byDay[(new Date(Number(t)).getDay() + 6) % 7]++; });
+    const top = Math.max(...byDay);
+    const names = ['Mondays','Tuesdays','Wednesdays','Thursdays','Fridays','Saturdays','Sundays'];
+    document.getElementById('favDay').innerHTML = top >= 3 ? 'Usually <b>' + names[byDay.indexOf(top)] + '</b>' : '';
+
+    // Recent sessions
     const recentEl = document.getElementById('recentTable');
-    const recent = visits.slice(0, 8);
+    const recent = visits.slice(0, 6);
     recentEl.innerHTML = recent.length ? recent.map(d =>
-      `<tr><td>${d.toLocaleDateString(undefined,{weekday:'short', month:'short', day:'numeric'})}</td><td style="text-align:right;">${d.toLocaleTimeString(undefined,{hour:'2-digit',minute:'2-digit'})}</td></tr>`
-    ).join('') : '<tr><td style="color:var(--muted);">No visits recorded yet</td></tr>';
+      '<div class="visit-row"><div class="visit-date"><b>' + d.getDate() + '</b><small>' + escHtml(d.toLocaleDateString(undefined, { month: 'short' })) + '</small></div>' +
+      '<div class="visit-main">' + escHtml(d.cls || d.toLocaleDateString(undefined, { weekday: 'long' })) + '<small>' + escHtml((d.cls ? d.toLocaleDateString(undefined, { weekday: 'long' }) + ' · ' : '') + relDay(d)) + '</small></div>' +
+      '<div class="visit-time">' + escHtml(fmtTime(d)) + '</div></div>'
+    ).join('') : '<div class="visit-main" style="color:var(--muted);padding:6px 0;">No sessions recorded yet.</div>';
   }
+
+  // Weekly goal: chosen by the member, saved on this phone only.
+  document.getElementById('goalBtn').addEventListener('click', () => {
+    const chips = document.getElementById('goalChips');
+    if (!chips.hidden) { chips.hidden = true; return; }
+    const g = weeklyGoal();
+    chips.innerHTML = [1,2,3,4,5,6,7].map(n => '<button type="button" data-goal="' + n + '" class="' + (n === g ? 'on' : '') + '">' + n + '</button>').join('');
+    chips.hidden = false;
+  });
+  document.getElementById('goalChips').addEventListener('click', ev => {
+    const b = ev.target.closest('button[data-goal]'); if (!b) return;
+    try { localStorage.setItem(GOAL_KEY, b.dataset.goal); } catch (e) {}
+    document.getElementById('goalChips').hidden = true;
+    renderStats();
+  });
 
   function sameDay(a, b) {
     return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
   }
 
+  // The class running now, worked out on the phone for display only (the server decides
+  // what is actually recorded). null = this gym has no timetable.
+  function classNow() {
+    if (!classes.length) return null;
+    const now = new Date(), dow = (now.getDay() + 6) % 7 + 1, mins = now.getHours() * 60 + now.getMinutes();
+    const m = t => { const p = String(t).split(':'); return +p[0] * 60 + +p[1]; };
+    const c = classes.find(c => (c.days || []).includes(dow) && mins >= m(c.start) - 15 && mins <= m(c.end));
+    return c ? c.name : 'Open mat';
+  }
+
+  // Today's check-in for the class running now (or any check-in today, if there's no timetable).
   function todaysVisit() {
-    const now = new Date();
-    return visits.find(d => sameDay(d, now)) || null;
+    const now = new Date(), cur = classNow();
+    return visits.find(d => sameDay(d, now) && (cur === null || (d.cls || '') === cur)) || null;
   }
 
   function fmtTime(d) {
@@ -494,7 +725,10 @@
       recheck.style.display = 'block';
     } else if (state === 'ready') {
       box.classList.add('ready');
-      box.textContent = "You're at the gym. Enter your PIN to check in.";
+      const cn = classNow();
+      box.textContent = !cn ? "You're at the gym. Enter your PIN to check in."
+        : cn === 'Open mat' ? "You're at the gym. No class on right now, so this counts as Open mat. Enter your PIN to check in."
+        : "You're at the gym. Enter your PIN to check in for " + cn + '.';
       form.style.display = 'flex';
     } else if (state === 'done') {
       box.classList.add('done');
@@ -504,7 +738,7 @@
       tick.textContent = '✓';
       box.appendChild(tick);
       box.appendChild(document.createTextNode(
-        when ? 'Checked in today at ' + fmtTime(when) + '. See you in class!' : "You're checked in for today. See you in class!"
+        when ? 'Checked in' + (when.cls ? ' for ' + when.cls : ' today') + ' at ' + fmtTime(when) + '. See you on the mats!' : "You're checked in" + (classNow() ? ' for ' + classNow() : ' for today') + '. See you on the mats!'
       ));
     }
   }
@@ -586,11 +820,16 @@
       input.value = '';
       if (result.success) {
         const now = new Date();
+        now.cls = result.cls || (classNow() || '');
         justCheckedInAt = now;
         visits.unshift(now);  // show the new visit in the stats straight away
         renderStats();
         setCheckinState('done', now);
-        if (currentData) { currentData.visits = visits.slice(); saveLastProfile(currentData); }
+        if (currentData) {
+          currentData.visits = visits.slice();
+          currentData.sessions = visits.map(d => ({ t: d.toISOString(), cls: d.cls || '' }));
+          saveLastProfile(currentData);
+        }
         return;
       }
       if (result.reason === 'already') { setCheckinState('done'); return; }
