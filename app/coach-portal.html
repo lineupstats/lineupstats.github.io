@@ -201,6 +201,7 @@ body.m-detail .tabbar{display:none}
 .modal-box{border-radius:18px 18px 0 0;max-height:92vh;overflow-y:auto;padding:22px 18px calc(22px + env(safe-area-inset-bottom,0px))}
 .modal-actions .btn,.invite-actions .btn{padding:12px 14px}
 }
+.ci-multibar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:10px;padding:10px 12px;border:1px solid rgba(244,122,18,.4);background:rgba(244,122,18,.08);border-radius:12px;font-size:14px;font-weight:600}.ci-multibar[hidden],.ci-multi-msg[hidden]{display:none}.ci-multi-msg{margin-top:10px;padding:10px 12px;border-radius:12px;background:#17191c;border:1px solid var(--border);font-size:13px;line-height:1.45}.ci-multi-list{max-height:55vh;overflow-y:auto;-webkit-overflow-scrolling:touch}.ci-pick{justify-content:flex-start!important;gap:12px;cursor:pointer;-webkit-tap-highlight-color:transparent}.ci-pick input{position:absolute;opacity:0;pointer-events:none}.ci-box{width:24px;height:24px;flex:0 0 24px;border-radius:7px;border:2px solid #4a4d52;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:var(--bg)}.ci-pick.on .ci-box{background:var(--orange);border-color:var(--orange)}.ci-pick.on .ci-box::after{content:"✓"}.ci-pick.done{opacity:.55;cursor:default}.ci-pick.done .ci-box{border-color:#2E9E5B;color:#2E9E5B}.ci-pick .badge{margin-left:auto}
 </style></head><body>
 <div class="shell"><aside class="sidebar" id="sidebar"><div class="brand"><div class="brand-mark"><svg viewBox="0 0 100 100" aria-hidden="true"><path fill="#F47A12" d="M23 20 L38 16 L38 62 L77 47.5 L81.5 61.5 L23 83 Z"/></svg></div><h1 id="brand-name"></h1><p id="brand-role">Coach workspace</p></div><div class="nav-label">WORKSPACE</div><nav class="nav" aria-label="Main navigation"><button class="active" data-page="overview"><span class="ico">▦</span>Overview</button><button data-page="members"><span class="ico">♙</span>Members<span class="nav-badge" id="join-badge" hidden></span></button><button data-page="checkins"><span class="ico">✓</span>Check-ins</button><button data-page="setup"><span class="ico">⚙</span>Academy setup</button></nav>
 <div class="sidebar-bottom"><button class="plan-pill" id="plan-pill" hidden><span class="pp-name" id="plan-pill-name"></span><span class="pp-cta" id="plan-pill-cta"></span></button><div id="gym-picker-wrap" hidden><div class="role-label" id="gym-picker-label">ADMIN: GYM</div><select class="field" id="gym-picker" style="width:100%;margin-bottom:10px" aria-label="Choose gym"></select></div><button class="btn" id="coach-preview-btn" hidden style="width:100%;margin-bottom:10px">Preview as coach</button><div id="role-help"></div><button class="btn" id="signout-btn" style="width:100%;margin-top:12px">Sign out</button></div></aside><div class="overlay" id="overlay"></div>
@@ -233,7 +234,7 @@ body.m-detail .tabbar{display:none}
 
 <section class="page" id="page-members"><div class="page-intro"><div><h3>Members</h3><p>Member directory, belt progression and app access.</p></div><button class="btn primary" id="add-member">＋ Invite members</button></div><div class="card" id="join-card" hidden style="margin-bottom:15px;border-color:rgba(244,122,18,.45)"><div class="card-head" style="margin-bottom:4px"><div><h4>Join requests</h4><div class="muted" style="font-size:12px;margin-top:3px">People who asked to join with your link. Approving adds them and emails them a sign-in link.</div></div></div><div class="mini-list" id="join-list"></div></div><div class="toolbar"><input class="field search" id="member-search" placeholder="Search name or email…"><select class="field" id="belt-filter"><option value="all">All belts</option></select><select class="field" id="status-filter"><option value="all">Active and inactive</option><option value="active">Active</option><option value="inactive">Inactive</option></select><select class="field" id="access-filter"><option value="all">Any app access</option><option value="signedin">Signed in</option><option value="invited">Not signed in yet</option><option value="noemail">No email</option></select></div><div class="members-layout"><div class="card" style="padding:10px;overflow:auto"><table class="table"><thead><tr><th>Member</th><th>Belt</th><th>Status</th><th>App</th><th>Last visit</th></tr></thead><tbody id="member-table"></tbody></table><div class="empty" id="member-empty" style="display:none">No members match. Try another search or filter.</div></div><aside class="card detail-card" id="member-detail"><div class="empty">Choose a member to view their profile.</div></aside></div></section>
 
-<section class="page" id="page-checkins"><div class="page-intro"><div><h3>Check-ins</h3><p>Add anyone who forgot to check in, add guests, or remove a mistake.</p></div><span class="badge" id="checkin-date"></span></div><div class="checkin-layout"><div class="card"><div class="card-head"><h4>Add a check-in</h4></div><input class="field" style="width:100%" id="checkin-search" placeholder="Search a member's name…" autocomplete="off"><div id="checkin-results" style="margin-top:10px"></div><button class="btn" id="guest-open" style="margin-top:12px;width:100%">＋ Add a guest</button><div id="guest-form" hidden style="margin-top:14px"><div class="detail-field"><label for="guest-name">Guest's name</label><input class="field" id="guest-name" style="width:100%"></div><div class="detail-field"><label for="guest-belt">Belt (optional)</label><select class="field" id="guest-belt" style="width:100%"></select></div><div style="display:flex;gap:8px;justify-content:flex-end"><button class="btn" id="guest-cancel">Cancel</button><button class="btn primary" id="guest-add">Add guest</button></div></div></div><div class="card"><div class="card-head"><h4>Checked in today</h4><button class="small-btn" id="ci-refresh">Refresh</button></div><div class="kpi-value" id="today-count">0</div><div class="muted" id="today-sub">members checked in today</div><div class="mini-list" id="today-list" style="margin-top:12px"></div></div></div></section>
+<section class="page" id="page-checkins"><div class="page-intro"><div><h3>Check-ins</h3><p>Add anyone who forgot to check in, add guests, or remove a mistake.</p></div><span class="badge" id="checkin-date"></span></div><div class="checkin-layout"><div class="card"><div class="card-head"><h4>Add a check-in</h4><button class="small-btn" id="ci-multi">Select several</button></div><input class="field" style="width:100%" id="checkin-search" placeholder="Search a member's name…" autocomplete="off"><div class="ci-multibar" id="ci-multibar" hidden><span id="ci-multi-count">Tick who's here</span><button class="btn primary" id="ci-multi-go" disabled>Check in</button></div><div class="ci-multi-msg" id="ci-multi-msg" hidden></div><div id="checkin-results" style="margin-top:10px"></div><button class="btn" id="guest-open" style="margin-top:12px;width:100%">＋ Add a guest</button><div id="guest-form" hidden style="margin-top:14px"><div class="detail-field"><label for="guest-name">Guest's name</label><input class="field" id="guest-name" style="width:100%"></div><div class="detail-field"><label for="guest-belt">Belt (optional)</label><select class="field" id="guest-belt" style="width:100%"></select></div><div style="display:flex;gap:8px;justify-content:flex-end"><button class="btn" id="guest-cancel">Cancel</button><button class="btn primary" id="guest-add">Add guest</button></div></div></div><div class="card"><div class="card-head"><h4>Checked in today</h4><button class="small-btn" id="ci-refresh">Refresh</button></div><div class="kpi-value" id="today-count">0</div><div class="muted" id="today-sub">members checked in today</div><div class="mini-list" id="today-list" style="margin-top:12px"></div></div></div></section>
 
 <section class="page" id="page-setup"><div class="page-intro"><div><h3>Academy setup</h3><p id="setup-intro">Configure the portal to match your academy.</p></div><button class="btn primary" id="save-settings">Save settings</button></div>
 <div class="setting-tabs"><button class="setting-tab active" data-setting="academy">Academy</button><button class="setting-tab" data-setting="me">My profile</button><button class="setting-tab" data-setting="plan" id="plan-tab">Plan and seats</button><button class="setting-tab" data-setting="grading">Belt grading</button><button class="setting-tab soon" data-setting="profiles" disabled title="Coming soon">Profile fields <span class="soon-tag">Coming soon</span></button><button class="setting-tab soon" data-setting="features" disabled title="Coming soon">Features <span class="soon-tag">Coming soon</span></button><button class="setting-tab soon" data-setting="memberships" disabled title="Coming soon">Memberships <span class="soon-tag">Coming soon</span></button><button class="setting-tab super-tab" data-setting="permissions" data-super-only hidden>Coach permissions</button><button class="setting-tab super-tab" data-setting="newgyms" data-super-only hidden>New gyms <span class="ng-count" id="ng-count" hidden></span></button></div>
@@ -294,6 +295,7 @@ const WEEK={days:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],now:[0,0,0,0,0,0,0]
 let identity=null,sessionKey=null,pickedGym=null,role='coach',gymId=null,gyms=[],signups=[],autoApprove=false;
 let members=[],settings=null,selectedId=null,lastLoaded=null,busy=false,refreshTimer=null;
 let ci={items:[],counts:{active:0,guests:0},ranks:[]};
+let ciMulti=false,ciPicked=new Set();   // multi-select check-in
 
 const $=id=>document.getElementById(id);
 function clone(o){return JSON.parse(JSON.stringify(o))}
@@ -865,11 +867,61 @@ function ciRender(d){
 }
 function ciResults(){
  const q=$('checkin-search').value.trim().toLowerCase(),box=$('checkin-results');
+ if(ciMulti){ciMultiList(q,box);return}
  if(!q){box.innerHTML='';return}
  const done={};(ci.items||[]).forEach(it=>{if(!it.removed&&it.memberId)done[it.memberId]=true});
  const hits=members.filter(m=>m.name.toLowerCase().includes(q)).slice(0,8);
  box.innerHTML=hits.map(m=>`<div class="checkin-item"><div class="row-main"><strong>${esc(m.name)}</strong><small>${esc(m.belt)}</small></div>${done[m.id]?'<span class="badge">✓ Checked in</span>':!m.active?'<span class="badge">Inactive</span>':`<button class="small-btn primary-btn" data-add="${esc(m.id)}">Check in</button>`}</div>`).join('')||`<div class="empty">No member called "${esc(q)}". Add them as a guest instead?</div>`;
 }
+// ---------- Multi-select check-in: tick several members, check them all in ----------
+function ciMultiList(q,box){
+ const done={};(ci.items||[]).forEach(it=>{if(!it.removed&&it.memberId)done[it.memberId]=true});
+ const list=members.filter(m=>m.active&&(!q||m.name.toLowerCase().includes(q))).sort((a,b)=>a.name.localeCompare(b.name));
+ box.innerHTML=list.length?`<div class="ci-multi-list">${list.map(m=>done[m.id]
+  ?`<div class="checkin-item ci-pick done"><span class="ci-box">✓</span><div class="row-main"><strong>${esc(m.name)}</strong><small>${beltDot(m.belt)}${esc(m.belt)}</small></div><span class="badge">Checked in</span></div>`
+  :`<label class="checkin-item ci-pick${ciPicked.has(m.id)?' on':''}"><input type="checkbox" data-pick="${esc(m.id)}" ${ciPicked.has(m.id)?'checked':''}><span class="ci-box"></span><div class="row-main"><strong>${esc(m.name)}</strong><small>${beltDot(m.belt)}${esc(m.belt)}</small></div></label>`).join('')}</div>`
+  :`<div class="empty">${q?`No active member called "${esc(q)}".`:'No active members yet.'}</div>`;
+ ciMultiBar();
+}
+function ciMultiBar(){
+ const n=ciPicked.size,go=$('ci-multi-go');
+ $('ci-multi-count').textContent=n?n+' selected':"Tick who's here";
+ go.disabled=!n||busy;go.textContent=n?'Check in '+n:'Check in';
+}
+function setCiMulti(on){
+ ciMulti=on;ciPicked.clear();
+ $('ci-multi').textContent=on?'Done':'Select several';
+ $('ci-multibar').hidden=!on;$('guest-open').hidden=on;if(on)closeGuest();
+ if(on)$('ci-multi-msg').hidden=true;
+ $('checkin-search').placeholder=on?'Filter the list…':"Search a member's name…";
+ ciResults();
+}
+async function ciMultiGo(){
+ if(busy||!ciPicked.size)return;
+ const ids=[...ciPicked],nameOf=id=>(members.find(x=>x.id===id)||{}).name||'Member';
+ const ok=[],already=[],bad=[];let last=null;
+ busy=true;$('page-checkins').classList.add('busy');const go=$('ci-multi-go');go.disabled=true;
+ try{
+  for(let i=0;i<ids.length;i++){
+   go.textContent='Checking in '+(i+1)+' of '+ids.length+'…';
+   try{const r=await api('coachAddMember',{memberId:ids[i]});
+    if(r&&r.success){ok.push(nameOf(ids[i]));last=r}
+    else if(r&&r.reason==='already')already.push(nameOf(ids[i]));
+    else bad.push(nameOf(ids[i]));
+   }catch(err){bad.push(nameOf(ids[i]))}
+  }
+ }finally{busy=false;$('page-checkins').classList.remove('busy')}
+ const parts=[];
+ if(ok.length)parts.push('✓ '+ok.length+' checked in');
+ if(already.length)parts.push(already.join(', ')+(already.length===1?' was':' were')+' already checked in');
+ if(bad.length)parts.push("Couldn't check in "+bad.join(', ')+'. Try them again');
+ setCiMulti(false);$('checkin-search').value='';
+ const msg=$('ci-multi-msg');msg.textContent=parts.join(' · ');msg.hidden=!parts.length;
+ toast(ok.length?ok.length+(ok.length===1?' member':' members')+' checked in':'Nothing new to check in');
+ if(last)ciRender(last);else ciRefresh();
+ refreshSoon();
+}
+
 async function ciAction(mode,params,okText){
  if(busy)return false;busy=true;$('page-checkins').classList.add('busy');
  try{const r=await api(mode,params);
@@ -879,6 +931,11 @@ async function ciAction(mode,params,okText){
  finally{busy=false;$('page-checkins').classList.remove('busy')}
 }
 $('checkin-search').addEventListener('input',ciResults);
+$('ci-multi').onclick=()=>setCiMulti(!ciMulti);
+$('ci-multi-go').onclick=ciMultiGo;
+$('checkin-results').addEventListener('change',ev=>{const c=ev.target.closest('input[data-pick]');if(!c)return;
+ if(c.checked)ciPicked.add(c.dataset.pick);else ciPicked.delete(c.dataset.pick);
+ c.closest('.ci-pick').classList.toggle('on',c.checked);ciMultiBar()});
 $('checkin-results').addEventListener('click',async ev=>{const b=ev.target.closest('button[data-add]');if(!b)return;const m=members.find(x=>x.id===b.dataset.add);if(await ciAction('coachAddMember',{memberId:b.dataset.add},(m?m.name:'Member')+' checked in')){$('checkin-search').value='';ciResults()}});
 $('today-list').addEventListener('click',ev=>{const b=ev.target.closest('button[data-row]');if(!b)return;const undo=b.dataset.undo==='1';ciAction('removeCheckin',{row:b.dataset.row,stamp:b.dataset.stamp,undo:undo?1:0},undo?'Check-in restored':'Check-in removed')});
 $('ci-refresh').onclick=ciRefresh;
