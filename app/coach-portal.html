@@ -111,7 +111,16 @@ body.super .topbar{border-bottom-color:rgba(244,122,18,.45)}
 @media(max-width:760px){.topbar{height:calc(68px + env(safe-area-inset-top,0px))}}
 body{padding-bottom:env(safe-area-inset-bottom,0px)}
 
-
+/* Phone: compact top bar */
+@media(max-width:760px){
+.topbar>div:first-child{min-width:0}
+.topbar h2{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.top-actions{gap:6px;flex-shrink:0}
+.top-actions .btn{padding:7px 11px;line-height:1.2;white-space:nowrap;border-radius:9px}
+#top-add{font-size:0}#top-add::before{content:"＋ Invite";font-size:13px}
+#refresh-btn{font-size:0}#refresh-btn::before{content:"↻";font-size:16px}
+.page-intro .btn.primary{align-self:flex-start;padding:9px 14px;font-size:13px}
+}
 
 </style></head><body>
 <div class="shell"><aside class="sidebar" id="sidebar"><div class="brand"><div class="brand-mark"><svg viewBox="0 0 100 100" aria-hidden="true"><path fill="#F47A12" d="M23 20 L38 16 L38 62 L77 47.5 L81.5 61.5 L23 83 Z"/></svg></div><h1 id="brand-name"></h1><p id="brand-role">Coach workspace</p></div><div class="nav-label">WORKSPACE</div><nav class="nav" aria-label="Main navigation"><button class="active" data-page="overview"><span class="ico">▦</span>Overview</button><button data-page="members"><span class="ico">♙</span>Members<span class="nav-badge" id="join-badge" hidden></span></button><button data-page="checkins"><span class="ico">✓</span>Check-ins</button><button data-page="setup"><span class="ico">⚙</span>Academy setup</button></nav>
