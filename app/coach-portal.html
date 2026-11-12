@@ -207,6 +207,7 @@ body.m-detail .tabbar{display:none}
 .class-locked{display:grid;gap:8px;justify-items:start;padding:16px;border:1px dashed rgba(244,122,18,.5);border-radius:12px;background:rgba(244,122,18,.06)}.class-locked span{color:var(--muted);font-size:13px;line-height:1.45}
 .belt-edit{display:grid!important;grid-template-columns:22px 34px minmax(0,1fr) auto;align-items:center;gap:8px;margin:0;padding:8px 0;border-bottom:1px solid var(--border);flex-wrap:nowrap!important}.belt-edit:last-child{border-bottom:0}.belt-edit .belt-name{max-width:none;width:100%;min-width:0}.belt-pos{font-size:12px;font-weight:700;color:var(--muted);text-align:center}.belt-swatch{position:relative;display:block;width:34px;height:34px;border-radius:9px;border:2px solid rgba(255,255,255,.18);cursor:pointer;overflow:hidden}.belt-swatch input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;border:0;padding:0}.belt-tools{display:flex;gap:4px}.belt-tools .small-btn{width:34px;height:34px;padding:0;display:flex;align-items:center;justify-content:center;font-size:15px}.belt-tools .small-btn:disabled{opacity:.3}.belt-del{color:#ff8a65}.belt-add{display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:8px;align-items:center;margin-top:12px;padding-top:12px;border-top:1px dashed var(--border)}.belt-add .field{min-width:0;width:100%}
 .beta-pill{display:inline-block;vertical-align:middle;font:800 10px/1 "Work Sans",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--orange);border:1px solid rgba(244,122,18,.6);background:rgba(244,122,18,.12);border-radius:20px;padding:4px 8px}.brand .beta-pill{margin-top:10px}.beta-top{display:none;margin-left:8px;padding:3px 6px;font-size:9px}@media(max-width:760px){.beta-top{display:inline-block}.topbar h2{white-space:nowrap}}.topbar h2{display:inline}.beta-note{font-size:12px;color:var(--soft);line-height:1.45;background:#202226;border:1px solid var(--border);border-radius:12px;padding:10px 12px;margin:0 0 12px}.beta-note a{color:var(--orange)}.beta-note .beta-pill{margin-right:6px}.gym-banner{border-color:rgba(244,122,18,.6)!important;background:rgba(244,122,18,.12)!important;margin-bottom:12px}
+.cr-table{display:grid;gap:0}.cr-row{display:grid;grid-template-columns:minmax(0,2fr) 1fr 1fr 1fr;gap:10px;align-items:center;width:100%;text-align:left;background:none;border:0;border-top:1px solid var(--border);padding:12px 4px;color:var(--text);font:inherit;cursor:pointer}.cr-row.cr-head{cursor:default;border-top:0;padding-top:0;font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.05em}.cr-row span small{display:block;color:var(--muted);font-size:12px;margin-top:2px;font-weight:400}.cr-row.open{background:rgba(244,122,18,.07);border-radius:10px}.cr-big{font-size:20px;font-weight:800}.cr-up{color:#4ade80;font-weight:700}.cr-down{color:#ff8a65;font-weight:700}.cr-note{font-size:13px;margin:12px 0 0}.cr-detail{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:16px;padding:12px 4px 16px}.cr-detail h5{margin:0 0 8px;font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}.cr-bars{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;height:90px;align-items:end}.cr-bar{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:3px;font-size:10px;color:var(--muted)}.cr-bar div{width:100%;max-width:22px;background:var(--orange);border-radius:4px 4px 2px 2px;min-height:2px}.cr-bar b{color:var(--text);font-size:10px}.cr-people{display:grid;gap:6px}.cr-person{display:flex;justify-content:space-between;gap:8px;background:#202226;border:1px solid var(--border);border-radius:9px;padding:7px 10px;color:var(--text);font:inherit;font-size:13px;text-align:left;cursor:pointer}.cr-person small{color:var(--muted)}@media(max-width:760px){.cr-row{grid-template-columns:minmax(0,1.6fr) .9fr .8fr;}.cr-row>span:nth-child(4){display:none}.cr-detail{grid-template-columns:1fr}}
 </style></head><body>
 <div class="shell"><aside class="sidebar" id="sidebar"><div class="brand"><div class="brand-mark"><svg viewBox="0 0 100 100" aria-hidden="true"><path fill="#F47A12" d="M23 20 L38 16 L38 62 L77 47.5 L81.5 61.5 L23 83 Z"/></svg></div><h1 id="brand-name"></h1><p id="brand-role">Coach workspace</p><span class="beta-pill" title="LineUp is in beta: things may change while we improve it">Beta</span></div><div class="nav-label">WORKSPACE</div><nav class="nav" aria-label="Main navigation"><button class="active" data-page="overview"><span class="ico">▦</span>Overview</button><button data-page="members"><span class="ico">♙</span>Members<span class="nav-badge" id="join-badge" hidden></span></button><button data-page="checkins"><span class="ico">✓</span>Check-ins</button><button data-page="setup"><span class="ico">⚙</span>Academy setup</button></nav>
 <div class="sidebar-bottom"><button class="plan-pill" id="plan-pill" hidden><span class="pp-name" id="plan-pill-name"></span><span class="pp-cta" id="plan-pill-cta"></span></button><div id="gym-picker-wrap" hidden><div class="role-label" id="gym-picker-label">ADMIN: GYM</div><select class="field" id="gym-picker" style="width:100%;margin-bottom:10px" aria-label="Choose gym"></select></div><button class="btn" id="coach-preview-btn" hidden style="width:100%;margin-bottom:10px">Preview as coach</button><div id="role-help"></div><button class="btn" id="signout-btn" style="width:100%;margin-top:12px">Sign out</button></div></aside><div class="overlay" id="overlay"></div>
@@ -225,6 +226,7 @@ body.m-detail .tabbar{display:none}
 <div class="grid dashboard-grid">
 <div class="card"><div class="card-head"><div><h4>Attendance this week</h4><div class="muted" style="font-size:12px;margin-top:3px">Daily check-ins compared with last week</div></div><span class="badge">Busiest: <strong id="busiest-day" style="color:var(--text)">—</strong></span></div><div class="chart" id="attendance-chart"></div><div class="chart-legend"><span><span class="swatch" style="background:var(--orange)"></span>This week <span class="swatch" style="background:#3a3d42;margin-left:12px"></span>Last week</span><strong id="week-total" style="color:var(--text)">— visits</strong></div></div>
 <div class="card" id="nudge-card" data-label="Needs a nudge" data-plan="standard"><div class="card-head"><div><h4>Needs a nudge</h4><div class="muted" style="font-size:12px;margin-top:3px" id="nudge-sub">Active members with no visit recently</div></div><span class="badge" id="nudge-count">0</span></div><div class="mini-list" id="nudge-list"></div></div>
+<div class="card span2 dash-extra" id="class-card" data-label="Class report" data-plan="premium"><div class="card-head"><div><h4>Classes</h4><div class="muted" style="font-size:12px;margin-top:3px" id="class-sub">How each class on your timetable is doing, last 4 weeks</div></div><span class="badge" id="class-best">—</span></div><div id="class-report"></div></div>
 <div class="card span2 dash-extra" id="cal-card" data-label="Attendance calendar" data-plan="standard"><div class="card-head"><div><h4>Attendance calendar</h4><div class="muted" style="font-size:12px;margin-top:3px" id="cal-sub">Tap a day to see who came and who didn't</div></div><div style="display:flex;gap:6px;align-items:center"><button class="small-btn" id="cal-prev" aria-label="Previous month">‹</button><strong id="cal-label" style="min-width:130px;text-align:center"></strong><button class="small-btn" id="cal-next" aria-label="Next month">›</button></div></div><div class="cal-head"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div><div class="cal-grid" id="cal-grid"></div><div id="cal-day" hidden><div class="card-head" style="margin:16px 0 6px"><h4 id="cal-day-title"></h4><div class="seg"><button data-calmode="attended">Came</button><button data-calmode="absent">Didn't come</button></div></div><div class="mini-list scroll-list" id="cal-day-body"></div></div></div>
 <div class="card dash-extra" id="belts-card" data-label="Belt breakdown" data-plan="standard"><div class="card-head"><div><h4 id="belt-word">Belt breakdown</h4><div class="muted" style="font-size:12px;margin-top:3px">Tap a belt to see its students</div></div></div><div id="belt-breakdown"></div></div>
 <div class="card dash-extra" id="bench-card" data-label="Time at each belt" data-plan="standard"><div class="card-head"><div><h4 id="bench-title">Time at each belt</h4><div class="muted" style="font-size:12px;margin-top:3px">Average sessions before a promotion</div></div></div><div class="mini-list" id="bench-list"></div></div>
@@ -304,6 +306,7 @@ let members=[],settings=null,selectedId=null,lastLoaded=null,busy=false,refreshT
 let ci={items:[],counts:{active:0,guests:0},ranks:[]};
 let ciMulti=false,ciPicked=new Set();   // multi-select check-in
 let classesDraft=null;   // the timetable being edited in Academy setup > Classes
+let classReport=null,openClass=null;   // Overview > Classes (Premium)
 let pendingLocation=null; // a new gym location waiting for Save settings
 
 const $=id=>document.getElementById(id);
@@ -367,7 +370,7 @@ async function loadAll(quiet){
   if(!d.success){if(quiet){toast(friendlyServerError(d.error));return}showState('error',friendlyServerError(d.error));return}
   role=d.role;gymId=d.gymId;serverVersion=d.serverVersion||'';gyms=d.gyms||[];signups=d.signups||[];autoApprove=!!d.autoApprove;members=d.members||[];settings=d.settings;
   if(!settings.belts||!settings.belts.length)settings.belts=clone(DEFAULT_BELTS);
-  WEEK.now=d.week.now;WEEK.prev=d.week.prev;weekdayPeople=d.weekdayPeople||[[],[],[],[],[],[],[]];lastLoaded=new Date();useDash(both[1]);profiles={};if(d.join)join=d.join;
+  WEEK.now=d.week.now;WEEK.prev=d.week.prev;weekdayPeople=d.weekdayPeople||[[],[],[],[],[],[],[]];classReport=d.classReport||null;lastLoaded=new Date();useDash(both[1]);profiles={};if(d.join)join=d.join;
   if(!members.some(m=>m.id===selectedId))selectedId=members[0]?.id;
   showState('ready');
   if(!quiet||!$('page-setup').classList.contains('active'))fillSettingInputs();
@@ -430,7 +433,7 @@ function renderMyProfile(){
 }
 
 function applyRole(){
- renderMyProfile();renderNewGyms();setTimeout(offerFirstTour,800);
+ renderClassReport();renderMyProfile();renderNewGyms();setTimeout(offerFirstTour,800);
  document.body.classList.toggle('super',isSuper());
  $('brand-name').textContent=gymName();
  document.title=gymName();
@@ -1119,6 +1122,33 @@ async function switchCoachGym(target){
  }
 }
 
+
+// ---------- Overview > Classes report (Premium) ----------
+const WD_SHORT=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+function scheduleText(s){if(!s)return 'Outside class times';const d=s.days.slice().sort((a,b)=>a-b),run=d.length>2&&d[d.length-1]-d[0]===d.length-1;
+ return (run?WD_SHORT[d[0]-1]+'–'+WD_SHORT[d[d.length-1]-1]:d.map(x=>WD_SHORT[x-1]).join(', '))+' · '+s.start+'–'+s.end}
+function renderClassReport(){
+ const box=$('class-report');if(!box)return;
+ const rows=(classReport&&classReport.rows)||[];
+ if(!rows.length){$('class-best').textContent='—';box.innerHTML='<div class="empty" style="padding:6px 0">No classes yet. Add your timetable in <b>Academy setup → Classes</b> and this fills up as members check in.</div>';return}
+ const timed=rows.filter(r=>r.avg!==null&&r.sessions);
+ const best=timed.slice().sort((a,b)=>b.avg-a.avg)[0],worst=timed.length>1?timed.slice().sort((a,b)=>a.avg-b.avg)[0]:null;
+ $('class-best').innerHTML=best?'Busiest: <strong style="color:var(--text)">'+esc(best.name)+'</strong>':'—';
+ const change=r=>{if(!r.prev&&!r.checkins)return '<span class="muted">—</span>';if(!r.prev)return '<span class="cr-up">New</span>';const p=Math.round((r.checkins-r.prev)/r.prev*100);return p===0?'<span class="muted">Same</span>':'<span class="'+(p>0?'cr-up':'cr-down')+'">'+(p>0?'▲ ':'▼ ')+Math.abs(p)+'%</span>'};
+ box.innerHTML='<div class="cr-table"><div class="cr-row cr-head"><span>Class</span><span>Avg per session</span><span>Check-ins</span><span>vs prev. 4 wks</span></div>'+
+  rows.map((r,i)=>`<button type="button" class="cr-row${openClass===r.name?' open':''}" data-cr="${i}"><span><strong>${esc(r.name)}</strong><small>${esc(scheduleText(r.schedule))}</small></span><span class="cr-big">${r.avg!==null?r.avg:'—'}<small>${r.sessions?r.sessions+' sessions':''}</small></span><span>${r.checkins}</span><span>${change(r)}</span></button>`+(openClass===r.name?classDetail(r):'')).join('')+'</div>'+
+  (best&&worst&&best!==worst?`<p class="muted cr-note">Busiest is <b>${esc(best.name)}</b> (${best.avg} per session). Quietest is <b>${esc(worst.name)}</b> (${worst.avg}).</p>`:'');
+ box.querySelectorAll('[data-cr]').forEach(b=>b.onclick=()=>{const r=rows[+b.dataset.cr];openClass=openClass===r.name?null:r.name;renderClassReport()});
+ box.querySelectorAll('[data-open-member]').forEach(b=>b.onclick=ev=>{ev.stopPropagation();openMember(b.dataset.openMember)});
+}
+function classDetail(r){
+ const max=Math.max(1,...r.wd);
+ const bars=r.wd.map((n,i)=>`<div class="cr-bar"><div style="height:${Math.round(n/max*100)}%"></div><span>${WD_SHORT[i][0]}</span><b>${n||''}</b></div>`).join('');
+ const people=(list,fmt)=>list.length?list.map(m=>`<button type="button" class="cr-person" data-open-member="${esc(m.id)}">${esc(m.name)}<small>${fmt(m)}</small></button>`).join(''):'<span class="muted" style="font-size:13px">Nobody yet.</span>';
+ return `<div class="cr-detail"><div><h5>Check-ins by weekday</h5><div class="cr-bars">${bars}</div></div>
+  <div><h5>Regulars</h5><div class="cr-people">${people(r.regulars,m=>m.count+(m.count===1?' session':' sessions'))}</div></div>
+  <div><h5>Haven't been in 2+ weeks</h5><div class="cr-people">${people(r.missing,m=>m.lastDays+' days ago')}</div></div></div>`;
+}
 
 // ---------- Gym location (Academy setup > Academy) ----------
 function showGymLocation(){
