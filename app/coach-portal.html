@@ -299,7 +299,7 @@ const beltColors={White:'#E9E9EA',Blue:'#2F6FDB',Purple:'#7D4FC9',Brown:'#8A5631
 const DEFAULT_BELTS=[{name:'White',color:'#E9E9EA'},{name:'Blue',color:'#2F6FDB'},{name:'Purple',color:'#7D4FC9'},{name:'Brown',color:'#8A5631'},{name:'Black',color:'#3A3A3D'}];
 const WEEK={days:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],now:[0,0,0,0,0,0,0],prev:[0,0,0,0,0,0,0]};
 
-let identity=null,sessionKey=null,pickedGym=null,role='coach',gymId=null,gyms=[],signups=[],autoApprove=false;
+let identity=null,sessionKey=null,pickedGym=null,role='coach',gymId=null,gyms=[],signups=[],autoApprove=false,serverVersion='';
 let members=[],settings=null,selectedId=null,lastLoaded=null,busy=false,refreshTimer=null;
 let ci={items:[],counts:{active:0,guests:0},ranks:[]};
 let ciMulti=false,ciPicked=new Set();   // multi-select check-in
@@ -365,7 +365,7 @@ async function loadAll(quiet){
  try{
   const both=await Promise.all([api('portalData'),api('data').catch(()=>null)]);const d=both[0];
   if(!d.success){if(quiet){toast(friendlyServerError(d.error));return}showState('error',friendlyServerError(d.error));return}
-  role=d.role;gymId=d.gymId;gyms=d.gyms||[];signups=d.signups||[];autoApprove=!!d.autoApprove;members=d.members||[];settings=d.settings;
+  role=d.role;gymId=d.gymId;serverVersion=d.serverVersion||'';gyms=d.gyms||[];signups=d.signups||[];autoApprove=!!d.autoApprove;members=d.members||[];settings=d.settings;
   if(!settings.belts||!settings.belts.length)settings.belts=clone(DEFAULT_BELTS);
   WEEK.now=d.week.now;WEEK.prev=d.week.prev;weekdayPeople=d.weekdayPeople||[[],[],[],[],[],[],[]];lastLoaded=new Date();useDash(both[1]);profiles={};if(d.join)join=d.join;
   if(!members.some(m=>m.id===selectedId))selectedId=members[0]?.id;
@@ -1052,7 +1052,9 @@ $('save-settings').onclick=async()=>{
   const sentClasses=data.classes?data.classes.length:null;
   classesDraft=null;pendingLocation=null;await loadAll(true);fillSettingInputs();renderClasses();
   if(r.skipped&&r.skipped.includes('classes'))toast('Class timetable not saved: this gym is on the '+(r.classesBlockedPlan||'Free/Standard')+' plan. Classes need Premium.');
-  else if(sentClasses&&!((settings&&settings.classes)||[]).length)toast("The other settings saved, but the class timetable didn't come back. Make sure the latest Portal.gs is deployed.");
+  else if(sentClasses&&r.classesSaved===undefined)toast('Class timetable not saved: the live server is an older Portal.gs without classes. Paste the latest Portal.gs, then Deploy → New version.');
+  else if(sentClasses&&r.classesRejected&&r.classesRejected.length)toast('Some classes weren\'t saved: '+r.classesRejected.join('; ')+'.');
+  else if(sentClasses&&!((settings&&settings.classes)||[]).length)toast("Classes were saved, but they didn't come back. Make sure the latest Code.gs is deployed too.");
   else toast(r.skipped&&r.skipped.length?'Saved. Some sections are locked and weren\'t changed.':'Settings saved');
  }catch(err){failed(err,"Couldn't confirm the settings saved")}finally{busy=false;btn.disabled=false;btn.textContent='Save settings'}
 };
@@ -1226,7 +1228,7 @@ function openHelp(){
  let m=$('help-menu');
  if(!m){m=document.createElement('div');m.id='help-menu';m.className='help-menu';document.body.appendChild(m);
   m.addEventListener('click',ev=>{const b=ev.target.closest('[data-tour]');if(b)startTour(b.dataset.tour);if(ev.target===m)closeHelp()})}
- m.innerHTML='<div class="help-sheet"><div class="help-head"><h4>Guided tours</h4><button class="link-plain" type="button" onclick="this.closest(\'.help-menu\').classList.remove(\'on\')">Close</button></div><p class="muted" style="margin:0 0 12px;font-size:13px">Short tours that point at the real screens, using your own academy.</p><div class="beta-note"><span class="beta-pill">Beta</span> LineUp is in beta, so things may change while we improve it. Spotted something odd? Email <a href="mailto:cismafree@gmail.com">cismafree@gmail.com</a>.</div>'+
+ m.innerHTML='<div class="help-sheet"><div class="help-head"><h4>Guided tours</h4><button class="link-plain" type="button" onclick="this.closest(\'.help-menu\').classList.remove(\'on\')">Close</button></div><p class="muted" style="margin:0 0 12px;font-size:13px">Short tours that point at the real screens, using your own academy.</p><div class="beta-note"><span class="beta-pill">Beta</span> LineUp is in beta, so things may change while we improve it. Spotted something odd? Email <a href="mailto:cismafree@gmail.com">cismafree@gmail.com</a>.<br><small style="color:var(--muted)">Server version: '+esc(serverVersion||'older (no version number)')+'</small></div>'+
   Object.keys(TOURS).map(k=>'<button class="help-item" type="button" data-tour="'+k+'"><strong>'+esc(TOURS[k].name)+'</strong><small>'+esc(TOURS[k].blurb)+'</small><span>›</span></button>').join('')+'</div>';
  m.classList.add('on');
 }
