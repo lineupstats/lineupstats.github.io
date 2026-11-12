@@ -47,7 +47,9 @@
 
   header { border-bottom: 1px solid var(--ink-line); }
   header .wrap { display: flex; justify-content: space-between; align-items: center; height: 72px; gap: 1rem; }
-  .brand img { height: 34px !important; width: auto; }
+  .brand { display: flex; align-items: center; gap: 0.6rem; text-decoration: none; }
+  .brand img { height: 34px !important; width: auto; border-radius: 8px; }
+  .brand span { font: 700 1.6rem/1 "Oswald", "Arial Narrow", sans-serif; letter-spacing: 0.01em; color: var(--white); }
   .header-right { display: flex; align-items: center; gap: 0.9rem; }
   .back { color: var(--muted); font-size: 0.95rem; text-decoration: none; }
   .back:hover { color: var(--orange); }
@@ -218,7 +220,7 @@
 
 <header>
   <div class="wrap">
-    <a class="brand" href="/"><img src="img/logo.png" alt="LineUp" width="460" height="144"></a>
+    <a class="brand" href="/" aria-label="LineUp home"><img src="/app/member-icon-512.png" alt="" width="34" height="34"><span>LineUp</span></a>
     <div class="header-right">
       <a class="back" href="https://www.cismafree.com">A CismaFree tool</a>
       <a class="signin" href="/app/login.html">Sign in</a>
@@ -245,7 +247,7 @@
       <div class="hero-visual">
         <div class="hero-photo">
           <div class="shot">
-            <img src="img/hero.webp" width="1800" height="1282" alt="Members training during an evening class, several marked as checked in" fetchpriority="high">
+            <img src="/app/hero.webp" width="1800" height="1282" alt="Members training during an evening class, several marked as checked in" fetchpriority="high">
             <div class="sq up" style="left:26.25%;top:28%;width:27.25%;height:29.8%"><span><b>Checked in</b><small>Purple belt</small></span></div>
             <div class="sq" style="left:40%;top:59.6%;width:22.5%;height:19.6%"><span><b>Checked in</b><small>White belt</small></span></div>
             <div class="sq out up" style="left:53.75%;top:17.2%;width:9.25%;height:24.2%"><span>Not in yet</span></div>
@@ -263,7 +265,7 @@
 
   <section id="coaches" class="alt" aria-labelledby="coaches-title">
     <div class="wrap split">
-      <figure class="photo"><img src="img/coaches.webp" width="960" height="1200" alt="Two members drilling a guard pass on the mat" loading="lazy"></figure>
+      <figure class="photo"><img src="/app/coaches.webp" width="960" height="1200" alt="Two members drilling a guard pass on the mat" loading="lazy"></figure>
       <div>
       <h2 id="coaches-title">Your whole gym, in one glance</h2>
       <p class="intro">For coaches and owners.</p>
@@ -280,7 +282,7 @@
   <section aria-labelledby="members-title">
     <div class="wrap split flip">
       <div class="photo-wrap">
-        <figure class="photo"><img src="img/members.webp" width="960" height="1195" alt="Members training together during class" loading="lazy"></figure>
+        <figure class="photo"><img src="/app/members.webp" width="960" height="1195" alt="Members training together during class" loading="lazy"></figure>
         <span class="pill p-a">🔥 16-week streak</span>
         <span class="pill p-b"><span>12 sessions this month</span> <span class="up">▲3</span></span>
       </div>
@@ -333,7 +335,7 @@
       </div>
 
       <div class="cta-band">
-        <img class="band-bg" src="img/final.webp" width="1800" height="1080" alt="" loading="lazy">
+        <img class="band-bg" src="/app/final.webp" width="1800" height="1080" alt="" loading="lazy">
         <div>
           <h2>Ready to start?</h2>
           <p>Set up your academy now, free. Prefer a hand? <a href="https://www.cismafree.com/#contact">Get in touch</a> and we'll do it with you.</p>
