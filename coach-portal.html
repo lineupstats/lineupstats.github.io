@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>LineUp</title><link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20rx%3D%2222%22%20fill%3D%22%230A0B0C%22/%3E%3Cpath%20fill%3D%22%23F47A12%22%20d%3D%22M23%2020%20L38%2016%20L38%2062%20L77%2047.5%20L81.5%2061.5%20L23%2083%20Z%22/%3E%3C/svg%3E"><link rel="apple-touch-icon" href="./member-icon-180.png">
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>LineUp</title><link rel="manifest" href="./login-manifest.json"><meta name="theme-color" content="#0A0B0C"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="LineUp"><link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20rx%3D%2222%22%20fill%3D%22%230A0B0C%22/%3E%3Cpath%20fill%3D%22%23F47A12%22%20d%3D%22M23%2020%20L38%2016%20L38%2062%20L77%2047.5%20L81.5%2061.5%20L23%2083%20Z%22/%3E%3C/svg%3E"><link rel="apple-touch-icon" href="./member-icon-180.png">
 <style>
 :root{--bg:#0A0B0C;--panel:#151618;--panel2:#1B1D20;--border:#2C2F33;--text:#F5F5F5;--muted:#9A9DA1;--soft:#C9CBCE;--orange:#F47A12;--orange2:#FFB070;--green:#63B995;--blue:#6EA8FE;--red:#FF9E8F;--radius:15px}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px/1.5 'Work Sans',system-ui,-apple-system,'Segoe UI',sans-serif}button,input,select{font:inherit}button{cursor:pointer}.shell{min-height:100vh}.sidebar{width:238px;position:fixed;inset:0 auto 0 0;background:#101112;border-right:1px solid var(--border);padding:25px 14px 18px;display:flex;flex-direction:column;z-index:20}.brand{padding:0 10px 30px}.brand-mark{width:40px;height:40px;border-radius:11px;background:#0A0B0C;border:1px solid var(--border);display:grid;place-items:center;margin-bottom:12px}.brand-mark svg{width:30px;height:30px;display:block}.brand h1{font:700 21px/1.15 'Oswald','Arial Narrow',sans-serif;text-transform:uppercase;letter-spacing:.7px;margin:0}.brand p{color:var(--muted);font-size:12px;margin:8px 0 0}.nav-label{color:#66696e;font-size:10px;font-weight:700;letter-spacing:1.5px;padding:0 12px;margin:0 0 8px}.nav{display:grid;gap:5px}.nav button{display:flex;align-items:center;gap:12px;text-align:left;width:100%;border:1px solid transparent;background:transparent;color:var(--muted);border-radius:10px;padding:11px 12px;font-weight:600}.nav button:hover{background:var(--panel2);color:var(--text)}.nav button.active{background:rgba(244,122,18,.13);color:var(--orange);border-color:rgba(244,122,18,.2)}.ico{width:19px;text-align:center;font-size:17px}.sidebar-bottom{margin-top:auto;border-top:1px solid var(--border);padding:16px 10px 0;color:var(--muted);font-size:12px}.coach-pill{display:inline-flex;align-items:center;gap:7px;background:var(--panel);border:1px solid var(--border);border-radius:30px;padding:6px 10px;margin-bottom:10px}.dot{width:7px;height:7px;border-radius:50%;background:var(--orange);display:inline-block}.main{margin-left:238px;min-height:100vh}.topbar{height:78px;border-bottom:1px solid #202226;display:flex;align-items:center;justify-content:space-between;padding:0 32px;position:sticky;top:0;background:rgba(10,11,12,.94);backdrop-filter:blur(10px);z-index:10}.crumb{color:var(--muted);font-size:12px;margin-bottom:2px}.topbar h2{margin:0;font:600 23px 'Oswald',sans-serif;letter-spacing:.3px}.top-actions{display:flex;gap:9px;align-items:center}.btn{border:1px solid var(--border);background:var(--panel);color:var(--text);border-radius:10px;padding:10px 14px;font-weight:600}.btn:hover{border-color:#55585d}.btn.primary{background:var(--orange);border-color:var(--orange);color:#0A0B0C}.btn.primary:hover{background:var(--orange2)}.content{max-width:1500px;padding:27px 32px 48px;margin:auto}.page{display:none}.page.active{display:block}.page-intro{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;margin-bottom:23px}.page-intro h3{font:600 25px 'Oswald',sans-serif;margin:0 0 5px;text-transform:uppercase;letter-spacing:.4px}.page-intro p{margin:0;color:var(--muted)}.section-title{font-weight:700;margin:0 0 13px;font-size:14px}.grid{display:grid;gap:15px}.kpis{grid-template-columns:repeat(4,minmax(0,1fr));margin-bottom:20px}.card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:19px}.kpi-head{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:12px;font-weight:600}.kpi-icon{width:32px;height:32px;border-radius:9px;display:grid;place-items:center;background:rgba(244,122,18,.12);color:var(--orange);font-size:16px}.kpi-value{font:700 31px 'Oswald',sans-serif;margin:13px 0 3px}.kpi-note{font-size:12px;color:var(--muted)}.accent{color:var(--orange)}.dashboard-grid{grid-template-columns:minmax(0,1.45fr) minmax(280px,1fr);align-items:stretch}.card-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}.card-head h4{margin:0;font-size:15px}.muted{color:var(--muted)}.chart{height:180px;display:flex;align-items:flex-end;gap:14px;padding:12px 6px 0;border-bottom:1px solid var(--border);position:relative}.bar-group{height:100%;flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:8px}.bar{width:min(34px,72%);min-height:3px;background:var(--orange);border-radius:6px 6px 2px 2px;opacity:.88}.bar-label{font-size:11px;color:var(--muted);padding-bottom:8px}.chart-legend{display:flex;justify-content:space-between;color:var(--muted);font-size:12px;margin-top:13px}.mini-list{display:grid;gap:0}.mini-row{display:flex;align-items:center;gap:11px;padding:12px 0;border-bottom:1px solid #25272b}.mini-row:last-child{border-bottom:0}.avatar{width:37px;height:37px;border-radius:50%;display:grid;place-items:center;background:#292c30;color:#eee;font-weight:700;font-size:12px;flex:none}.row-main{flex:1;min-width:0}.row-main strong{display:block;font-size:13px}.row-main small{color:var(--muted);font-size:12px}.badge{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--border);border-radius:30px;padding:4px 8px;font-size:11px;color:var(--soft);white-space:nowrap}.status-dot{width:7px;height:7px;border-radius:50%;display:inline-block}.belt{width:22px;height:7px;border-radius:3px;display:inline-block;border:1px solid #55585d}.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:15px}.field{background:#0f1012;color:var(--text);border:1px solid var(--border);border-radius:10px;padding:11px 12px;min-height:42px;outline:none}.field:focus{border-color:var(--orange)}.search{flex:1;min-width:200px}.filters{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px}.filter{background:transparent;border:1px solid var(--border);color:var(--soft);border-radius:30px;padding:7px 12px;font-size:12px;font-weight:600}.filter.active{background:var(--orange);border-color:var(--orange);color:var(--bg)}.members-layout{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(280px,.8fr);gap:16px}.table{width:100%;border-collapse:collapse}.table th{text-align:left;color:var(--muted);font-size:11px;font-weight:600;padding:11px 10px;border-bottom:1px solid var(--border)}.table td{padding:13px 10px;border-bottom:1px solid #24262a;font-size:12px}.table tr{cursor:pointer}.table tbody tr:hover,.table tbody tr.selected{background:rgba(244,122,18,.08)}.member-name{display:flex;align-items:center;gap:9px;min-width:150px}.member-name strong{font-size:12px}.member-name small{display:block;color:var(--muted);font-size:11px}.detail-card{display:flex;flex-direction:column;gap:14px}.detail-head{display:flex;align-items:center;gap:12px;padding-bottom:15px;border-bottom:1px solid var(--border)}.detail-head .avatar{width:49px;height:49px;font-size:15px}.detail-head h4{margin:0 0 3px;font:600 20px 'Oswald',sans-serif;text-transform:uppercase}.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.detail-stat{background:#0c0d0f;border:1px solid #292b2f;border-radius:10px;padding:12px}.detail-stat small{display:block;color:var(--muted);font-size:11px}.detail-stat strong{font:600 20px 'Oswald',sans-serif}.detail-field label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px}.detail-field input,.detail-field select{width:100%}.empty{padding:28px;text-align:center;color:var(--muted)}.checkin-layout{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(280px,.9fr);gap:16px}.checkin-item{display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid #25272b}.checkin-item .row-main{flex:1}.checkin-item input{accent-color:var(--orange);width:17px;height:17px}.progress{height:7px;background:#2a2d31;border-radius:30px;overflow:hidden;margin-top:10px}.progress span{display:block;height:100%;background:var(--orange);border-radius:30px}.setting-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:17px}.setting-tab{padding:9px 12px;border-radius:9px;background:transparent;border:1px solid var(--border);color:var(--muted)}.setting-tab.active{color:var(--orange);border-color:rgba(244,122,18,.45);background:rgba(244,122,18,.09)}.settings-panel{display:none}.settings-panel.active{display:block}.setting-row{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:16px 0;border-bottom:1px solid var(--border)}.setting-row:last-child{border-bottom:0}.setting-row strong{display:block;font-size:13px}.setting-row small{display:block;color:var(--muted);margin-top:3px;font-size:12px}.switch{width:42px;height:24px;border-radius:30px;background:#3a3d42;position:relative;border:0;flex:none}.switch:after{content:'';position:absolute;width:18px;height:18px;left:3px;top:3px;border-radius:50%;background:#eee;transition:.15s}.switch.on{background:var(--orange)}.switch.on:after{left:21px;background:#111}.belt-edit{display:flex;align-items:center;gap:9px;margin:8px 0}.belt-edit input{max-width:220px;flex:1}.small-btn{padding:7px 10px;border-radius:8px;background:#202226;border:1px solid var(--border);color:var(--soft)}.notice{background:rgba(244,122,18,.08);border:1px solid rgba(244,122,18,.25);color:var(--soft);padding:12px 14px;border-radius:10px;font-size:12px;margin-bottom:16px}.toast{position:fixed;right:22px;bottom:22px;background:#22252a;border:1px solid #454950;border-radius:10px;padding:12px 16px;z-index:60;display:none;box-shadow:0 10px 30px #0008}.hamb{display:none;background:transparent;border:1px solid var(--border);color:var(--text);padding:7px 10px;border-radius:8px}.overlay{display:none}.modal{position:fixed;inset:0;background:#0009;z-index:80;display:none;align-items:center;justify-content:center;padding:20px}.modal.open{display:flex}.modal-box{width:min(520px,100%);background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:22px}.modal-box h3{font:600 22px 'Oswald',sans-serif;margin:0 0 16px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.form-grid .detail-field:first-child{grid-column:1/-1}.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}
 @media(max-width:1100px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.members-layout,.dashboard-grid,.checkin-layout{grid-template-columns:1fr}.topbar,.content{padding-left:22px;padding-right:22px}}
@@ -48,7 +48,7 @@
 .plan-big{font:600 24px 'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.4px}
 .plan-hook{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 18px;border-radius:12px;margin-bottom:16px;background:linear-gradient(120deg,rgba(244,122,18,.18),rgba(244,122,18,.04));border:1px solid rgba(244,122,18,.45)}
 .plan-hook p{margin:4px 0 0;font-size:13px;color:var(--soft)}.plan-hook .btn{text-decoration:none;white-space:nowrap}
-.plan-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.plan-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
 .plan-card{position:relative;border:1px solid var(--border);border-radius:14px;padding:18px 16px;background:#121315}
 .plan-card.current{border-color:var(--orange);box-shadow:0 0 0 1px var(--orange) inset;background:rgba(244,122,18,.06)}
 .plan-card.next{border-style:dashed;border-color:rgba(244,122,18,.55)}
@@ -103,12 +103,117 @@ body.super .topbar{border-bottom-color:rgba(244,122,18,.45)}
 .detail-stat strong.small{font-size:15px}
 .progress.over span{background:var(--red)}
 @media(max-width:760px){.table th:nth-child(3),.table td:nth-child(3){display:table-cell}.table th:nth-child(4),.table td:nth-child(4){display:none}}
+.rf-icon{display:none}
+@media(max-width:760px){.top-actions{gap:6px}.top-actions .btn{padding:6px 10px;font-size:13px;line-height:1.2;border-radius:9px;flex:0 0 auto}.top-add-more{display:none}.rf-text{display:none}.rf-icon{display:inline;font-size:15px}.chart{height:120px;gap:5px;padding:8px 0 0}.bar-label{font-size:10px;padding-bottom:6px}.bar-val{font-size:9px}.bar-pair{gap:2px}.chart-legend{flex-wrap:wrap;gap:6px;font-size:11px;margin-top:10px}}
+.plan-price{font-size:20px;font-weight:800;color:var(--orange);margin:2px 0 4px}.plan-th-price{font-size:11px;font-weight:600;color:var(--muted)}.plan-price-inline{font-size:13px;font-weight:700;color:var(--orange);margin-left:8px}
+.me-head{display:flex;align-items:center;gap:14px;padding:4px 0 14px;border-bottom:1px solid var(--border)}.me-avatar{width:48px;height:48px;border-radius:24px;background:rgba(244,122,18,.15);color:var(--orange);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:17px;flex:0 0 auto}.me-name{font-weight:800;font-size:17px}.me-val{text-align:right;font-weight:600;min-width:0;overflow-wrap:anywhere}.me-gyms{display:flex;flex-direction:column;gap:6px;align-items:flex-end}.me-gym{display:flex;gap:10px;align-items:center}.me-tag{font-size:11px;color:var(--orange);border:1px solid rgba(244,122,18,.45);border-radius:20px;padding:2px 8px}@media(max-width:600px){#settings-me .setting-row{flex-direction:column;align-items:flex-start;gap:8px}.me-val{text-align:left}.me-gyms{align-items:flex-start}}
+.ng-count{display:inline-block;min-width:18px;padding:0 6px;margin-left:6px;border-radius:10px;background:var(--orange);color:#0A0B0C;font-size:11px;font-weight:800;line-height:18px;text-align:center}.ng-auto{display:flex;gap:8px;align-items:center;font-size:13px;padding:4px 0 14px;border-bottom:1px solid var(--border);margin-bottom:12px}.ng-card{border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:12px}.ng-name{font-weight:800;font-size:16px}.ng-grid{display:grid;grid-template-columns:90px 1fr;gap:6px 12px;margin:12px 0;font-size:13px}.ng-grid span{color:var(--muted)}.ng-grid b{font-weight:600;overflow-wrap:anywhere}.ng-actions{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}
+/* App mode on phones: keep content clear of the notch, status bar and home bar */.topbar{height:calc(78px + env(safe-area-inset-top,0px));padding-top:env(safe-area-inset-top,0px)}.sidebar{padding-top:calc(25px + env(safe-area-inset-top,0px));padding-bottom:calc(18px + env(safe-area-inset-bottom,0px))}.main{padding-bottom:env(safe-area-inset-bottom,0px)}body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:#0A0B0C;z-index:30}
+@media(max-width:760px){.topbar{height:calc(68px + env(safe-area-inset-top,0px))}}
+/* ===== Phone layout extras ===== */
+.toast{bottom:calc(22px + env(safe-area-inset-bottom,0px))}
+.tabbar,.m-detail-bar{display:none}
+
+/* ===== Phone layout (coach portal on a phone; laptops are unchanged) ===== */
+@media(max-width:760px){
+body{font-size:15px}
+/* Top bar: one line */
+.topbar{height:calc(60px + env(safe-area-inset-top,0px));padding-left:14px;padding-right:14px}
+.topbar>div:first-child{min-width:0;gap:10px!important}
+.topbar h2{font-size:21px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.top-actions{gap:6px;flex-shrink:0}
+.top-actions .btn{padding:8px 12px;line-height:1.2;white-space:nowrap;border-radius:10px}
+.hamb{padding:7px 11px;font-size:16px}
+.top-actions .btn{font-size:14px}.rf-icon{font-size:17px}
+/* Room for the tab bar */
+.content{padding:16px 14px calc(96px + env(safe-area-inset-bottom,0px))}
+.toast{left:14px;right:14px;bottom:calc(76px + env(safe-area-inset-bottom,0px));text-align:center}
+/* Bottom tab bar */
+.tabbar{display:grid;grid-template-columns:repeat(4,1fr);position:fixed;left:0;right:0;bottom:0;z-index:14;background:rgba(16,17,18,.97);backdrop-filter:blur(10px);border-top:1px solid var(--border);padding:6px 4px calc(6px + env(safe-area-inset-bottom,0px))}
+.tabbar button{position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;background:transparent;border:0;color:var(--muted);font-size:11px;font-weight:600;padding:6px 0;border-radius:10px}
+.tabbar .tb-ico{font-size:19px;line-height:1.1}
+.tabbar button.active{color:var(--orange)}
+.tb-badge{position:absolute;top:2px;left:calc(50% + 8px);background:var(--orange);color:var(--bg);border-radius:20px;font-size:10px;font-weight:800;padding:0 6px;line-height:16px}
+/* Page headers: the top bar already names the page */
+#page-overview .page-intro,#page-members .page-intro{display:none}
+.page-intro{margin-bottom:14px}.page-intro h3{font-size:20px}.page-intro p{font-size:13px}
+/* Forms: 16px stops the iPhone zooming in when you tap a box */
+.field,select.field,input.field{font-size:16px;min-height:46px}
+/* Overview: most useful first */
+.kpis{gap:10px;margin-bottom:14px}
+.kpi-head{font-size:12px}.kpi-icon{width:28px;height:28px;font-size:14px}
+.kpi-value{font-size:26px;margin:8px 0 2px}.kpi-note{font-size:11.5px}
+.dashboard-grid{gap:12px}
+#nudge-card{order:-2}
+.card{padding:16px;border-radius:14px}
+.card-head{flex-wrap:wrap;margin-bottom:12px}
+.cal-day{height:38px;font-size:13px}.cal-head,.cal-grid{gap:4px}
+.mini-row{padding:12px 0}
+/* Members: search on its own line, filters underneath, list as cards */
+.toolbar{gap:8px}
+.toolbar .search{flex:1 1 100%;min-width:0}
+.toolbar select.field{flex:1 1 0;min-width:0;font-size:14px;padding:8px}
+.members-layout .card{padding:4px 12px!important}
+.table,.table tbody{display:block}
+.table thead{display:none}
+.table tr{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 10px;align-items:center;padding:13px 2px;border-bottom:1px solid #24262a}
+.table tbody tr:last-child{border-bottom:0}
+.table td,.table th:nth-child(n),.table td:nth-child(n){display:block;border:0;padding:0;font-size:13px}
+.table td:nth-child(1){grid-column:1;grid-row:1}
+.table td:nth-child(2){grid-column:2;grid-row:1;text-align:right;white-space:nowrap}
+.table td:nth-child(3){grid-column:1;grid-row:2;padding-left:46px}
+.table td:nth-child(4){display:none}
+.table td:nth-child(5){grid-column:2;grid-row:2;text-align:right;color:var(--muted);font-size:12px}
+.member-name{min-width:0}.member-name strong{font-size:14px}
+.member-name small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:52vw}
+.table tbody tr.selected{background:transparent}
+/* Member profile opens full screen */
+body:not(.m-detail) #member-detail{display:none}
+body.m-detail #member-detail{position:fixed;left:0;right:0;bottom:0;top:calc(56px + env(safe-area-inset-top,0px));z-index:40;border-radius:0;border:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:18px 16px calc(30px + env(safe-area-inset-bottom,0px))}
+body.m-detail .m-detail-bar{display:flex;align-items:center;position:fixed;left:0;right:0;top:0;z-index:41;height:calc(56px + env(safe-area-inset-top,0px));padding:env(safe-area-inset-top,0px) 10px 0;background:#101112;border-bottom:1px solid var(--border)}
+.m-detail-bar button{background:transparent;border:0;color:var(--orange);font-size:16px;font-weight:700;padding:10px 8px}
+body.m-detail{overflow:hidden}
+body.m-detail .tabbar{display:none}
+#join-list .mini-row{flex-wrap:wrap}#join-list .mini-row>div:last-child{width:100%;justify-content:flex-end}
+/* Check-ins: big search and buttons */
+#checkin-search{min-height:50px}
+.checkin-item{padding:12px 0}
+.checkin-item .small-btn,#today-list .small-btn{padding:10px 14px;font-size:14px}
+#guest-open{min-height:46px}
+/* Academy setup: tabs scroll sideways, rows stack, Save sits above the tab bar */
+.setting-tabs{flex-wrap:nowrap;overflow-x:auto;margin:0 -14px 14px;padding:0 14px 4px;scrollbar-width:none}
+.setting-tabs::-webkit-scrollbar{display:none}
+.setting-tab{flex:0 0 auto;white-space:nowrap;padding:10px 14px}
+.setting-tab.soon{display:none}
+.setting-row{flex-direction:column;align-items:stretch;gap:10px}
+.setting-row .field{width:100%!important;max-width:none!important}
+.setting-row .switch{align-self:flex-start}
+.belt-edit{flex-wrap:wrap}
+#page-setup .page-intro p,.page-intro h3{display:none}
+#page-checkins .page-intro p{margin:0}
+#settings-newgyms .ng-actions .btn{flex:1}
+#page-setup.active #save-settings{position:fixed;left:14px;right:14px;bottom:calc(70px + env(safe-area-inset-bottom,0px));z-index:13;padding:14px;font-size:15px;box-shadow:0 8px 24px #000a}
+#page-setup{padding-bottom:70px}
+#page-setup:has(#settings-plan.active .panel-body[hidden]) #save-settings{display:none}
+.plan-head{flex-wrap:wrap}
+/* Pop-ups slide up from the bottom */
+.modal{align-items:flex-end;padding:0}
+.modal-box{border-radius:18px 18px 0 0;max-height:92vh;overflow-y:auto;padding:22px 18px calc(22px + env(safe-area-inset-bottom,0px))}
+.modal-actions .btn,.invite-actions .btn{padding:12px 14px}
+}
+.ci-multibar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:10px;padding:10px 12px;border:1px solid rgba(244,122,18,.4);background:rgba(244,122,18,.08);border-radius:12px;font-size:14px;font-weight:600}.ci-multibar[hidden],.ci-multi-msg[hidden]{display:none}.ci-multi-msg{margin-top:10px;padding:10px 12px;border-radius:12px;background:#17191c;border:1px solid var(--border);font-size:13px;line-height:1.45}.ci-multi-list{max-height:55vh;overflow-y:auto;-webkit-overflow-scrolling:touch}.ci-pick{justify-content:flex-start!important;gap:12px;cursor:pointer;-webkit-tap-highlight-color:transparent}.ci-pick input{position:absolute;opacity:0;pointer-events:none}.ci-box{width:24px;height:24px;flex:0 0 24px;border-radius:7px;border:2px solid #4a4d52;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:var(--bg)}.ci-pick.on .ci-box{background:var(--orange);border-color:var(--orange)}.ci-pick.on .ci-box::after{content:"✓"}.ci-pick.done{opacity:.55;cursor:default}.ci-pick.done .ci-box{border-color:#2E9E5B;color:#2E9E5B}.ci-pick .badge{margin-left:auto}
+.class-row{border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:10px;display:grid;gap:10px}.class-row .class-name{width:100%}.class-days{display:flex;gap:6px;flex-wrap:wrap}.day-btn{width:38px;height:38px;border-radius:10px;border:1px solid var(--border);background:#202226;color:var(--soft);font-weight:700;cursor:pointer}.day-btn.on{background:var(--orange);border-color:var(--orange);color:var(--bg)}.class-times{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.class-times .field{flex:1 1 130px;min-width:130px;width:auto}.class-times .class-del{margin-left:auto}.ci-class-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}.ci-class-row label{font-size:13px;color:var(--muted);font-weight:600}.ci-class-row .field{flex:1}.ci-class-row[hidden]{display:none}.class-split{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}.class-pill{font-size:12px;padding:4px 10px;border-radius:20px;background:#202226;border:1px solid var(--border)}.class-pill b{color:var(--orange);margin-left:4px}
+.help-btn{font-weight:800;min-width:38px}#tour-wrap{display:none}#tour-wrap.on{display:block}.tour-block{position:fixed;inset:0;z-index:90}.tour-spot{position:fixed;z-index:91;border-radius:12px;box-shadow:0 0 0 9999px rgba(4,5,6,.72),0 0 0 3px var(--orange),0 0 24px 6px rgba(244,122,18,.55);pointer-events:none;transition:all .25s ease;animation:tourPulse 1.8s ease-in-out infinite}@keyframes tourPulse{0%,100%{box-shadow:0 0 0 9999px rgba(4,5,6,.72),0 0 0 3px var(--orange),0 0 18px 4px rgba(244,122,18,.45)}50%{box-shadow:0 0 0 9999px rgba(4,5,6,.72),0 0 0 3px var(--orange),0 0 30px 10px rgba(244,122,18,.7)}}@media(prefers-reduced-motion:reduce){.tour-spot{animation:none}}.tour-card{position:fixed;z-index:92;background:#FFFFFF;color:#111214;border:0;border-top:4px solid var(--orange);border-radius:16px;padding:16px 18px;box-shadow:0 16px 48px rgba(0,0,0,.6)}.tour-card .link-plain{color:#5b5f66}.tour-card .btn{background:#F1F2F4;color:#111214;border-color:#D9DBDF}.tour-card .btn.primary{background:var(--orange);border-color:var(--orange);color:#111214}.tour-card .btn:disabled{opacity:.45}.tour-card h4{margin:4px 0 6px;font-size:18px;color:#111214}.tour-card p{margin:0 0 16px;color:#3a3d42;font-size:15px;line-height:1.5}.tour-count{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#C2410C}.tour-actions{display:flex;align-items:center;gap:8px}.help-menu{position:fixed;inset:0;z-index:80;background:rgba(0,0,0,.5);display:none;align-items:flex-start;justify-content:flex-end;padding:70px 20px 20px}.help-menu.on{display:flex}.help-sheet{width:min(380px,100%);background:#17191c;border:1px solid #2c2f33;border-radius:16px;padding:16px;box-shadow:0 12px 40px rgba(0,0,0,.5)}.help-head{display:flex;justify-content:space-between;align-items:center}.help-head h4{margin:0 0 6px;font-size:17px}.help-item{display:grid;grid-template-columns:1fr auto;gap:2px 10px;width:100%;text-align:left;background:#202226;border:1px solid var(--border);border-radius:12px;padding:12px 14px;margin-bottom:8px;color:var(--text);cursor:pointer}.help-item small{grid-column:1;color:var(--muted);font-size:12px}.help-item span{grid-row:1/3;grid-column:2;align-self:center;color:var(--orange);font-size:20px}.tour-offer{position:fixed;z-index:70;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));width:min(460px,calc(100% - 24px));display:flex;align-items:center;gap:10px;background:#17191c;border:1px solid rgba(244,122,18,.5);border-radius:16px;padding:12px 14px;box-shadow:0 12px 40px rgba(0,0,0,.5)}.tour-offer>div{flex:1}.tour-offer small{display:block;color:var(--muted);font-size:12px;margin-top:2px}@media(max-width:760px){.help-menu{align-items:flex-end;padding:0}.help-sheet{width:100%;border-radius:18px 18px 0 0;padding-bottom:calc(18px + env(safe-area-inset-bottom,0px))}.tour-offer{bottom:calc(76px + env(safe-area-inset-bottom,0px))}.help-btn{min-width:34px}}
+.class-locked{display:grid;gap:8px;justify-items:start;padding:16px;border:1px dashed rgba(244,122,18,.5);border-radius:12px;background:rgba(244,122,18,.06)}.class-locked span{color:var(--muted);font-size:13px;line-height:1.45}
+.belt-edit{display:grid!important;grid-template-columns:22px 34px minmax(0,1fr) auto;align-items:center;gap:8px;margin:0;padding:8px 0;border-bottom:1px solid var(--border);flex-wrap:nowrap!important}.belt-edit:last-child{border-bottom:0}.belt-edit .belt-name{max-width:none;width:100%;min-width:0}.belt-pos{font-size:12px;font-weight:700;color:var(--muted);text-align:center}.belt-swatch{position:relative;display:block;width:34px;height:34px;border-radius:9px;border:2px solid rgba(255,255,255,.18);cursor:pointer;overflow:hidden}.belt-swatch input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;border:0;padding:0}.belt-tools{display:flex;gap:4px}.belt-tools .small-btn{width:34px;height:34px;padding:0;display:flex;align-items:center;justify-content:center;font-size:15px}.belt-tools .small-btn:disabled{opacity:.3}.belt-del{color:#ff8a65}.belt-add{display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:8px;align-items:center;margin-top:12px;padding-top:12px;border-top:1px dashed var(--border)}.belt-add .field{min-width:0;width:100%}
+.beta-pill{display:inline-block;vertical-align:middle;font:800 10px/1 "Work Sans",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--orange);border:1px solid rgba(244,122,18,.6);background:rgba(244,122,18,.12);border-radius:20px;padding:4px 8px}.brand .beta-pill{margin-top:10px}.beta-top{display:none;margin-left:8px;padding:3px 6px;font-size:9px}@media(max-width:760px){.beta-top{display:inline-block}.topbar h2{white-space:nowrap}}.topbar h2{display:inline}.beta-note{font-size:12px;color:var(--soft);line-height:1.45;background:#202226;border:1px solid var(--border);border-radius:12px;padding:10px 12px;margin:0 0 12px}.beta-note a{color:var(--orange)}.beta-note .beta-pill{margin-right:6px}.gym-banner{border-color:rgba(244,122,18,.6)!important;background:rgba(244,122,18,.12)!important;margin-bottom:12px}
 </style></head><body>
-<div class="shell"><aside class="sidebar" id="sidebar"><div class="brand"><div class="brand-mark"><svg viewBox="0 0 100 100" aria-hidden="true"><path fill="#F47A12" d="M23 20 L38 16 L38 62 L77 47.5 L81.5 61.5 L23 83 Z"/></svg></div><h1 id="brand-name"></h1><p id="brand-role">Coach workspace</p></div><div class="nav-label">WORKSPACE</div><nav class="nav" aria-label="Main navigation"><button class="active" data-page="overview"><span class="ico">▦</span>Overview</button><button data-page="members"><span class="ico">♙</span>Members<span class="nav-badge" id="join-badge" hidden></span></button><button data-page="checkins"><span class="ico">✓</span>Check-ins</button><button data-page="setup"><span class="ico">⚙</span>Academy setup</button></nav>
+<div class="shell"><aside class="sidebar" id="sidebar"><div class="brand"><div class="brand-mark"><svg viewBox="0 0 100 100" aria-hidden="true"><path fill="#F47A12" d="M23 20 L38 16 L38 62 L77 47.5 L81.5 61.5 L23 83 Z"/></svg></div><h1 id="brand-name"></h1><p id="brand-role">Coach workspace</p><span class="beta-pill" title="LineUp is in beta: things may change while we improve it">Beta</span></div><div class="nav-label">WORKSPACE</div><nav class="nav" aria-label="Main navigation"><button class="active" data-page="overview"><span class="ico">▦</span>Overview</button><button data-page="members"><span class="ico">♙</span>Members<span class="nav-badge" id="join-badge" hidden></span></button><button data-page="checkins"><span class="ico">✓</span>Check-ins</button><button data-page="setup"><span class="ico">⚙</span>Academy setup</button></nav>
 <div class="sidebar-bottom"><button class="plan-pill" id="plan-pill" hidden><span class="pp-name" id="plan-pill-name"></span><span class="pp-cta" id="plan-pill-cta"></span></button><div id="gym-picker-wrap" hidden><div class="role-label" id="gym-picker-label">ADMIN: GYM</div><select class="field" id="gym-picker" style="width:100%;margin-bottom:10px" aria-label="Choose gym"></select></div><button class="btn" id="coach-preview-btn" hidden style="width:100%;margin-bottom:10px">Preview as coach</button><div id="role-help"></div><button class="btn" id="signout-btn" style="width:100%;margin-top:12px">Sign out</button></div></aside><div class="overlay" id="overlay"></div>
-<main class="main"><header class="topbar"><div style="display:flex;align-items:center;gap:12px"><button class="hamb" id="hamb">☰</button><div><div class="crumb" id="crumb">OAK VALLEY BJJ / COACH PORTAL</div><h2 id="top-title">Overview</h2></div></div><div class="top-actions"><button class="btn" id="refresh-btn">Refresh</button><button class="btn hide-mobile" id="export-btn">Export members</button><button class="btn primary" id="top-add">＋ Invite members</button></div></header><div class="content"><div class="notice" id="account-banner" hidden style="margin-bottom:16px;border-color:rgba(255,158,143,.5)"></div><div class="notice" id="coach-preview-banner" hidden style="margin-bottom:16px"></div>
+<main class="main"><header class="topbar"><div style="display:flex;align-items:center;gap:12px"><button class="hamb" id="hamb">☰</button><div><div class="crumb" id="crumb">OAK VALLEY BJJ / COACH PORTAL</div><h2 id="top-title">Overview</h2><span class="beta-pill beta-top" title="LineUp is in beta">Beta</span></div></div><div class="top-actions"><button class="btn help-btn" id="help-btn" aria-label="Guided tours" title="Guided tours">?</button><button class="btn hide-mobile" id="export-btn">Export members</button><button class="btn primary" id="top-add" aria-label="Invite members">＋ Invite<span class="top-add-more"> members</span></button></div></header><div class="content"><div class="notice" id="account-banner" hidden style="margin-bottom:16px;border-color:rgba(255,158,143,.5)"></div><div class="notice" id="coach-preview-banner" hidden style="margin-bottom:16px"></div>
 
 <section class="page active" id="page-overview"><div class="page-intro"><div><h3>Academy overview</h3><p>Who's training, who's drifting and how full your plan is.</p></div><span class="badge"><span class="dot"></span> <span id="view-badge">Coach view</span></span></div>
+<button class="notice join-banner gym-banner" id="gym-banner" hidden><strong>🥋 A coach wants to open a gym.</strong> <span id="gym-banner-text"></span></button>
 <button class="notice join-banner" id="join-banner" hidden><strong>New join requests.</strong> <span id="join-banner-text"></span></button>
 <div class="grid kpis">
 <div class="card kpi-card" data-kpi="active" role="button" tabindex="0"><div class="kpi-head">Active members <span class="kpi-icon">♙</span></div><div class="kpi-value" id="kpi-active">0</div><div class="kpi-note" id="kpi-active-note"></div></div>
@@ -119,15 +224,15 @@ body.super .topbar{border-bottom-color:rgba(244,122,18,.45)}
 <div class="card" id="kpi-detail" hidden style="margin-bottom:15px"><div class="card-head"><h4 id="kpi-detail-title"></h4><button class="small-btn" id="kpi-detail-close">Close</button></div><div class="mini-list scroll-list" id="kpi-detail-body"></div></div>
 <div class="grid dashboard-grid">
 <div class="card"><div class="card-head"><div><h4>Attendance this week</h4><div class="muted" style="font-size:12px;margin-top:3px">Daily check-ins compared with last week</div></div><span class="badge">Busiest: <strong id="busiest-day" style="color:var(--text)">—</strong></span></div><div class="chart" id="attendance-chart"></div><div class="chart-legend"><span><span class="swatch" style="background:var(--orange)"></span>This week <span class="swatch" style="background:#3a3d42;margin-left:12px"></span>Last week</span><strong id="week-total" style="color:var(--text)">— visits</strong></div></div>
-<div class="card" id="nudge-card" data-label="Needs a nudge" data-plan="basic"><div class="card-head"><div><h4>Needs a nudge</h4><div class="muted" style="font-size:12px;margin-top:3px" id="nudge-sub">Active members with no visit recently</div></div><span class="badge" id="nudge-count">0</span></div><div class="mini-list" id="nudge-list"></div></div>
-<div class="card span2 dash-extra" id="cal-card" data-label="Attendance calendar" data-plan="basic"><div class="card-head"><div><h4>Attendance calendar</h4><div class="muted" style="font-size:12px;margin-top:3px" id="cal-sub">Tap a day to see who came and who didn't</div></div><div style="display:flex;gap:6px;align-items:center"><button class="small-btn" id="cal-prev" aria-label="Previous month">‹</button><strong id="cal-label" style="min-width:130px;text-align:center"></strong><button class="small-btn" id="cal-next" aria-label="Next month">›</button></div></div><div class="cal-head"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div><div class="cal-grid" id="cal-grid"></div><div id="cal-day" hidden><div class="card-head" style="margin:16px 0 6px"><h4 id="cal-day-title"></h4><div class="seg"><button data-calmode="attended">Came</button><button data-calmode="absent">Didn't come</button></div></div><div class="mini-list scroll-list" id="cal-day-body"></div></div></div>
+<div class="card" id="nudge-card" data-label="Needs a nudge" data-plan="standard"><div class="card-head"><div><h4>Needs a nudge</h4><div class="muted" style="font-size:12px;margin-top:3px" id="nudge-sub">Active members with no visit recently</div></div><span class="badge" id="nudge-count">0</span></div><div class="mini-list" id="nudge-list"></div></div>
+<div class="card span2 dash-extra" id="cal-card" data-label="Attendance calendar" data-plan="standard"><div class="card-head"><div><h4>Attendance calendar</h4><div class="muted" style="font-size:12px;margin-top:3px" id="cal-sub">Tap a day to see who came and who didn't</div></div><div style="display:flex;gap:6px;align-items:center"><button class="small-btn" id="cal-prev" aria-label="Previous month">‹</button><strong id="cal-label" style="min-width:130px;text-align:center"></strong><button class="small-btn" id="cal-next" aria-label="Next month">›</button></div></div><div class="cal-head"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div><div class="cal-grid" id="cal-grid"></div><div id="cal-day" hidden><div class="card-head" style="margin:16px 0 6px"><h4 id="cal-day-title"></h4><div class="seg"><button data-calmode="attended">Came</button><button data-calmode="absent">Didn't come</button></div></div><div class="mini-list scroll-list" id="cal-day-body"></div></div></div>
 <div class="card dash-extra" id="belts-card" data-label="Belt breakdown" data-plan="standard"><div class="card-head"><div><h4 id="belt-word">Belt breakdown</h4><div class="muted" style="font-size:12px;margin-top:3px">Tap a belt to see its students</div></div></div><div id="belt-breakdown"></div></div>
 <div class="card dash-extra" id="bench-card" data-label="Time at each belt" data-plan="standard"><div class="card-head"><div><h4 id="bench-title">Time at each belt</h4><div class="muted" style="font-size:12px;margin-top:3px">Average sessions before a promotion</div></div></div><div class="mini-list" id="bench-list"></div></div>
 <div class="card" id="freq-card" data-label="Training frequency" data-plan="standard"><div class="card-head"><div><h4>Training frequency</h4><div class="muted" style="font-size:12px;margin-top:3px">Active members by visits in the last 28 days</div></div></div><div id="freq-list"></div></div>
-<div class="card" id="access-card" data-label="App sign-in" data-plan="basic"><div class="card-head"><div><h4>App sign-in</h4><div class="muted" style="font-size:12px;margin-top:3px">Active members, updated automatically</div></div></div><div id="access-breakdown"></div><div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center"><span class="muted" style="font-size:12px">Signed in so far</span><strong class="accent" id="access-rate">0%</strong></div></div>
+<div class="card" id="access-card" data-label="App sign-in" data-plan="standard"><div class="card-head"><div><h4>App sign-in</h4><div class="muted" style="font-size:12px;margin-top:3px">Active members, updated automatically</div></div></div><div id="access-breakdown"></div><div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center"><span class="muted" style="font-size:12px">Signed in so far</span><strong class="accent" id="access-rate">0%</strong></div></div>
 <div class="card dash-extra" id="weekday-card" data-label="Busiest days and who comes" data-plan="standard"><div class="card-head"><div><h4>Busiest days</h4><div class="muted" style="font-size:12px;margin-top:3px">All check-ins by day of the week. Tap a day to see who comes.</div></div></div><div class="chart" id="weekday-chart"></div><div id="weekday-detail" hidden><div class="card-head" style="margin:16px 0 6px"><h4 id="weekday-detail-title"></h4><button class="small-btn" id="weekday-close">Close</button></div><div class="mini-list scroll-list" id="weekday-detail-body"></div></div></div>
 <div class="card"><div class="card-head"><h4>Recent member activity</h4><button class="small-btn" data-goto="members">View members</button></div><div class="mini-list" id="recent-activity"></div></div>
-<div class="card" id="snapshot-card" data-label="Academy snapshot" data-plan="basic"><div class="card-head"><h4>Academy snapshot</h4></div><div class="mini-row"><span class="kpi-icon">＋</span><div class="row-main"><strong>New this month</strong><small id="new-note">Joined this month</small></div><strong id="new-count">0</strong></div><div class="mini-row"><span class="kpi-icon">♧</span><div class="row-main"><strong>Most common belt</strong><small>Across active members</small></div><strong id="common-belt">—</strong></div><div class="mini-row"><span class="kpi-icon">⏸</span><div class="row-main"><strong>Inactive members</strong><small>Kept on record, not using a seat</small></div><strong id="inactive-count">0</strong></div><div style="padding-top:12px"><strong style="font-size:13px">Belt mix</strong><div class="stack" id="belt-stack"></div><div class="stack-legend" id="belt-legend"></div></div></div>
+<div class="card" id="snapshot-card" data-label="Academy snapshot" data-plan="standard"><div class="card-head"><h4>Academy snapshot</h4></div><div class="mini-row"><span class="kpi-icon">＋</span><div class="row-main"><strong>New this month</strong><small id="new-note">Joined this month</small></div><strong id="new-count">0</strong></div><div class="mini-row"><span class="kpi-icon">♧</span><div class="row-main"><strong>Most common belt</strong><small>Across active members</small></div><strong id="common-belt">—</strong></div><div class="mini-row"><span class="kpi-icon">⏸</span><div class="row-main"><strong>Inactive members</strong><small>Kept on record, not using a seat</small></div><strong id="inactive-count">0</strong></div><div style="padding-top:12px"><strong style="font-size:13px">Belt mix</strong><div class="stack" id="belt-stack"></div><div class="stack-legend" id="belt-legend"></div></div></div>
 </div>
 <div class="card more-card" id="more-card" hidden></div>
 <p class="hint" id="updated-note" style="margin:16px 0 0"></p>
@@ -135,16 +240,19 @@ body.super .topbar{border-bottom-color:rgba(244,122,18,.45)}
 
 <section class="page" id="page-members"><div class="page-intro"><div><h3>Members</h3><p>Member directory, belt progression and app access.</p></div><button class="btn primary" id="add-member">＋ Invite members</button></div><div class="card" id="join-card" hidden style="margin-bottom:15px;border-color:rgba(244,122,18,.45)"><div class="card-head" style="margin-bottom:4px"><div><h4>Join requests</h4><div class="muted" style="font-size:12px;margin-top:3px">People who asked to join with your link. Approving adds them and emails them a sign-in link.</div></div></div><div class="mini-list" id="join-list"></div></div><div class="toolbar"><input class="field search" id="member-search" placeholder="Search name or email…"><select class="field" id="belt-filter"><option value="all">All belts</option></select><select class="field" id="status-filter"><option value="all">Active and inactive</option><option value="active">Active</option><option value="inactive">Inactive</option></select><select class="field" id="access-filter"><option value="all">Any app access</option><option value="signedin">Signed in</option><option value="invited">Not signed in yet</option><option value="noemail">No email</option></select></div><div class="members-layout"><div class="card" style="padding:10px;overflow:auto"><table class="table"><thead><tr><th>Member</th><th>Belt</th><th>Status</th><th>App</th><th>Last visit</th></tr></thead><tbody id="member-table"></tbody></table><div class="empty" id="member-empty" style="display:none">No members match. Try another search or filter.</div></div><aside class="card detail-card" id="member-detail"><div class="empty">Choose a member to view their profile.</div></aside></div></section>
 
-<section class="page" id="page-checkins"><div class="page-intro"><div><h3>Check-ins</h3><p>Add anyone who forgot to check in, add guests, or remove a mistake.</p></div><span class="badge" id="checkin-date"></span></div><div class="checkin-layout"><div class="card"><div class="card-head"><h4>Add a check-in</h4></div><input class="field" style="width:100%" id="checkin-search" placeholder="Search a member's name…" autocomplete="off"><div id="checkin-results" style="margin-top:10px"></div><button class="btn" id="guest-open" style="margin-top:12px;width:100%">＋ Add a guest</button><div id="guest-form" hidden style="margin-top:14px"><div class="detail-field"><label for="guest-name">Guest's name</label><input class="field" id="guest-name" style="width:100%"></div><div class="detail-field"><label for="guest-belt">Belt (optional)</label><select class="field" id="guest-belt" style="width:100%"></select></div><div style="display:flex;gap:8px;justify-content:flex-end"><button class="btn" id="guest-cancel">Cancel</button><button class="btn primary" id="guest-add">Add guest</button></div></div></div><div class="card"><div class="card-head"><h4>Checked in today</h4><button class="small-btn" id="ci-refresh">Refresh</button></div><div class="kpi-value" id="today-count">0</div><div class="muted" id="today-sub">members checked in today</div><div class="mini-list" id="today-list" style="margin-top:12px"></div></div></div></section>
+<section class="page" id="page-checkins"><div class="page-intro"><div><h3>Check-ins</h3><p>Add anyone who forgot to check in, add guests, or remove a mistake.</p></div><span class="badge" id="checkin-date"></span></div><div class="checkin-layout"><div class="card"><div class="card-head"><h4>Add a check-in</h4><button class="small-btn" id="ci-multi">Select several</button></div><div class="ci-class-row" id="ci-class-row" hidden><label for="ci-class">Class</label><select class="field" id="ci-class"></select></div><input class="field" style="width:100%" id="checkin-search" placeholder="Search a member's name…" autocomplete="off"><div class="ci-multibar" id="ci-multibar" hidden><span id="ci-multi-count">Tick who's here</span><button class="btn primary" id="ci-multi-go" disabled>Check in</button></div><div class="ci-multi-msg" id="ci-multi-msg" hidden></div><div id="checkin-results" style="margin-top:10px"></div><button class="btn" id="guest-open" style="margin-top:12px;width:100%">＋ Add a guest</button><div id="guest-form" hidden style="margin-top:14px"><div class="detail-field"><label for="guest-name">Guest's name</label><input class="field" id="guest-name" style="width:100%"></div><div class="detail-field"><label for="guest-belt">Belt (optional)</label><select class="field" id="guest-belt" style="width:100%"></select></div><div style="display:flex;gap:8px;justify-content:flex-end"><button class="btn" id="guest-cancel">Cancel</button><button class="btn primary" id="guest-add">Add guest</button></div></div></div><div class="card"><div class="card-head"><h4>Checked in today</h4><button class="small-btn" id="ci-refresh">Refresh</button></div><div class="kpi-value" id="today-count">0</div><div class="muted" id="today-sub">members checked in today</div><div class="class-split" id="class-split"></div><div class="mini-list" id="today-list" style="margin-top:12px"></div></div></div></section>
 
 <section class="page" id="page-setup"><div class="page-intro"><div><h3>Academy setup</h3><p id="setup-intro">Configure the portal to match your academy.</p></div><button class="btn primary" id="save-settings">Save settings</button></div>
-<div class="setting-tabs"><button class="setting-tab active" data-setting="academy">Academy</button><button class="setting-tab" data-setting="plan" id="plan-tab">Plan and seats</button><button class="setting-tab" data-setting="grading">Belt grading</button><button class="setting-tab soon" data-setting="profiles" disabled title="Coming soon">Profile fields <span class="soon-tag">Coming soon</span></button><button class="setting-tab soon" data-setting="features" disabled title="Coming soon">Features <span class="soon-tag">Coming soon</span></button><button class="setting-tab soon" data-setting="memberships" disabled title="Coming soon">Memberships <span class="soon-tag">Coming soon</span></button><button class="setting-tab super-tab" data-setting="permissions" data-super-only hidden>Coach permissions</button></div>
+<div class="setting-tabs"><button class="setting-tab active" data-setting="academy">Academy</button><button class="setting-tab" data-setting="me">My profile</button><button class="setting-tab" data-setting="plan" id="plan-tab">Plan and seats</button><button class="setting-tab" data-setting="grading">Belt grading</button><button class="setting-tab" data-setting="classes">Classes</button><button class="setting-tab soon" data-setting="profiles" disabled title="Coming soon">Profile fields <span class="soon-tag">Coming soon</span></button><button class="setting-tab soon" data-setting="features" disabled title="Coming soon">Features <span class="soon-tag">Coming soon</span></button><button class="setting-tab soon" data-setting="memberships" disabled title="Coming soon">Memberships <span class="soon-tag">Coming soon</span></button><button class="setting-tab super-tab" data-setting="permissions" data-super-only hidden>Coach permissions</button><button class="setting-tab super-tab" data-setting="newgyms" data-super-only hidden>New gyms <span class="ng-count" id="ng-count" hidden></span></button></div>
 
-<div class="card settings-panel active" id="settings-academy" data-perm="academy"><div class="lock-note" hidden></div><div class="panel-body"><h4 style="margin:0 0 12px">Academy details</h4><div class="setting-row"><div><strong>Academy name</strong><small id="academy-name-hint">Name shown in the coach portal.</small></div><input class="field" id="academy-name" style="max-width:280px;width:48%"></div><div class="setting-row"><div><strong>Coach display name</strong><small>Shown in the coach workspace.</small></div><input class="field" id="coach-name" style="max-width:280px;width:48%"></div><div class="setting-row"><div><strong>Nudge after</strong><small>Days without a visit before an active member shows in "Needs a nudge".</small></div><input class="field" id="alert-days" type="number" min="1" style="width:110px"></div></div></div>
+<div class="card settings-panel" id="settings-me"><div class="panel-body"><h4 style="margin:0 0 12px">My profile</h4><div id="me-body"></div></div></div>
 
-<div class="card settings-panel" id="settings-plan" data-perm="plan"><div class="lock-note" hidden></div><div id="plan-compare"></div><div class="panel-body"><h4 style="margin:0 0 4px">Admin: plan and seats for this academy</h4><p class="muted" style="margin:0 0 12px;font-size:12px">Choose the plan, account status and seats, then click Save settings. The plan cards below show what each plan includes.</p><div class="setting-row"><div><strong>Plan</strong><small>Free: check-ins and members, up to 15 members unless you set seats. Basic: adds Needs a nudge, calendar and app sign-in. Standard: adds history, insights and export. Premium: payments and more, when ready.</small></div><select class="field" id="plan-tier"><option value="free">Free</option><option value="basic">Basic</option><option value="standard">Standard</option><option value="premium">Premium</option></select></div><div class="setting-row"><div><strong>Account status</strong><small>Paused or Inactive blocks this academy's coaches and members until you set it back to Active.</small></div><select class="field" id="plan-status"><option value="active">Active</option><option value="paused">Paused</option><option value="inactive">Inactive</option></select></div><div class="setting-row"><div><strong>Member seats</strong><small>How many active members this plan allows.</small></div><input class="field" id="member-capacity" type="number" min="1" style="width:110px"></div><div class="setting-row"><div><strong>Join link</strong><small>Let people ask to join with the coach's link. Their coach still approves each one.</small></div><button class="switch on" id="join-enabled" role="switch" aria-checked="true" aria-label="Join link"></button></div><div class="setting-row"><div><strong>Seats in use</strong><small>Counted automatically from active members. Inactive members don't use a seat.</small></div><strong id="seats-in-use" style="font:600 20px 'Oswald',sans-serif">0</strong></div></div></div>
+<div class="card settings-panel active" id="settings-academy" data-perm="academy"><div class="lock-note" hidden></div><div class="panel-body"><h4 style="margin:0 0 12px">Academy details</h4><div class="setting-row"><div><strong>Academy name</strong><small id="academy-name-hint">Name shown in the coach portal.</small></div><input class="field" id="academy-name" style="max-width:280px;width:48%"></div><div class="setting-row"><div><strong>Coach display name</strong><small>Shown in the coach workspace.</small></div><input class="field" id="coach-name" style="max-width:280px;width:48%"></div><div class="setting-row"><div><strong>Nudge after</strong><small>Days without a visit before an active member shows in "Needs a nudge".</small></div><input class="field" id="alert-days" type="number" min="1" style="width:110px"></div><div class="setting-row" id="gym-location-row"><div><strong>Gym location</strong><small id="gym-location-text">Members can only check in near this spot.</small></div><button class="btn" id="gym-location-btn" type="button">Use my current location</button></div></div></div>
 
-<div class="card settings-panel" id="settings-grading" data-perm="grading"><div class="lock-note" hidden></div><div class="panel-body"><h4 style="margin:0 0 4px">Belt progression</h4><p class="muted" style="margin:0 0 14px;font-size:12px">Set the belt order and colours members see in their app. Stripes are coming soon.</p><div class="setting-row" hidden><div><strong>Grading system</strong><small>Choose how progression is represented.</small></div><select class="field" id="grading-system"><option value="belts-stripes">Belts and stripes</option><option value="belts">Belts only</option><option value="stripes">Stripes only</option><option value="custom">Custom levels</option></select></div><div class="setting-row" hidden><div><strong>Maximum stripes per belt</strong><small>Used when stripes are enabled.</small></div><select class="field" id="stripes-count"><option>0</option><option>2</option><option>4</option><option>5</option></select></div><div style="margin-top:17px"><div class="card-head"><h4>Belt order</h4></div><div id="belt-list"></div><div style="display:flex;gap:8px;margin-top:13px"><input class="field" id="new-belt-name" placeholder="New belt / level name"><input class="field" id="new-belt-color" type="color" value="#55585D" style="width:55px;padding:4px"><button class="btn" id="add-belt">Add level</button></div></div></div></div>
+<div class="card settings-panel" id="settings-plan" data-perm="plan"><div class="lock-note" hidden></div><div id="plan-compare"></div><div class="panel-body"><h4 style="margin:0 0 4px">Admin: plan and seats for this academy</h4><p class="muted" style="margin:0 0 12px;font-size:12px">Choose the plan, account status and seats, then click Save settings. The plan cards below show what each plan includes.</p><div class="setting-row"><div><strong>Plan</strong><small>Free: check-ins and members, up to 25 members unless you set seats. Standard: adds Needs a nudge, calendar, history, insights and export. Premium: adds class timetable, merch shop (soon), and your own branding and theme colour (soon).</small></div><select class="field" id="plan-tier"><option value="free">Free</option><option value="standard">Standard · £19.99/mo</option><option value="premium">Premium · £29.99/mo</option></select></div><div class="setting-row"><div><strong>Account status</strong><small>Paused or Inactive blocks this academy's coaches and members until you set it back to Active.</small></div><select class="field" id="plan-status"><option value="active">Active</option><option value="paused">Paused</option><option value="inactive">Inactive</option></select></div><div class="setting-row"><div><strong>Member seats</strong><small>How many active members this plan allows.</small></div><input class="field" id="member-capacity" type="number" min="1" style="width:110px"></div><div class="setting-row"><div><strong>Join link</strong><small>Let people ask to join with the coach's link. Their coach still approves each one.</small></div><button class="switch on" id="join-enabled" role="switch" aria-checked="true" aria-label="Join link"></button></div><div class="setting-row"><div><strong>Seats in use</strong><small>Counted automatically from active members. Inactive members don't use a seat.</small></div><strong id="seats-in-use" style="font:600 20px 'Oswald',sans-serif">0</strong></div></div></div>
+
+<div class="card settings-panel" id="settings-classes" data-perm="academy"><div class="lock-note" hidden></div><div class="panel-body"><h4 style="margin:0 0 4px">Class timetable</h4><p class="muted" style="margin:0 0 14px;font-size:12px">Members check in as usual and LineUp records which class it was. Check-in opens 15 minutes before a class starts. Outside class times it's recorded as Open mat. Leave this empty if you don't run set classes.</p><div id="class-list"></div><button class="btn" id="class-add" style="margin-top:10px">＋ Add a class</button><p class="muted" id="class-save-note" style="margin:12px 0 0;font-size:12px">Tap Save settings when you're done.</p></div></div>
+<div class="card settings-panel" id="settings-grading" data-perm="grading"><div class="lock-note" hidden></div><div class="panel-body"><h4 style="margin:0 0 4px">Belt progression</h4><p class="muted" style="margin:0 0 14px;font-size:12px">Set the belt order and colours members see in their app. Stripes are coming soon.</p><div class="setting-row" hidden><div><strong>Grading system</strong><small>Choose how progression is represented.</small></div><select class="field" id="grading-system"><option value="belts-stripes">Belts and stripes</option><option value="belts">Belts only</option><option value="stripes">Stripes only</option><option value="custom">Custom levels</option></select></div><div class="setting-row" hidden><div><strong>Maximum stripes per belt</strong><small>Used when stripes are enabled.</small></div><select class="field" id="stripes-count"><option>0</option><option>2</option><option>4</option><option>5</option></select></div><div style="margin-top:17px"><div class="card-head"><h4>Belt order</h4></div><div id="belt-list"></div><div class="belt-add"><label class="belt-swatch" title="Colour" style="background:#55585D"><input id="new-belt-color" type="color" value="#55585D" aria-label="New belt colour" oninput="this.parentNode.style.background=this.value"></label><input class="field" id="new-belt-name" placeholder="New belt or level name"><button class="btn" id="add-belt">＋ Add</button></div></div></div></div>
 
 <div class="card settings-panel" id="settings-profiles" data-perm="profiles"><div class="lock-note" hidden></div><div class="panel-body"><h4 style="margin:0 0 4px">Member profile fields</h4><p class="muted" style="margin:0 0 12px;font-size:12px">Toggle the fields you want to see and add custom fields for your academy.</p><div id="profile-fields"></div><div style="display:flex;gap:8px;margin-top:14px"><input class="field" id="new-field-name" placeholder="Custom field name"><button class="btn" id="add-field">Add field</button></div></div></div>
 
@@ -152,6 +260,7 @@ body.super .topbar{border-bottom-color:rgba(244,122,18,.45)}
 
 <div class="card settings-panel" id="settings-memberships" data-perm="memberships"><div class="lock-note" hidden></div><div class="panel-body"><h4 style="margin:0 0 4px">Memberships</h4><p class="muted" style="margin:0 0 12px;font-size:12px">Configure membership types and reminders.</p><div id="membership-list"></div><div style="display:flex;gap:8px;margin-top:14px"><input class="field" id="new-membership" placeholder="Membership type name"><button class="btn" id="add-membership">Add type</button></div><div class="setting-row"><div><strong>Expiry warning period</strong><small>Days before expiry to flag a membership.</small></div><input class="field" type="number" id="expiry-days" min="0" style="width:100px"></div></div></div>
 
+<div class="card settings-panel" id="settings-newgyms" data-super-only hidden><h4 style="margin:0 0 4px">New gyms</h4><p class="muted" style="margin:0 0 12px;font-size:12px">Academies that signed up on the sign-up page. Approving creates the gym, its spreadsheet and the coach's login, and emails the coach.</p><div id="ng-body"></div></div>
 <div class="card settings-panel" id="settings-permissions" data-super-only hidden><h4 style="margin:0 0 4px">Coach permissions</h4><p class="muted" style="margin:0 0 12px;font-size:12px">Choose what coaches at this academy can change. Plan and seats always stay with LineUp.</p><div id="perm-list"></div></div>
 </section>
 </div></main></div>
@@ -190,9 +299,12 @@ const beltColors={White:'#E9E9EA',Blue:'#2F6FDB',Purple:'#7D4FC9',Brown:'#8A5631
 const DEFAULT_BELTS=[{name:'White',color:'#E9E9EA'},{name:'Blue',color:'#2F6FDB'},{name:'Purple',color:'#7D4FC9'},{name:'Brown',color:'#8A5631'},{name:'Black',color:'#3A3A3D'}];
 const WEEK={days:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],now:[0,0,0,0,0,0,0],prev:[0,0,0,0,0,0,0]};
 
-let identity=null,sessionKey=null,pickedGym=null,role='coach',gymId=null,gyms=[];
+let identity=null,sessionKey=null,pickedGym=null,role='coach',gymId=null,gyms=[],signups=[],autoApprove=false;
 let members=[],settings=null,selectedId=null,lastLoaded=null,busy=false,refreshTimer=null;
 let ci={items:[],counts:{active:0,guests:0},ranks:[]};
+let ciMulti=false,ciPicked=new Set();   // multi-select check-in
+let classesDraft=null;   // the timetable being edited in Academy setup > Classes
+let pendingLocation=null; // a new gym location waiting for Save settings
 
 const $=id=>document.getElementById(id);
 function clone(o){return JSON.parse(JSON.stringify(o))}
@@ -253,7 +365,7 @@ async function loadAll(quiet){
  try{
   const both=await Promise.all([api('portalData'),api('data').catch(()=>null)]);const d=both[0];
   if(!d.success){if(quiet){toast(friendlyServerError(d.error));return}showState('error',friendlyServerError(d.error));return}
-  role=d.role;gymId=d.gymId;gyms=d.gyms||[];members=d.members||[];settings=d.settings;
+  role=d.role;gymId=d.gymId;gyms=d.gyms||[];signups=d.signups||[];autoApprove=!!d.autoApprove;members=d.members||[];settings=d.settings;
   if(!settings.belts||!settings.belts.length)settings.belts=clone(DEFAULT_BELTS);
   WEEK.now=d.week.now;WEEK.prev=d.week.prev;weekdayPeople=d.weekdayPeople||[[],[],[],[],[],[],[]];lastLoaded=new Date();useDash(both[1]);profiles={};if(d.join)join=d.join;
   if(!members.some(m=>m.id===selectedId))selectedId=members[0]?.id;
@@ -267,7 +379,58 @@ function refreshSoon(){clearTimeout(refreshTimer);refreshTimer=setTimeout(()=>lo
 
 function page(name){document.querySelectorAll('.page').forEach(x=>x.classList.toggle('active',x.id==='page-'+name));document.querySelectorAll('.nav button').forEach(x=>x.classList.toggle('active',x.dataset.page===name));$('top-title').textContent=({overview:'Overview',members:'Members',checkins:'Check-ins',setup:'Academy setup'})[name];$('sidebar').classList.remove('open');$('overlay').classList.remove('show');if(name==='overview')renderDashboard();if(name==='members')renderMembers();if(name==='checkins')ciRefresh();if(name==='setup')renderSettings()}
 
+// Admin only: gym sign-ups waiting for approval (Academy setup > New gyms).
+function renderNewGyms(){
+ const box=$('ng-body'),cnt=$('ng-count');if(!box)return;
+ const gb=$('gym-banner');if(gb){gb.hidden=!(isSuper()&&signups.length);if(signups.length)$('gym-banner-text').textContent=(signups.length===1?signups[0].academy+' is':signups.length+' gyms are')+' waiting for your approval. Tap to review.'}
+ if(cnt){cnt.textContent=signups.length;cnt.hidden=!signups.length||!isSuper()}
+ if(!isSuper()){box.innerHTML='';return}
+ const toggle=`<label class="ng-auto"><input type="checkbox" id="ng-auto" ${autoApprove?'checked':''}> Approve new gyms automatically</label>`;
+ const list=signups.length?signups.map(r=>`<div class="ng-card">
+  <div class="ng-top"><div><div class="ng-name">${esc(r.academy)}</div><div class="muted" style="font-size:12px">Received ${esc(r.received)}</div></div></div>
+  <div class="ng-grid"><span>Coach</span><b>${esc(r.coach)}</b><span>Email</span><b>${esc(r.email)}</b>
+  <span>Where</span><b>${esc(r.place)}${r.found&&r.found!=='Not found'?`<br><small class="muted">${esc(r.found)}</small>`:'<br><small style="color:var(--orange)">Postcode not found: set the location after approving</small>'}</b>
+  <span>Teaches</span><b>${esc(r.teaches||'—')}</b><span>Members</span><b>${esc(r.members||'—')}</b></div>
+  <div class="ng-actions"><button class="btn" data-ng="${esc(r.id)}" data-dec="decline">Decline</button><button class="btn primary" data-ng="${esc(r.id)}" data-dec="approve">Approve and create gym</button></div></div>`).join('')
+  :'<p class="muted" style="margin:6px 0 0">No gym sign-ups waiting.</p>';
+ box.innerHTML=toggle+list;
+ $('ng-auto').onchange=async e=>{const on=e.target.checked;
+  try{const r=await api('portalSetAutoApprove',{on:on?1:0});if(!r.success)throw new Error(r.error||'Could not change it');autoApprove=on;toast(on?'New gyms will be approved automatically':'New gyms will wait for you')}
+  catch(err){e.target.checked=!on;failed(err,"Couldn't change auto-approve")}};
+ box.querySelectorAll('[data-ng]').forEach(b=>b.onclick=async()=>{
+  const approve=b.dataset.dec==='approve',r0=signups.find(x=>x.id===b.dataset.ng);
+  if(!approve&&!confirm('Decline the sign-up from '+(r0?r0.academy:'this gym')+'? Nothing is created.'))return;
+  box.querySelectorAll('[data-ng]').forEach(x=>x.disabled=true);b.textContent=approve?'Creating…':'Declining…';
+  try{const r=await api('portalDecideGym',{id:b.dataset.ng,decision:approve?'approve':'decline'});
+   if(!r.success){toast(r.error||"Couldn't do that");}
+   else toast(approve?(r0?r0.academy:'The gym')+' is set up. Pick it from the Admin gym menu.':'Sign-up declined');
+   await loadAll(true);
+  }catch(err){failed(err,"Couldn't confirm that")}
+  finally{renderNewGyms()}});
+}
+
+// The signed-in coach's own details (from sign-in), shown in Academy setup > My profile.
+function renderMyProfile(){
+ const box=$('me-body');if(!box||!identity)return;
+ const row=(label,value,hint)=>`<div class="setting-row"><div><strong>${esc(label)}</strong>${hint?`<small>${esc(hint)}</small>`:''}</div><div class="me-val">${value}</div></div>`;
+ const name=identity.name||(settings&&settings.coach)||'Coach';
+ const initials=String(name).trim().split(/\s+/).map(w=>w[0]||'').join('').slice(0,2).toUpperCase();
+ const list=coachGyms().length?coachGyms():[{gymId:identity.gymId,gymName:identity.gymName}];
+ const here=String(identity.gymId);
+ const gymsHtml=list.map(g=>{const cur=String(g.gymId)===here;
+  return `<div class="me-gym${cur?' cur':''}"><span>${esc(g.gymName||g.gymId)}</span>${cur?'<span class="me-tag">Open now</span>':(realSuper()?'':`<button class="link-plain" data-me-gym="${esc(g.gymId)}">Switch</button>`)}</div>`}).join('');
+ box.innerHTML=
+  `<div class="me-head"><div class="me-avatar">${esc(initials)}</div><div><div class="me-name">${esc(name)}</div><div class="muted" style="font-size:13px">${esc(identity.email||'')}</div></div></div>`+
+  row('Role',esc(realSuper()?'LineUp admin':'Coach'),realSuper()?'Full access to every academy.':'Set by your academy. Contact LineUp to change it.')+
+  row('Email',esc(identity.email||'—'),'You sign in with this email (Google or an emailed code).')+
+  row(list.length>1?'Academies you coach at':'Academy',`<div class="me-gyms">${gymsHtml}</div>`,list.length>1?'Switch here or from the Gym menu.':'')+
+  row('This device','<button class="btn" id="me-signout">Sign out</button>','You stay signed in with your PIN until you sign out.');
+ box.querySelectorAll('[data-me-gym]').forEach(b=>b.onclick=()=>switchCoachGym(b.dataset.meGym));
+ $('me-signout').onclick=()=>{if(confirm('Sign out of LineUp on this device? You will need to sign in again with your email.'))signOut()};
+}
+
 function applyRole(){
+ renderMyProfile();renderNewGyms();setTimeout(offerFirstTour,800);
  document.body.classList.toggle('super',isSuper());
  $('brand-name').textContent=gymName();
  document.title=gymName();
@@ -296,10 +459,11 @@ function applyRole(){
  renderSettings();renderDashboard();renderMembers();renderJoin();renderPlanPill();
 }
 
-// ---------- Plans: Basic, Standard, Premium ----------
+// ---------- Plans: Free, Standard, Premium ----------
 // Cards marked data-plan="standard" (or "premium") show a lock for gyms on a lower plan.
 // Super users always see everything; Preview as coach shows the gym's real plan.
-const PLAN_RANK={free:0,basic:1,standard:2,premium:3},PLAN_NAME={free:'Free',basic:'Basic',standard:'Standard',premium:'Premium'};
+// Plans: Free, Standard, Premium. A gym still marked "Basic" is treated as Standard.
+const PLAN_RANK={free:0,basic:2,standard:2,premium:3},PLAN_NAME={free:'Free',basic:'Standard',standard:'Standard',premium:'Premium'};
 function hasPlan(p){return isSuper()||(PLAN_RANK[(settings&&settings.plan)||'standard']??1)>=PLAN_RANK[p]}
 // Each locked card shows one real figure from the gym and hides the detail behind it.
 function teaserFor(id,word){
@@ -359,22 +523,23 @@ function renderPlanLocks(){
 }
 // ---------- Your plan ----------
 const LINEUP_EMAIL='cismafree@gmail.com';
-const PLAN_ORDER=['free','basic','standard','premium'];
+const PLAN_ORDER=['free','standard','premium'];
+// Monthly prices shown in the portal. Change them here only.
+const PLAN_PRICE={free:'Free',standard:'£19.99',premium:'£29.99'};
+function planPrice(k,short){const p=PLAN_PRICE[k];return !p||p==='Free'?'Free':p+(short?'/mo':' a month')}
 const PLAN_CARD={
- free:{icon:'◎',tag:'Get started',points:['Phone check-in with PIN','Members and join link',"This week's attendance",'Up to 15 members']},
- basic:{icon:'◉',tag:'Keep members coming',points:['Needs a nudge list','Attendance calendar','App sign-in tracking','Academy snapshot']},
- standard:{icon:'◆',tag:'Know your academy',points:['Full attendance history','Training insights','Busiest days and who comes','Export members']},
- premium:{icon:'★',tag:'Run the whole gym',points:['Payments (soon)','Member messages (soon)','Custom fields (soon)','Priority help']}
+ free:{icon:'◎',tag:'Get started',points:['Phone check-in with PIN','Members and join link',"This week's attendance",'Up to 25 members']},
+ standard:{icon:'◆',tag:'Keep members coming',points:['Needs a nudge list','Attendance calendar and full history','Training insights and belt times','Busiest days, sign-ins and export']},
+ premium:{icon:'★',tag:'Run the whole gym',points:['Everything in Standard','Class timetable and check-ins by class','Merch shop for gis and kit (soon)','Your own branding and theme colour (soon)','Priority help']}
 };
 // Full list for "Compare all features": [feature, first plan that includes it]
-const PLAN_TABLE=[['Phone check-in with PIN','free'],['Check-ins page, guests and corrections','free'],['Members list, join link and approvals','free'],['Belt changes and member history','free'],["This week's attendance chart",'free'],['Needs a nudge list','basic'],['Attendance calendar (this month)','basic'],['App sign-in tracking and snapshot','basic'],['Calendar for every past month','standard'],['Visits per member, training frequency','standard'],['Belt breakdown, time at each belt','standard'],['Busiest days and who comes','standard'],['Export member list','standard'],['Payments, messages, custom fields (soon)','premium'],['Priority set-up help','premium']];
+const PLAN_TABLE=[['Phone check-in with PIN','free'],['Check-ins page, guests and corrections','free'],['Members list, join link and approvals','free'],['Belt changes and member history','free'],["This week's attendance chart",'free'],['Needs a nudge list','standard'],['Attendance calendar (this month)','standard'],['App sign-in tracking and snapshot','standard'],['Calendar for every past month','standard'],['Visits per member, training frequency','standard'],['Belt breakdown, time at each belt','standard'],['Busiest days and who comes','standard'],['Export member list','standard'],['Class timetable, check-ins by class','premium'],['Merch shop: members order and pay for gis and kit (soon)','premium'],['White-label: your gym\'s branding, no LineUp name (soon)','premium'],['Choose your theme colour (soon)','premium'],['Payments, messages, custom fields (soon)','premium'],['Priority set-up help','premium']];
 function openPlans(){page('setup');showSetting('plan')}
 function upgradeHook(next){
  if(!settings)return '';
  const act=activeMembers(),nudge=act.filter(m=>m.lastDays==null||m.lastDays>=settings.alertDays).length;
- if(next==='basic')return nudge?`${nudge} ${nudge===1?'member hasn\'t':'members haven\'t'} trained in ${settings.alertDays}+ days. Basic shows you who, so you can bring them back.`:'Basic shows who is drifting away before they leave, plus your attendance calendar.';
- if(next==='standard')return 'Standard shows your busiest days, who trains when, and how long people take at each belt.';
- if(next==='premium')return 'Premium adds payments and member messages as they arrive.';
+ if(next==='standard')return nudge?`${nudge} ${nudge===1?'member hasn\'t':'members haven\'t'} trained in ${settings.alertDays}+ days. Standard shows you who, plus your busiest days and how long people take at each belt.`:'Standard shows who is drifting away before they leave, your busiest days, and how long people take at each belt.';
+ if(next==='premium')return 'Premium adds your class timetable, so every check-in is recorded against the right class, plus a merch shop and your own branding as they arrive.';
  return '';
 }
 function renderPlanPage(){
@@ -382,22 +547,22 @@ function renderPlanPage(){
  const used=activeMembers().length,seats=hasLimit()?`${used} of ${settings.capacity} members`:`${used} members, no limit`;
  const mail=s=>`mailto:${LINEUP_EMAIL}?subject=${encodeURIComponent(s)}&body=${encodeURIComponent('Hi LineUp,\n\nAcademy: '+gymName()+'\n\n')}`;
  const coach=!isSuper();
- const hook=next&&coach?`<div class="plan-hook"><div><strong>Next step: ${PLAN_NAME[next]}</strong><p>${esc(upgradeHook(next))}</p></div><a class="btn primary" href="${mail('Upgrade '+gymName()+' to '+PLAN_NAME[next])}">Upgrade to ${PLAN_NAME[next]}</a></div>`:'';
+ const hook=next&&coach?`<div class="plan-hook"><div><strong>Next step: ${PLAN_NAME[next]}</strong><p>${esc(upgradeHook(next))}</p></div><a class="btn primary" href="${mail('Upgrade '+gymName()+' to '+PLAN_NAME[next])}">Upgrade to ${PLAN_NAME[next]} · ${esc(planPrice(next,true))}</a></div>`:'';
  const cards=PLAN_ORDER.map(k=>{const c=PLAN_CARD[k],isCur=k===cur,isNext=k===next;
   return `<div class="plan-card${isCur?' current':''}${isNext?' next':''}">${isCur?'<span class="plan-flag">Your plan</span>':isNext?'<span class="plan-flag ghost">Next</span>':''}
-  <div class="plan-icon">${c.icon}</div><h4>${PLAN_NAME[k]}</h4><p class="plan-tag">${c.tag}</p>
+  <div class="plan-icon">${c.icon}</div><h4>${PLAN_NAME[k]}</h4><div class="plan-price">${esc(planPrice(k))}</div><p class="plan-tag">${c.tag}</p>
   <ul>${c.points.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`}).join('');
  const rows=PLAN_TABLE.map(([f,from])=>`<tr><td>${esc(f)}</td>${PLAN_ORDER.map(k=>`<td class="${k===cur?'cur':''}">${PLAN_RANK[k]>=PLAN_RANK[from]?'✓':''}</td>`).join('')}</tr>`).join('');
- $('plan-compare').innerHTML=`<div class="plan-head"><div><span class="plan-big">${PLAN_NAME[cur]}</span><span class="muted" style="font-size:12px;margin-left:8px">${esc(seats)}</span></div>${coach?`<a class="link-plain" href="${mail('Question about '+gymName()+"'s LineUp plan")}">Contact LineUp</a>`:''}</div>
+ $('plan-compare').innerHTML=`<div class="plan-head"><div><span class="plan-big">${PLAN_NAME[cur]}</span><span class="plan-price-inline">${esc(planPrice(cur))}</span><span class="muted" style="font-size:12px;margin-left:8px">${esc(seats)}</span></div>${coach?`<a class="link-plain" href="${mail('Question about '+gymName()+"'s LineUp plan")}">Contact LineUp</a>`:''}</div>
  ${hook}<div class="plan-grid">${cards}</div>
- <details class="plan-table"><summary>Compare all features</summary><div style="overflow-x:auto"><table><thead><tr><th></th>${PLAN_ORDER.map(k=>`<th class="${k===cur?'cur':''}">${PLAN_NAME[k]}</th>`).join('')}</tr></thead><tbody>${rows}</tbody></table></div></details>
+ <details class="plan-table"><summary>Compare all features</summary><div style="overflow-x:auto"><table><thead><tr><th></th>${PLAN_ORDER.map(k=>`<th class="${k===cur?'cur':''}">${PLAN_NAME[k]}<br><span class="plan-th-price">${esc(planPrice(k,true))}</span></th>`).join('')}</tr></thead><tbody>${rows}</tbody></table></div></details>
  ${coach?'':'<p class="hint" style="margin:14px 0 0">Coaches see this page with an upgrade message based on their own figures. Change the plan below.</p>'}`;
 }
 function renderPlanPill(){
  if(!settings){$('plan-pill').hidden=true;return}
  const cur=settings.plan||'standard',next=PLAN_ORDER[PLAN_ORDER.indexOf(cur)+1];
  $('plan-pill').hidden=false;$('plan-pill-name').textContent=PLAN_NAME[cur]+' plan';
- const up=['free','basic'].includes(cur)&&!isSuper();
+ const up=['free','standard'].includes(cur)&&!isSuper();
  $('plan-pill-cta').textContent=up?'Upgrade':'View';$('plan-pill').classList.toggle('up',up);
 }
 $('plan-pill').onclick=openPlans;
@@ -613,6 +778,7 @@ $('join-list').addEventListener('click',async ev=>{
  finally{busy=false;if(b.isConnected){b.disabled=false;b.textContent=approve?'Approve':'Decline'}}
 });
 $('join-banner').onclick=()=>page('members');
+$('gym-banner').onclick=()=>{page('setup');showSetting('newgyms')};
 function openInvite(){
  const on=join.enabled;
  $('invite-on').hidden=!on;$('invite-off').hidden=on;
@@ -698,24 +864,85 @@ async function ciRefresh(){
  try{const d=await api('todayCheckins');if(d.error){toast(friendlyServerError(d.error));return}ciRender(d)}catch(err){failed(err,"Couldn't load today's check-ins")}
 }
 function ciTime(iso){return new Date(iso).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}
+function ciClass(){const r=$('ci-class-row');return r&&!r.hidden?$('ci-class').value:''}
+function ciDone(){const done={},cls=ciClass(),hasCls=(ci.classes||[]).length>0;(ci.items||[]).forEach(it=>{if(!it.removed&&it.memberId&&(!hasCls||(it.cls||'')===cls))done[it.memberId]=true});return done}
+function ciClassPicker(d){
+ const row=$('ci-class-row'),sel=$('ci-class'),list=d.classes||[];
+ row.hidden=!list.length;if(!list.length){$('class-split').innerHTML='';return}
+ const keep=sel.dataset.touched?sel.value:'',opts=list.concat(['Open mat']);
+ sel.innerHTML=opts.map(n=>`<option value="${esc(n)}">${esc(n)}${n===d.classNow?' (now)':''}</option>`).join('');
+ sel.value=keep&&opts.includes(keep)?keep:(d.classNow||opts[0]);
+ const counts={};(d.items||[]).forEach(it=>{if(!it.removed){const k=it.cls||'Open mat';counts[k]=(counts[k]||0)+1}});
+ $('class-split').innerHTML=Object.keys(counts).length?opts.filter(n=>counts[n]).map(n=>`<span class="class-pill">${esc(n)} <b>${counts[n]}</b></span>`).join(''):'';
+}
 function ciRender(d){
- ci=d;const c=d.counts||{active:0,guests:0};
+ ci=d;ciClassPicker(d);const c=d.counts||{active:0,guests:0};
  $('today-count').textContent=c.active;
  const mem=c.active-c.guests;$('today-sub').textContent=c.guests?`checked in today: ${mem} ${mem===1?'member':'members'} and ${c.guests} ${c.guests===1?'guest':'guests'}`:(c.active===1?'person':'people')+' checked in today';
  const sel=$('guest-belt'),keep=sel.value;sel.innerHTML='<option value="">Not sure</option>'+(d.ranks||[]).map(r=>`<option>${esc(r)}</option>`).join('');sel.value=keep;
  $('today-list').innerHTML=(d.items||[]).map(it=>{
-  const tag=it.source==='guest'?'Guest':it.source==='coach'?'Added by coach':'Self check-in';
+  const tag=(it.cls?it.cls+' · ':'')+(it.source==='guest'?'Guest':it.source==='coach'?'Added by coach':'Self check-in');
   const meta=it.removed?'Removed, no longer counted':`${esc(ciTime(it.time))} · ${tag}${it.source==='guest'&&it.rank?' · '+esc(it.rank):''}`;
   return `<div class="mini-row">${avatar(it.name)}<div class="row-main"><strong class="${it.removed?'gone':''}">${esc(it.name)}</strong><small>${meta}</small></div><button class="small-btn" data-row="${it.row}" data-stamp="${esc(it.stamp)}" data-undo="${it.removed?1:0}">${it.removed?'Undo':'Remove'}</button></div>`}).join('')||'<div class="empty">No check-ins yet today.</div>';
  ciResults();
 }
 function ciResults(){
  const q=$('checkin-search').value.trim().toLowerCase(),box=$('checkin-results');
+ if(ciMulti){ciMultiList(q,box);return}
  if(!q){box.innerHTML='';return}
- const done={};(ci.items||[]).forEach(it=>{if(!it.removed&&it.memberId)done[it.memberId]=true});
+ const done=ciDone();
  const hits=members.filter(m=>m.name.toLowerCase().includes(q)).slice(0,8);
  box.innerHTML=hits.map(m=>`<div class="checkin-item"><div class="row-main"><strong>${esc(m.name)}</strong><small>${esc(m.belt)}</small></div>${done[m.id]?'<span class="badge">✓ Checked in</span>':!m.active?'<span class="badge">Inactive</span>':`<button class="small-btn primary-btn" data-add="${esc(m.id)}">Check in</button>`}</div>`).join('')||`<div class="empty">No member called "${esc(q)}". Add them as a guest instead?</div>`;
 }
+// ---------- Multi-select check-in: tick several members, check them all in ----------
+function ciMultiList(q,box){
+ const done=ciDone();
+ const list=members.filter(m=>m.active&&(!q||m.name.toLowerCase().includes(q))).sort((a,b)=>a.name.localeCompare(b.name));
+ box.innerHTML=list.length?`<div class="ci-multi-list">${list.map(m=>done[m.id]
+  ?`<div class="checkin-item ci-pick done"><span class="ci-box">✓</span><div class="row-main"><strong>${esc(m.name)}</strong><small>${beltDot(m.belt)}${esc(m.belt)}</small></div><span class="badge">Checked in</span></div>`
+  :`<label class="checkin-item ci-pick${ciPicked.has(m.id)?' on':''}"><input type="checkbox" data-pick="${esc(m.id)}" ${ciPicked.has(m.id)?'checked':''}><span class="ci-box"></span><div class="row-main"><strong>${esc(m.name)}</strong><small>${beltDot(m.belt)}${esc(m.belt)}</small></div></label>`).join('')}</div>`
+  :`<div class="empty">${q?`No active member called "${esc(q)}".`:'No active members yet.'}</div>`;
+ ciMultiBar();
+}
+function ciMultiBar(){
+ const n=ciPicked.size,go=$('ci-multi-go');
+ $('ci-multi-count').textContent=n?n+' selected':"Tick who's here";
+ go.disabled=!n||busy;go.textContent=n?'Check in '+n:'Check in';
+}
+function setCiMulti(on){
+ ciMulti=on;ciPicked.clear();
+ $('ci-multi').textContent=on?'Done':'Select several';
+ $('ci-multibar').hidden=!on;$('guest-open').hidden=on;if(on)closeGuest();
+ if(on)$('ci-multi-msg').hidden=true;
+ $('checkin-search').placeholder=on?'Filter the list…':"Search a member's name…";
+ ciResults();
+}
+async function ciMultiGo(){
+ if(busy||!ciPicked.size)return;
+ const ids=[...ciPicked],nameOf=id=>(members.find(x=>x.id===id)||{}).name||'Member';
+ const ok=[],already=[],bad=[];let last=null;
+ busy=true;$('page-checkins').classList.add('busy');const go=$('ci-multi-go');go.disabled=true;
+ try{
+  for(let i=0;i<ids.length;i++){
+   go.textContent='Checking in '+(i+1)+' of '+ids.length+'…';
+   try{const r=await api('coachAddMember',{memberId:ids[i],cls:ciClass()});
+    if(r&&r.success){ok.push(nameOf(ids[i]));last=r}
+    else if(r&&r.reason==='already')already.push(nameOf(ids[i]));
+    else bad.push(nameOf(ids[i]));
+   }catch(err){bad.push(nameOf(ids[i]))}
+  }
+ }finally{busy=false;$('page-checkins').classList.remove('busy')}
+ const parts=[];
+ if(ok.length)parts.push('✓ '+ok.length+' checked in');
+ if(already.length)parts.push(already.join(', ')+(already.length===1?' was':' were')+' already checked in');
+ if(bad.length)parts.push("Couldn't check in "+bad.join(', ')+'. Try them again');
+ setCiMulti(false);$('checkin-search').value='';
+ const msg=$('ci-multi-msg');msg.textContent=parts.join(' · ');msg.hidden=!parts.length;
+ toast(ok.length?ok.length+(ok.length===1?' member':' members')+' checked in':'Nothing new to check in');
+ if(last)ciRender(last);else ciRefresh();
+ refreshSoon();
+}
+
 async function ciAction(mode,params,okText){
  if(busy)return false;busy=true;$('page-checkins').classList.add('busy');
  try{const r=await api(mode,params);
@@ -725,20 +952,64 @@ async function ciAction(mode,params,okText){
  finally{busy=false;$('page-checkins').classList.remove('busy')}
 }
 $('checkin-search').addEventListener('input',ciResults);
-$('checkin-results').addEventListener('click',async ev=>{const b=ev.target.closest('button[data-add]');if(!b)return;const m=members.find(x=>x.id===b.dataset.add);if(await ciAction('coachAddMember',{memberId:b.dataset.add},(m?m.name:'Member')+' checked in')){$('checkin-search').value='';ciResults()}});
+$('ci-multi').onclick=()=>setCiMulti(!ciMulti);
+$('ci-class').onchange=()=>{$('ci-class').dataset.touched='1';ciPicked.clear();ciResults()};
+$('class-add').onclick=()=>{if(!classesDraft)classesDraft=classesFromSettings();readClassesForm();classesDraft.push({name:'',days:[],start:'',end:''});renderClasses();const ins=document.querySelectorAll('#class-list .class-name');if(ins.length)ins[ins.length-1].focus()};
+$('class-list').addEventListener('click',ev=>{const row=ev.target.closest('.class-row');if(!row)return;readClassesForm();const c=classesDraft[+row.dataset.i];
+ const day=ev.target.closest('.day-btn');if(day){const n=+day.dataset.day;c.days=c.days.includes(n)?c.days.filter(x=>x!==n):c.days.concat(n);renderClasses();return}
+ if(ev.target.closest('.class-del')){classesDraft.splice(+row.dataset.i,1);renderClasses()}});
+$('ci-multi-go').onclick=ciMultiGo;
+$('checkin-results').addEventListener('change',ev=>{const c=ev.target.closest('input[data-pick]');if(!c)return;
+ if(c.checked)ciPicked.add(c.dataset.pick);else ciPicked.delete(c.dataset.pick);
+ c.closest('.ci-pick').classList.toggle('on',c.checked);ciMultiBar()});
+$('checkin-results').addEventListener('click',async ev=>{const b=ev.target.closest('button[data-add]');if(!b)return;const m=members.find(x=>x.id===b.dataset.add);if(await ciAction('coachAddMember',{memberId:b.dataset.add,cls:ciClass()},(m?m.name:'Member')+' checked in'+(ciClass()?' for '+ciClass():''))){$('checkin-search').value='';ciResults()}});
 $('today-list').addEventListener('click',ev=>{const b=ev.target.closest('button[data-row]');if(!b)return;const undo=b.dataset.undo==='1';ciAction('removeCheckin',{row:b.dataset.row,stamp:b.dataset.stamp,undo:undo?1:0},undo?'Check-in restored':'Check-in removed')});
 $('ci-refresh').onclick=ciRefresh;
 function openGuest(){$('guest-form').hidden=false;$('guest-open').hidden=true;$('guest-name').value=$('checkin-search').value.trim();$('guest-name').focus()}
 function closeGuest(){$('guest-form').hidden=true;$('guest-open').hidden=false;$('guest-name').value='';$('guest-belt').value=''}
 $('guest-open').onclick=openGuest;$('guest-cancel').onclick=closeGuest;
-$('guest-add').onclick=async()=>{const n=$('guest-name').value.trim();if(!n){toast("Enter the guest's name.");return}if(await ciAction('addGuest',{name:n,rank:$('guest-belt').value},n+' added as a guest')){closeGuest();$('checkin-search').value='';ciResults()}};
+$('guest-add').onclick=async()=>{const n=$('guest-name').value.trim();if(!n){toast("Enter the guest's name.");return}if(await ciAction('addGuest',{name:n,rank:$('guest-belt').value,cls:ciClass()},n+' added as a guest')){closeGuest();$('checkin-search').value='';ciResults()}};
 
 // ---------- Academy setup ----------
-function fillSettingInputs(){if(!settings)return;$('academy-name').value=settings.academy;$('coach-name').value=settings.coach;$('alert-days').value=settings.alertDays;$('member-capacity').value=settings.capacity??'';$('plan-tier').value=settings.plan;$('plan-status').value=settings.account;$('grading-system').value=settings.grading;$('stripes-count').value=String(settings.stripes);$('expiry-days').value=settings.expiry}
+function fillSettingInputs(){if(!settings)return;showGymLocation();$('academy-name').value=settings.academy;$('coach-name').value=settings.coach;$('alert-days').value=settings.alertDays;$('member-capacity').value=settings.capacity??'';$('plan-tier').value=settings.plan;$('plan-status').value=settings.account;$('grading-system').value=settings.grading;$('stripes-count').value=String(settings.stripes);$('expiry-days').value=settings.expiry}
+// ---------- Classes (timetable) ----------
+const DAY_LETTERS=['M','T','W','T','F','S','S'];
+function classesFromSettings(){return ((settings&&settings.classes)||[]).map(c=>({name:c.name,days:(c.days||[]).slice(),start:c.start,end:c.end}))}
+function renderClasses(){
+ const box=$('class-list');if(!box)return;
+ // Uses the gym's own plan (not Admin access): the server only keeps classes for Premium gyms.
+ const premium=(PLAN_RANK[(settings&&settings.plan)||'standard']??1)>=PLAN_RANK.premium;$('class-add').hidden=!premium;$('class-save-note').hidden=!premium;
+ if(!premium){box.innerHTML=`<div class="class-locked"><strong>🔒 Class timetable is part of Premium</strong><span>Record every check-in against the right class (for example morning and evening), see who comes to each class, and let members check in to two classes in one day.</span>${isSuper()?'<span><b>Admin:</b> this gym is on '+esc(PLAN_NAME[settings.plan]||settings.plan)+'. Set it to Premium in <b>Your plan</b> first, then add classes.</span>':''}<button class="btn primary see-plans" type="button">See plans</button></div>`;box.querySelector('.see-plans').onclick=openPlans;return}
+ if(!classesDraft)classesDraft=classesFromSettings();else readClassesForm();
+ box.innerHTML=classesDraft.length?classesDraft.map((c,i)=>`<div class="class-row" data-i="${i}">
+  <input class="field class-name" placeholder="Class name, e.g. Evening class" maxlength="30" value="${esc(c.name)}">
+  <div class="class-days">${DAY_LETTERS.map((l,d)=>`<button type="button" class="day-btn${c.days.includes(d+1)?' on':''}" data-day="${d+1}" aria-pressed="${c.days.includes(d+1)}" title="${['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'][d]}">${l}</button>`).join('')}</div>
+  <div class="class-times"><input class="field class-start" type="time" value="${esc(c.start||'')}" aria-label="Start time"><span class="muted">to</span><input class="field class-end" type="time" value="${esc(c.end||'')}" aria-label="End time"><button type="button" class="small-btn class-del" aria-label="Remove class">Remove</button></div>
+ </div>`).join(''):'<div class="empty" style="padding:6px 0">No classes yet. Check-ins are recorded without a class.</div>';
+}
+function readClassesForm(){
+ document.querySelectorAll('#class-list .class-row').forEach(r=>{const c=classesDraft[+r.dataset.i];if(!c)return;
+  c.name=r.querySelector('.class-name').value.trim();c.start=r.querySelector('.class-start').value;c.end=r.querySelector('.class-end').value});
+}
+function classesProblem(){
+ const names={};
+ for(const c of classesDraft){
+  if(!c.name)return 'Give every class a name.';
+  if(c.name.toLowerCase()==='open mat')return '"Open mat" is used automatically outside class times. Choose another name.';
+  if(names[c.name.toLowerCase()])return 'Two classes are called "'+c.name+'". Give each a different name.';
+  names[c.name.toLowerCase()]=1;
+  if(!c.days.length)return 'Pick at least one day for '+c.name+'.';
+  if(!c.start||!c.end)return 'Set a start and end time for '+c.name+'.';
+  if(c.end<=c.start)return c.name+' must end after it starts.';
+ }
+ return '';
+}
+
 function renderSettings(){
+ renderClasses();
  if(!settings)return;
  $('seats-in-use').textContent=hasLimit()?`${activeMembers().length} of ${settings.capacity}`:`${activeMembers().length}, no limit`;
- $('belt-list').innerHTML=settings.belts.map((b,i)=>`<div class="belt-edit"><span class="belt" style="width:32px;height:10px;background:${b.color}"></span><input class="field" value="${esc(b.name)}" data-belt-name="${i}" aria-label="Belt name"><input type="color" value="${b.color}" data-belt-color="${i}" style="width:43px;height:40px;background:transparent;border:0" aria-label="Belt colour"><button class="small-btn" data-up="${i}" ${i===0?'disabled':''} aria-label="Move up">↑</button><button class="small-btn" data-down="${i}" ${i===settings.belts.length-1?'disabled':''} aria-label="Move down">↓</button><button class="small-btn" data-remove-belt="${i}" aria-label="Remove">×</button></div>`).join('');
+ $('belt-list').innerHTML=settings.belts.map((b,i)=>`<div class="belt-edit"><span class="belt-pos">${i+1}</span><label class="belt-swatch" style="background:${b.color}" title="Change colour"><input type="color" value="${b.color}" data-belt-color="${i}" aria-label="${esc(b.name)} colour" oninput="this.parentNode.style.background=this.value"></label><input class="field belt-name" value="${esc(b.name)}" data-belt-name="${i}" aria-label="Belt name"><div class="belt-tools"><button class="small-btn" data-up="${i}" ${i===0?'disabled':''} aria-label="Move ${esc(b.name)} up">↑</button><button class="small-btn" data-down="${i}" ${i===settings.belts.length-1?'disabled':''} aria-label="Move ${esc(b.name)} down">↓</button><button class="small-btn belt-del" data-remove-belt="${i}" aria-label="Remove ${esc(b.name)}">×</button></div></div>`).join('');
  document.querySelectorAll('[data-belt-name]').forEach(x=>x.onchange=()=>{settings.belts[+x.dataset.beltName].name=x.value.trim()||settings.belts[+x.dataset.beltName].name});
  document.querySelectorAll('[data-belt-color]').forEach(x=>x.onchange=()=>{settings.belts[+x.dataset.beltColor].color=x.value;renderSettings()});
  document.querySelectorAll('[data-up]').forEach(x=>x.onclick=()=>moveBelt(+x.dataset.up,-1));
@@ -762,7 +1033,7 @@ function renderSettings(){
  document.querySelectorAll('.setting-tab').forEach(t=>{const p=$('settings-'+t.dataset.setting);t.classList.toggle('locked',!!p&&p.classList.contains('locked'))});
 }
 function moveBelt(i,d){const j=i+d;if(j<0||j>=settings.belts.length)return;[settings.belts[i],settings.belts[j]]=[settings.belts[j],settings.belts[i]];renderSettings()}
-function showSetting(name){document.querySelectorAll('.setting-tab').forEach(x=>x.classList.toggle('active',x.dataset.setting===name));document.querySelectorAll('.settings-panel').forEach(x=>x.classList.toggle('active',x.id==='settings-'+name))}
+function showSetting(name){const sv=$('save-settings');if(sv)sv.hidden=name==='me';document.querySelectorAll('.setting-tab').forEach(x=>x.classList.toggle('active',x.dataset.setting===name));document.querySelectorAll('.settings-panel').forEach(x=>x.classList.toggle('active',x.id==='settings-'+name))}
 document.querySelectorAll('.setting-tab').forEach(b=>b.onclick=()=>showSetting(b.dataset.setting));
 $('add-belt').onclick=()=>{const n=$('new-belt-name').value.trim();if(!n)return;settings.belts.push({name:n,color:$('new-belt-color').value.toUpperCase()});$('new-belt-name').value='';renderSettings()};
 $('add-field').onclick=()=>{const n=$('new-field-name').value.trim();if(!n)return;settings.fields.push({name:n,on:true});$('new-field-name').value='';renderSettings()};
@@ -770,15 +1041,19 @@ $('add-membership').onclick=()=>{const n=$('new-membership').value.trim();if(!n)
 $('save-settings').onclick=async()=>{
  if(busy)return;
  const data={};
- if(can('academy'))data.academy={name:$('academy-name').value.trim(),coach:$('coach-name').value.trim(),alertDays:+$('alert-days').value||14};
+ if(can('academy'))data.academy={name:$('academy-name').value.trim(),coach:$('coach-name').value.trim(),alertDays:+$('alert-days').value||14};if(pendingLocation)data.location=pendingLocation;
  if(can('grading'))data.grading={system:$('grading-system').value,stripes:+$('stripes-count').value,belts:settings.belts};
+ if(can('academy')&&classesDraft&&(PLAN_RANK[(settings&&settings.plan)||'standard']??1)>=PLAN_RANK.premium){readClassesForm();const pr=classesProblem();if(pr){showSetting('classes');toast(pr);return}data.classes=classesDraft.map(c=>({name:c.name,days:c.days.slice().sort(),start:c.start,end:c.end}))}
  if(isSuper()){data.plan={plan:$('plan-tier').value,account:$('plan-status').value,seats:$('member-capacity').value.trim(),joinEnabled:join.enabled};data.perms=settings.perms}
  if(!Object.keys(data).length){toast('Nothing here is editable for coaches at this academy.');return}
  busy=true;const btn=$('save-settings');btn.disabled=true;btn.textContent='Saving…';
  try{const r=await api('portalSaveSettings',{data:JSON.stringify(data)});
   if(!r.success){toast(r.error||"Couldn't save settings.");return}
-  await loadAll(true);fillSettingInputs();
-  toast(r.skipped&&r.skipped.length?'Saved. Some sections are locked and weren\'t changed.':'Settings saved');
+  const sentClasses=data.classes?data.classes.length:null;
+  classesDraft=null;pendingLocation=null;await loadAll(true);fillSettingInputs();renderClasses();
+  if(r.skipped&&r.skipped.includes('classes'))toast('Class timetable not saved: this gym is on the '+(r.classesBlockedPlan||'Free/Standard')+' plan. Classes need Premium.');
+  else if(sentClasses&&!((settings&&settings.classes)||[]).length)toast("The other settings saved, but the class timetable didn't come back. Make sure the latest Portal.gs is deployed.");
+  else toast(r.skipped&&r.skipped.length?'Saved. Some sections are locked and weren\'t changed.':'Settings saved');
  }catch(err){failed(err,"Couldn't confirm the settings saved")}finally{busy=false;btn.disabled=false;btn.textContent='Save settings'}
 };
 
@@ -804,7 +1079,17 @@ document.querySelectorAll('[data-goto]').forEach(b=>b.addEventListener('click',(
 $('hamb').onclick=()=>{$('sidebar').classList.add('open');$('overlay').classList.add('show')};
 $('overlay').onclick=()=>{$('sidebar').classList.remove('open');$('overlay').classList.remove('show')};
 $('signout-btn').onclick=()=>{if(confirm('Sign out of LineUp on this device?'))signOut()};
-$('refresh-btn').onclick=()=>{loadAll(true).then(()=>toast('Up to date'));if($('page-checkins').classList.contains('active'))ciRefresh()};
+// No Refresh button: the portal keeps itself up to date. It refreshes quietly when the
+// coach comes back to the app, and every minute while it's open on screen, but never
+// while someone is typing, in a pop-up or on a guided tour (so nothing they're doing is lost).
+function autoRefresh(minAge){
+ if(document.hidden||busy||tour||!lastLoaded||Date.now()-lastLoaded<minAge)return;
+ const a=document.activeElement;if(a&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName))return;
+ if(document.querySelector('.modal.show,.modal.open,#invite-modal.show,#member-modal.show'))return;
+ loadAll(true);if($('page-checkins').classList.contains('active'))ciRefresh();
+}
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)autoRefresh(20000)});
+setInterval(()=>autoRefresh(55000),60000);
 $('coach-preview-btn').onclick=()=>{previewCoach=!previewCoach;applyRole();toast(previewCoach?'Previewing as a coach':'Back to admin view')};
 $('retry-btn').onclick=()=>{blockedStatus=null;loadAll(false)};
 $('state-signout').onclick=()=>signOut();
@@ -832,6 +1117,133 @@ async function switchCoachGym(target){
  }
 }
 
+
+// ---------- Gym location (Academy setup > Academy) ----------
+function showGymLocation(){
+ const el=$('gym-location-text');if(!el)return;
+ const loc=pendingLocation||(settings&&settings.location)||{};
+ if(pendingLocation)el.innerHTML='New location captured. Tap <b>Save settings</b> to use it.';
+ else if(loc.lat&&loc.lng)el.textContent='Set. Members can check in within about 150 m of this spot.';
+ else el.innerHTML='<span style="color:var(--orange)">Not set yet, so members can\'t check in.</span> Tap the button while you\'re at the gym.';
+}
+function captureGymLocation(){
+ if(!navigator.geolocation){toast("This phone can't share its location.");return}
+ const b=$('gym-location-btn');b.disabled=true;b.textContent='Finding you…';
+ navigator.geolocation.getCurrentPosition(pos=>{
+  b.disabled=false;b.textContent='Use my current location';
+  pendingLocation={lat:pos.coords.latitude,lng:pos.coords.longitude};showGymLocation();
+  toast(pos.coords.accuracy>100?'Got it, but the signal is weak. Try again near a window for a better fix.':'Location captured. Tap Save settings.');
+ },()=>{b.disabled=false;b.textContent='Use my current location';toast('Allow location access for LineUp, then try again.')},{enableHighAccuracy:true,timeout:15000,maximumAge:0});
+}
+
+// ---------- Guided tours: highlight the real portal, step by step ----------
+// Each step points at a part of the page. Steps whose part isn't on screen
+// (a locked section, a phone-only button, no members yet) are skipped.
+const TOUR_SEEN_KEY='lineupToursSeen';
+const isPhone=()=>window.matchMedia('(max-width:760px)').matches;
+const navSel=p=>isPhone()?'.tabbar button[data-tab="'+p+'"]':'.nav button[data-page="'+p+'"]';
+const TOURS={
+ welcome:{name:'Welcome tour',blurb:'A quick look around the portal.',steps:[
+  {go:()=>page('overview'),sel:()=>navSel('overview'),title:'Overview',text:"Your academy at a glance: who trained this week, who's drifting and how full your plan is."},
+  {sel:'#nudge-card',title:'Needs a nudge',text:"Active members who haven't trained for a while. A quick message brings most of them back."},
+  {sel:'#attendance-chart',title:'Attendance this week',text:'Check-ins each day this week, compared with last week.'},
+  {sel:()=>navSel('members'),title:'Members',text:'Everyone at your academy. Open a member to change their belt, edit details or switch them off.'},
+  {sel:()=>navSel('checkins'),title:'Check-ins',text:"Who's in today. Add anyone who forgot, check in a whole class at once, or add a guest."},
+  {sel:()=>navSel('setup'),title:'Academy setup',text:'Your gym location, belts, class timetable, profile and plan.'},
+  {sel:'#top-add',title:'Invite members',text:'Share your join link, or add someone yourself. They get a welcome email with the steps.'},
+  {sel:'#help-btn',title:'Tours any time',text:'Tap ? whenever you want to see a guide again.'}]},
+ setup:{name:'Set up your academy',blurb:'Location, belts and classes, in 2 minutes.',steps:[
+  {go:()=>{page('setup');showSetting('academy')},sel:'[data-setting="academy"]',title:'Academy details',text:'Your academy name, your name, and when members should show in "Needs a nudge".'},
+  {sel:'#gym-location-row',title:'Gym location',text:"Members can only check in near this spot. Stand in the gym and tap Use my current location."},
+  {go:()=>showSetting('grading'),sel:'[data-setting="grading"]',title:'Belt grading',text:'Your belts, in order from beginner up, with their colours.'},
+  {sel:'#belt-list',title:'Your belts',text:'Use the arrows to reorder, rename a belt or change its colour, or add a new one.'},
+  {go:()=>showSetting('classes'),sel:'[data-setting="classes"]',title:'Classes (Premium)',text:'Add your timetable so every check-in is recorded against the right class.'},
+  {sel:'#class-add',title:'Add a class',text:'Name it, tap the days and set the times. Check-in opens 15 minutes before it starts.'},
+  {sel:'#save-settings',title:'Save settings',text:'Nothing changes until you tap Save settings.'}]},
+ members:{name:'Invite and manage members',blurb:'Join link, approvals, belts and switching someone off.',steps:[
+  {sel:'#top-add',title:'Invite members',text:'Share your join link by WhatsApp or email. New people send a request for you to approve.'},
+  {go:()=>page('members'),sel:'#join-card',title:'Join requests',text:'Approve or decline people who used your join link. Approving sends them a welcome email.'},
+  {sel:'#member-search',title:'Find a member',text:'Search by name, or filter by belt and status.'},
+  {sel:'#member-table tr[data-member]',title:'Open a member',text:'Tap a member to see their history and change their details.'},
+  {go:()=>{const r=document.querySelector('#member-table tr[data-member]');if(r)r.click()},sel:'#change-belt',title:'Change belt',text:'Promote them here. Their sessions at each belt are kept, and you can undo a mistake.'},
+  {sel:'#preview-member',title:"See what they see",text:"Opens their member app exactly as they see it, without checking them in."},
+  {sel:'#toggle-active',title:'Switch off a member',text:'Inactive members keep their history but can no longer sign in or check in, and free up a seat.'}]},
+ checkins:{name:'Check-ins',blurb:'Add people, whole classes and guests.',steps:[
+  {go:()=>page('checkins'),sel:'#ci-class-row',title:'Class',text:"Set automatically to the class on now. Change it to add someone to an earlier class."},
+  {sel:'#checkin-search',title:'Check someone in',text:"Search a name and tap Check in. Use it for anyone who forgot their phone."},
+  {sel:'#ci-multi',title:'Select several',text:'Tick everyone in the class and check them all in at once.'},
+  {sel:'#guest-open',title:'Add a guest',text:"Visitors and trial classes. Guests are counted but aren't added as members."},
+  {sel:'#today-list',title:"Today's check-ins",text:'Everyone checked in today, with their class. Remove a mistake here; it can be undone.'}]}
+};
+let tour=null;
+function tourEls(){
+ let w=$('tour-wrap');if(w)return w;
+ w=document.createElement('div');w.id='tour-wrap';
+ w.innerHTML='<div class="tour-block"></div><div class="tour-spot" id="tour-spot"></div><div class="tour-card" id="tour-card" role="dialog" aria-live="polite"><div class="tour-count" id="tour-count"></div><h4 id="tour-title"></h4><p id="tour-text"></p><div class="tour-actions"><button class="link-plain" id="tour-skip" type="button">End tour</button><span style="flex:1"></span><button class="btn" id="tour-back" type="button">Back</button><button class="btn primary" id="tour-next" type="button">Next</button></div></div>';
+ document.body.appendChild(w);
+ $('tour-skip').onclick=endTour;$('tour-back').onclick=()=>tourStep(-1);$('tour-next').onclick=()=>tourStep(1);
+ window.addEventListener('resize',placeTour);window.addEventListener('scroll',placeTour,true);
+ document.addEventListener('keydown',ev=>{if(!tour)return;if(ev.key==='Escape')endTour();if(ev.key==='ArrowRight')tourStep(1);if(ev.key==='ArrowLeft')tourStep(-1)});
+ return w;
+}
+function stepEl(st){const sel=typeof st.sel==='function'?st.sel():st.sel;const el=sel&&document.querySelector(sel);
+ if(!el)return null;const r=el.getBoundingClientRect();if(!r.width&&!r.height)return null;if(el.closest('[hidden]'))return null;return el}
+function startTour(key){
+ const t=TOURS[key];if(!t)return;closeHelp();try{localStorage.setItem(TOUR_SEEN_KEY,'1')}catch(e){}
+ tour={key:key,steps:t.steps,i:-1,dir:1};tourEls().classList.add('on');document.body.classList.add('touring');tourStep(1);
+}
+async function tourStep(dir){
+ if(!tour)return;let i=tour.i;
+ while(true){
+  i+=dir;if(i<0)return;if(i>=tour.steps.length){endTour(true);return}
+  const st=tour.steps[i];if(st.go){try{st.go()}catch(e){} await new Promise(r=>setTimeout(r,350))}
+  const el=stepEl(st);if(el){tour.i=i;tour.el=el;break}
+ }
+ const st=tour.steps[tour.i],shown=tour.steps.length;
+ tour.el.scrollIntoView({block:'center',behavior:'instant'});
+ $('tour-title').textContent=st.title;$('tour-text').textContent=st.text;
+ $('tour-count').textContent=TOURS[tour.key].name+' · '+(tour.i+1)+' of '+shown;
+ $('tour-back').disabled=tour.i===0;$('tour-next').textContent=tour.i===shown-1?'Done':'Next';
+ placeTour();$('tour-next').focus({preventScroll:true});
+}
+function placeTour(){
+ if(!tour||!tour.el)return;const r=tour.el.getBoundingClientRect(),pad=6,spot=$('tour-spot'),card=$('tour-card');
+ spot.style.cssText='top:'+(r.top-pad)+'px;left:'+(r.left-pad)+'px;width:'+(r.width+pad*2)+'px;height:'+(r.height+pad*2)+'px';
+ const vh=window.innerHeight,vw=window.innerWidth,cw=Math.min(340,vw-24);card.style.width=cw+'px';
+ const ch=card.offsetHeight;let top=r.bottom+14;if(top+ch>vh-12)top=Math.max(12,r.top-ch-14);
+ if(top+ch>vh-12||top<12)top=Math.max(12,vh-ch-12-(isPhone()?70:0));
+ let left=Math.min(Math.max(12,r.left+r.width/2-cw/2),vw-cw-12);
+ card.style.top=top+'px';card.style.left=left+'px';
+}
+function endTour(done){
+ if(!tour)return;const was=tour.key;tour=null;const w=$('tour-wrap');
+ // On a phone, the member tour leaves a member open full screen: go back to the list.
+ if(was==='members'&&isPhone()){const back=document.querySelector('.m-detail-bar button');if(back&&back.getBoundingClientRect().height)back.click()}
+if(w)w.classList.remove('on');document.body.classList.remove('touring');
+ if(done===true)toast('Tour done. Tap ? any time to see it again.');
+}
+function openHelp(){
+ let m=$('help-menu');
+ if(!m){m=document.createElement('div');m.id='help-menu';m.className='help-menu';document.body.appendChild(m);
+  m.addEventListener('click',ev=>{const b=ev.target.closest('[data-tour]');if(b)startTour(b.dataset.tour);if(ev.target===m)closeHelp()})}
+ m.innerHTML='<div class="help-sheet"><div class="help-head"><h4>Guided tours</h4><button class="link-plain" type="button" onclick="this.closest(\'.help-menu\').classList.remove(\'on\')">Close</button></div><p class="muted" style="margin:0 0 12px;font-size:13px">Short tours that point at the real screens, using your own academy.</p><div class="beta-note"><span class="beta-pill">Beta</span> LineUp is in beta, so things may change while we improve it. Spotted something odd? Email <a href="mailto:cismafree@gmail.com">cismafree@gmail.com</a>.</div>'+
+  Object.keys(TOURS).map(k=>'<button class="help-item" type="button" data-tour="'+k+'"><strong>'+esc(TOURS[k].name)+'</strong><small>'+esc(TOURS[k].blurb)+'</small><span>›</span></button>').join('')+'</div>';
+ m.classList.add('on');
+}
+function closeHelp(){const m=$('help-menu');if(m)m.classList.remove('on')}
+// First time on this device: offer the welcome tour once the portal has loaded.
+function offerFirstTour(){
+ try{if(localStorage.getItem(TOUR_SEEN_KEY))return}catch(e){return}
+ if($('tour-offer'))return;
+ const o=document.createElement('div');o.id='tour-offer';o.className='tour-offer';
+ o.innerHTML='<div><strong>New to LineUp?</strong><small>Take a 1-minute tour of your portal.</small></div><button class="link-plain" type="button" id="tour-later">Not now</button><button class="btn primary" type="button" id="tour-go">Start tour</button>';
+ document.body.appendChild(o);
+ $('tour-later').onclick=()=>{try{localStorage.setItem(TOUR_SEEN_KEY,'1')}catch(e){}o.remove()};
+ $('tour-go').onclick=()=>{o.remove();startTour('welcome')};
+}
+$('help-btn').onclick=openHelp;
+$('gym-location-btn').onclick=captureGymLocation;
+
 (function init(){
  // This page trusts login.html completely, exactly like the old dashboard:
  // no remembered coach on this device = sign in; no session for this tab = enter PIN.
@@ -843,6 +1255,35 @@ async function switchCoachGym(target){
  $('brand-name').textContent=identity.gymName||'';
  loadAll(false);
 })();
+})();
+</script>
+
+<script>
+/* Phone layout: bottom tab bar and full-screen member profile. Uses the existing menu, so nothing else changes. */
+(function(){
+ var TABS=[['overview','▦','Overview'],['members','♙','Members'],['checkins','✓','Check-ins'],['setup','⚙','Setup']];
+ var bar=document.createElement('nav');bar.className='tabbar';bar.setAttribute('aria-label','Main');
+ bar.innerHTML=TABS.map(function(t){return '<button type="button" data-tab="'+t[0]+'"><span class="tb-ico">'+t[1]+'</span><span>'+t[2]+'</span>'+(t[0]==='members'?'<span class="tb-badge" hidden></span>':'')+'</button>'}).join('');
+ document.body.appendChild(bar);
+ var head=document.createElement('div');head.className='m-detail-bar';head.innerHTML='<button type="button">‹ Members</button>';document.body.appendChild(head);
+ var phone=window.matchMedia('(max-width:760px)'),pushed=false;
+ function openDetail(){if(!phone.matches)return;document.body.classList.add('m-detail');var d=document.getElementById('member-detail');if(d)d.scrollTop=0;if(!pushed){try{history.pushState({lineupMember:1},'');pushed=true}catch(e){}}}
+ function closeDetail(){if(!document.body.classList.contains('m-detail'))return;document.body.classList.remove('m-detail');if(pushed){pushed=false;try{history.back()}catch(e){}}}
+ window.addEventListener('popstate',function(){pushed=false;document.body.classList.remove('m-detail')});
+ head.querySelector('button').onclick=closeDetail;
+ document.addEventListener('click',function(e){if(e.target.closest('#member-table [data-member], [data-open]'))setTimeout(openDetail,0)},true);
+ bar.addEventListener('click',function(e){var b=e.target.closest('[data-tab]');if(!b)return;closeDetail();var n=document.querySelector('.nav button[data-page="'+b.dataset.tab+'"]');if(n)n.click();window.scrollTo(0,0)});
+ function sync(){
+  var act=document.querySelector('.page.active'),id=act?act.id.replace('page-',''):'';
+  bar.querySelectorAll('[data-tab]').forEach(function(b){b.classList.toggle('active',b.dataset.tab===id)});
+  if(id!=='members')closeDetail();
+  var jb=document.getElementById('join-badge'),tb=bar.querySelector('.tb-badge');if(jb&&tb){tb.hidden=jb.hidden;tb.textContent=jb.textContent}
+ }
+ var mo=new MutationObserver(sync);
+ document.querySelectorAll('.page').forEach(function(p){mo.observe(p,{attributes:true,attributeFilter:['class']})});
+ var jb=document.getElementById('join-badge');if(jb)mo.observe(jb,{attributes:true,childList:true,characterData:true,subtree:true});
+ if(phone.addEventListener)phone.addEventListener('change',function(){if(!phone.matches)document.body.classList.remove('m-detail')});
+ sync();
 })();
 </script>
 
