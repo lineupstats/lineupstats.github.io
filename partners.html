@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>LineUp partners – earn by introducing gyms</title>
+<meta name="description" content="Already work with martial arts gyms? Introduce them to LineUp and earn on every gym that moves to a paid plan.">
+<meta name="theme-color" content="#0A0B0C">
+<link rel="canonical" href="https://lineup.cismafree.com/partners.html">
+<link rel="icon" href="/app/member-icon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0A0B0C; --ink-2: #151618; --ink-line: #2C2F33; --white: #F4F4F5; --muted: #B9BCC1;
+    --orange: #F47A12; --orange-soft: rgba(244, 122, 18, 0.14); --bad: #FF9E8F;
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  body {
+    background: var(--ink); color: var(--white);
+    font: 400 1.0625rem/1.65 "Work Sans", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    padding: env(safe-area-inset-top, 0) 0 env(safe-area-inset-bottom, 0);
+  }
+  h1, h2, h3 { font-family: "Oswald", "Arial Narrow", Impact, Arial, sans-serif; font-weight: 700; line-height: 1.05; text-transform: uppercase; }
+  a { color: inherit; }
+  :focus-visible { outline: 3px solid var(--orange); outline-offset: 3px; border-radius: 6px; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 1.5rem; }
+
+  header { border-bottom: 1px solid var(--ink-line); }
+  header .wrap { display: flex; justify-content: space-between; align-items: center; height: 72px; gap: 1rem; }
+  .brand { display: flex; align-items: center; gap: 0.6rem; text-decoration: none; }
+  .brand img { height: 34px; width: 34px; border-radius: 8px; }
+  .brand span { font: 700 1.6rem/1 "Oswald", "Arial Narrow", sans-serif; color: var(--white); }
+  .brand .beta-tag { font: 600 0.68rem/1 "Work Sans", system-ui, sans-serif; letter-spacing: 0.08em; text-transform: uppercase; color: var(--orange); border: 1.5px solid var(--orange); border-radius: 99px; padding: 0.25rem 0.5rem; font-style: normal; }
+  .back { color: var(--muted); font-size: 0.95rem; text-decoration: none; }
+  .back:hover { color: var(--orange); }
+
+  .hero { padding: 4.5rem 0 3.5rem; }
+  .eyebrow { display: inline-block; margin-bottom: 1rem; color: var(--orange); font: 700 0.8rem/1.4 "Work Sans", sans-serif; letter-spacing: 0.08em; text-transform: uppercase; }
+  .hero h1 { font-size: clamp(2.6rem, 6.4vw, 4.8rem); max-width: 14ch; }
+  .lead { margin-top: 1.3rem; font-size: 1.2rem; color: var(--muted); max-width: 46ch; }
+
+  .earn { margin-top: 2.5rem; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; background: var(--ink-2); border: 2px solid var(--orange); border-radius: 20px; padding: 1.75rem; }
+  .earn b { display: block; font: 700 3rem/1 "Oswald", sans-serif; color: var(--orange); }
+  .earn p { margin-top: 0.4rem; font-weight: 600; }
+  .earn .ex { border-left: 1px solid var(--ink-line); padding-left: 1.25rem; color: var(--muted); }
+  .earn .ex strong { color: var(--white); font: 700 1.35rem/1.3 "Oswald", sans-serif; }
+  .fine { margin-top: 0.9rem; color: var(--muted); font-size: 0.9rem; }
+
+  section { padding: 3.5rem 0; }
+  .alt { background: var(--ink-2); }
+  section h2 { font-size: clamp(1.9rem, 4vw, 2.8rem); }
+  .grid3 { margin-top: 2rem; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+  .card { background: var(--ink); border: 1px solid var(--ink-line); border-radius: 16px; padding: 1.5rem; }
+  .card h3 { font-size: 1.25rem; }
+  .card p { margin-top: 0.4rem; color: var(--muted); }
+  .steps { list-style: none; padding: 0; margin-top: 2rem; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; counter-reset: s; }
+  .steps li { counter-increment: s; border-top: 3px solid var(--orange); padding-top: 1rem; }
+  .steps li::before { content: counter(s); display: block; font: 700 2.2rem/1 "Oswald", sans-serif; color: var(--orange); margin-bottom: 0.5rem; }
+  .steps h3 { font-size: 1.2rem; }
+  .steps p { margin-top: 0.3rem; color: var(--muted); }
+
+  .apply { display: grid; grid-template-columns: 1fr 1.1fr; gap: 3rem; align-items: start; }
+  .apply .intro { margin-top: 0.9rem; color: var(--muted); max-width: 40ch; }
+  .formcard { background: var(--ink-2); border: 1px solid var(--ink-line); border-radius: 20px; padding: 1.75rem; }
+  .screen { display: none; } .screen.active { display: block; }
+  label { display: block; font-weight: 600; font-size: 0.95rem; margin-bottom: 0.35rem; }
+  .opt { color: var(--muted); font-weight: 400; }
+  .field { margin-bottom: 1rem; }
+  input[type=text], input[type=email], input[type=tel], textarea {
+    width: 100%; padding: 0.8rem 0.95rem; border-radius: 12px; border: 1.5px solid var(--ink-line);
+    background: var(--ink); color: var(--white); font: inherit; font-size: 1rem;
+  }
+  textarea { min-height: 96px; resize: vertical; }
+  input:focus, textarea:focus { outline: none; border-color: var(--orange); }
+  .code-input { font-size: 1.6rem; letter-spacing: 0.6rem; text-align: center; }
+  .check { display: grid; grid-template-columns: 1.3rem 1fr; gap: 0.7rem; align-items: start; font-weight: 400; font-size: 0.92rem; color: var(--muted); margin: 0.3rem 0 1.2rem; cursor: pointer; }
+  .check input { width: 1.2rem; height: 1.2rem; margin-top: 0.2rem; accent-color: var(--orange); }
+  .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+  .btn { display: block; width: 100%; background: var(--orange); color: var(--ink); font: 600 1.05rem "Work Sans", system-ui, sans-serif; border: 0; padding: 1rem 1.5rem; border-radius: 12px; cursor: pointer; text-align: center; text-decoration: none; }
+  .btn:hover { background: var(--white); }
+  .btn:disabled { opacity: 0.6; cursor: default; background: var(--orange); }
+  .link-btn { all: unset; cursor: pointer; color: var(--muted); font-size: 0.9rem; text-decoration: underline; display: block; margin: 1rem auto 0; text-align: center; }
+  .msg { min-height: 1.4rem; margin-top: 0.8rem; font-size: 0.92rem; color: var(--bad); }
+  .msg.ok { color: var(--muted); }
+  .small { margin-top: 0.9rem; font-size: 0.85rem; color: var(--muted); }
+  .done { text-align: center; padding: 1.5rem 0.5rem; }
+  .tick { width: 3.5rem; height: 3.5rem; margin: 0 auto 1rem; border-radius: 50%; background: var(--orange); color: var(--ink); display: grid; place-items: center; font: 700 1.8rem/1 "Oswald", sans-serif; }
+  .done h3 { font-size: 1.6rem; }
+  .done p { margin-top: 0.6rem; color: var(--muted); }
+
+  footer { padding: 2.5rem 0; color: var(--muted); font-size: 0.95rem; border-top: 1px solid var(--ink-line); }
+  footer .wrap { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+  footer a { color: var(--white); }
+
+  @media (max-width: 860px) {
+    .earn, .grid3, .steps, .apply { grid-template-columns: 1fr; }
+    .earn .ex { border-left: 0; padding-left: 0; border-top: 1px solid var(--ink-line); padding-top: 1rem; }
+    .apply { gap: 2rem; }
+    .hero { padding: 2.5rem 0 2.5rem; }
+    section { padding: 3rem 0; }
+  }
+  @media (max-width: 520px) { .back { display: none; } .formcard { padding: 1.3rem; } }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <a class="brand" href="/" aria-label="LineUp home, in beta"><img src="/app/member-icon-512.png" alt="" width="34" height="34"><span>LineUp</span><em class="beta-tag" aria-hidden="true">Beta</em></a>
+    <a class="back" href="/">What is LineUp?</a>
+  </div>
+</header>
+
+<main>
+  <section class="hero" aria-labelledby="hero-title" style="padding-bottom: 3.5rem">
+    <div class="wrap">
+      <span class="eyebrow">LineUp partner programme</span>
+      <h1 id="hero-title">Earn by introducing gyms</h1>
+      <p class="lead">Already work with martial arts gyms? Introduce them to LineUp. We set them up and look after them, and you earn on every gym that moves to a paid plan.</p>
+      <div class="earn">
+        <div><b>100%</b><p>of the gym's first paid month</p></div>
+        <div><b>+20%</b><p>of every payment for the next 11 months</p></div>
+        <div class="ex">Year one, per gym<br><strong>about £64</strong> on Standard<br><strong>about £96</strong> on Premium</div>
+      </div>
+      <p class="fine">Commission is paid monthly on what LineUp receives. Full terms are in the partner agreement we send you.</p>
+    </div>
+  </section>
+
+  <section class="alt" aria-labelledby="fit-title">
+    <div class="wrap">
+      <h2 id="fit-title">Who it suits</h2>
+      <div class="grid3">
+        <div class="card"><h3>Coaches and black belts</h3><p>You teach seminars or visit other academies, and coaches ask what you use.</p></div>
+        <div class="card"><h3>Suppliers</h3><p>You sell gis, mats, equipment or merch to gyms and are there every month.</p></div>
+        <div class="card"><h3>Gym professionals</h3><p>Physios, PTs, insurers or accountants who already work with gym owners.</p></div>
+      </div>
+      <ol class="steps">
+        <li><h3>Apply below</h3><p>Tell us who you are and how you work with gyms.</p></li>
+        <li><h3>Get your link</h3><p>We send the agreement and your personal link once it's signed.</p></li>
+        <li><h3>Gyms start free</h3><p>We handle set-up and support. You earn when they upgrade.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="apply" aria-labelledby="apply-title">
+    <div class="wrap apply">
+      <div>
+        <h2 id="apply-title">Apply to be a partner</h2>
+        <p class="intro">It takes a minute. We read every application and reply within a few days.</p>
+      </div>
+
+      <div class="formcard">
+        <div class="screen active" id="s-form">
+          <div class="field"><label for="name">Your name</label><input id="name" type="text" maxlength="60" autocomplete="name"></div>
+          <div class="field"><label for="email">Email</label><input id="email" type="email" maxlength="100" autocomplete="email" inputmode="email"></div>
+          <div class="field"><label for="phone">Phone <span class="opt">(optional)</span></label><input id="phone" type="tel" maxlength="20" autocomplete="tel"></div>
+          <div class="field"><label for="area">Where you work</label><input id="area" type="text" maxlength="80" placeholder="For example Milton Keynes and Bedford"></div>
+          <div class="field"><label for="how">How you work with gyms</label><textarea id="how" maxlength="300" placeholder="For example: I supply gis to about 10 gyms in Bedfordshire"></textarea></div>
+          <div class="hp" aria-hidden="true"><label for="website">Website</label><input id="website" type="text" tabindex="-1" autocomplete="off"></div>
+          <label class="check"><input id="consent" type="checkbox"><span>I'm happy for LineUp to contact me about the partner programme. My details are only used for that.</span></label>
+          <button class="btn" id="send-code" type="button">Send me a code</button>
+          <div class="msg" id="form-msg" role="status"></div>
+          <p class="small">We'll email you a 6-digit code to check the address is yours.</p>
+        </div>
+
+        <div class="screen" id="s-code">
+          <h3 style="font-size: 1.4rem">Check your email</h3>
+          <p class="small" style="margin: 0.5rem 0 1rem">We sent a 6-digit code to <strong id="sent-to"></strong>. Check your spam folder too.</p>
+          <input class="code-input" id="code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" aria-label="6-digit code">
+          <button class="btn" id="submit" type="button" style="margin-top: 1rem">Send my application</button>
+          <div class="msg" id="code-msg" role="status"></div>
+          <button class="link-btn" id="resend" type="button">Send a new code</button>
+          <button class="link-btn" id="back" type="button">Change my details</button>
+        </div>
+
+        <div class="screen" id="s-done">
+          <div class="done">
+            <div class="tick" aria-hidden="true">✓</div>
+            <h3>Thanks, application received</h3>
+            <p>We'll be in touch within a few days. If it's a good fit, we'll send the partner agreement and your personal link.</p>
+            <p><a href="/" style="color: var(--orange)">Back to LineUp</a></p>
+          </div>
+        </div>
+
+        <div class="screen" id="s-problem">
+          <p class="msg" id="problem-text">Partner applications aren't available right now. Please email lineup26.mk@gmail.com.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>LineUp is a tool by CismaFree, currently in beta.</span>
+    <a href="/">Back to LineUp</a>
+  </div>
+</footer>
+
+<script src="/app/config.js"></script>
+<script>
+(function () {
+  const URL_ = (window.LINEUP_CONFIG || {}).APPS_SCRIPT_URL;
+  const $ = id => document.getElementById(id);
+  let busy = false;
+  function show(id) { document.querySelectorAll('.screen').forEach(s => s.classList.toggle('active', s.id === id)); }
+  function jsonp(params) {
+    return new Promise((resolve, reject) => {
+      const cb = 'jsonp_cb_' + Math.random().toString(36).slice(2);
+      const timer = setTimeout(() => { done(); reject(new Error('timeout')); }, 25000);
+      const s = document.createElement('script');
+      function done() { clearTimeout(timer); delete window[cb]; if (s.parentNode) s.parentNode.removeChild(s); }
+      window[cb] = data => { done(); resolve(data); };
+      const qs = Object.keys(params).map(k => k + '=' + encodeURIComponent(params[k])).join('&');
+      s.src = URL_ + (URL_.includes('?') ? '&' : '?') + qs + '&callback=' + cb;
+      s.onerror = () => { done(); reject(new Error('network')); };
+      document.body.appendChild(s);
+    });
+  }
+  const OFFLINE = "Couldn't reach LineUp. Check your connection and try again.";
+  const v = () => ({ name: $('name').value.trim(), email: $('email').value.trim().toLowerCase(), phone: $('phone').value.trim(),
+    area: $('area').value.trim(), how: $('how').value.trim() });
+
+  async function sendCode(box) {
+    const d = v();
+    if (!d.name || !d.area || !d.how) { box.textContent = 'Please fill in your name, where you work and how you work with gyms.'; return false; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.email)) { box.textContent = 'Please enter a valid email address.'; return false; }
+    if (!$('consent').checked) { box.textContent = 'Please tick the box so we can contact you.'; return false; }
+    if (busy) return false; busy = true; box.className = 'msg'; box.textContent = '';
+    try {
+      const r = await jsonp({ mode: 'portalPartnerCode', email: d.email, website: $('website').value });
+      if (!r.success) { box.textContent = r.message || 'Something went wrong. Please try again.'; return false; }
+      $('sent-to').textContent = d.email; return true;
+    } catch (e) { box.textContent = OFFLINE; return false; } finally { busy = false; }
+  }
+  $('send-code').onclick = async () => { const b = $('send-code'); b.disabled = true; b.textContent = 'Sending…';
+    if (await sendCode($('form-msg'))) { show('s-code'); $('code').value = ''; $('code').focus(); }
+    b.disabled = false; b.textContent = 'Send me a code'; };
+  $('resend').onclick = async () => { const m = $('code-msg'); if (await sendCode(m)) { m.className = 'msg ok'; m.textContent = 'New code sent.'; } };
+  $('back').onclick = () => show('s-form');
+  $('submit').onclick = async () => {
+    const code = $('code').value.replace(/\D/g, ''), m = $('code-msg');
+    m.className = 'msg';
+    if (code.length !== 6) { m.textContent = 'Enter the 6-digit code from the email.'; return; }
+    if (busy) return; busy = true; const b = $('submit'); b.disabled = true; b.textContent = 'Sending…'; m.textContent = '';
+    try {
+      const r = await jsonp(Object.assign({ mode: 'portalPartnerSubmit', code: code, consent: 1 }, v()));
+      if (!r.success) { m.textContent = r.message || 'Something went wrong. Please try again.'; return; }
+      show('s-done');
+    } catch (e) { m.textContent = OFFLINE; }
+    finally { busy = false; b.disabled = false; b.textContent = 'Send my application'; }
+  };
+  $('code').addEventListener('keydown', e => { if (e.key === 'Enter') $('submit').click(); });
+  if (!URL_) show('s-problem');
+})();
+</script>
+</body>
+</html>

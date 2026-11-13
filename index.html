@@ -365,9 +365,18 @@
 <footer>
   <div class="wrap">
     <span>LineUp is a tool by CismaFree, currently in beta. Milton Keynes.</span>
-    <a href="https://www.cismafree.com">Visit CismaFree</a>
+    <span style="display: flex; gap: 1.25rem; flex-wrap: wrap"><a href="/partners.html">Become a partner</a><a href="https://www.cismafree.com">Visit CismaFree</a></span>
   </div>
 </footer>
 
+<script>
+// Remember a partner's referral code (for example lineup.cismafree.com/?ref=sam) so the sign-up page can credit them.
+(function () {
+  try {
+    var r = String(new URLSearchParams(location.search).get('ref') || '').toLowerCase().replace(/[^a-z0-9_-]/g, '').slice(0, 30);
+    if (r) localStorage.setItem('lineupRef', JSON.stringify({ ref: r, at: Date.now() }));
+  } catch (e) {}
+})();
+</script>
 </body>
 </html>
